@@ -12,11 +12,18 @@ const app = express();
 connectDB();
 
 // ─── Middleware ────────────────────────────────────────────────────────────────
+// app.use(cors({
+//   origin: process.env.FRONTEND_URL || 'http://localhost:5000',
+//   credentials: true,
+//   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+//   allowedHeaders: ['Content-Type', 'Authorization', 'X-Session-Id']
+// }));
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:5000',
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Session-Id']
+  origin: [
+    'https://herbre-thao-duoc-thien-nhi-nv1.vercel.app',
+    'http://localhost:5000'
+  ],
+  credentials: true
 }));
 
 app.use(express.json({ limit: '10mb' }));
