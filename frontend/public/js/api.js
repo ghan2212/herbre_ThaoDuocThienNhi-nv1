@@ -1,5 +1,5 @@
 /* api.js – Centralized API client for Herbré frontend */
-const API_BASE = '/api';
+const API_BASE = 'https://herbrethaoduocthiennhi-nv1-production.up.railway.app/api';
 
 // Session ID for guest cart
 let sessionId = localStorage.getItem('hb_session');
