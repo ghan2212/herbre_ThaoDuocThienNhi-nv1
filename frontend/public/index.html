@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Herbré – Thảo Dược Thiên Nhiên</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<!-- NAV -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="/" class="logo">
+      <svg class="logo-icon" viewBox="0 0 44 44" fill="none">
+        <circle cx="22" cy="22" r="22" fill="#e8f5e0"/>
+        <path d="M22 9C22 9 16 14 16 20C16 25 19 29 22 32C25 29 28 25 28 20C28 14 22 9 22 9Z" fill="#4a7c3f"/>
+        <path d="M22 9L22 32" stroke="#2d5a27" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M22 17C22 17 17 15 15 11" stroke="#7aab6a" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M22 21C22 21 27 19 29 15" stroke="#7aab6a" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M10 35Q22 32 34 35" stroke="#b8955a" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+      </svg>
+      <span class="logo-text">Herb<em>ré</em></span>
+    </a>
+    <div class="nav-links">
+      <a href="#products" class="nav-link" data-page="products">Sản phẩm</a>
+      <a href="#combos" class="nav-link" data-page="combos">Combo</a>
+      <a href="#benefits" class="nav-link">Công dụng</a>
+      <a href="#blogs" class="nav-link" data-page="blogs">Blog</a>
+    </div>
+    <div class="nav-actions">
+      <button class="btn-icon" id="btn-search-open" title="Tìm kiếm">🔍</button>
+      <button class="btn-icon" id="btn-wishlist" title="Yêu thích">🤍</button>
+      <button class="btn-icon btn-cart-nav" id="btn-cart" title="Giỏ hàng">
+        🛒<span class="badge" id="cart-badge">0</span>
+      </button>
+      <button class="btn-auth" id="btn-auth">Đăng nhập</button>
+    </div>
+    <button class="btn-hamburger" id="btn-menu">☰</button>
+  </div>
+</nav>
+
+<!-- SEARCH BAR -->
+<div class="search-bar" id="search-bar">
+  <div class="search-inner">
+    <input type="text" id="search-input" placeholder="Tìm thảo dược, công dụng..." autocomplete="off">
+    <button id="btn-search-close">✕</button>
+  </div>
+  <div class="search-results" id="search-results"></div>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-bg"></div>
+  <div class="hero-inner">
+    <div class="hero-content">
+      <span class="hero-tag">🌿 Thảo dược thiên nhiên thuần Việt</span>
+      <h1>Thư giãn &amp; phục hồi<br>từ <em>thiên nhiên</em></h1>
+      <p>Ngâm chân thảo dược, làm ấm bụng, giải độc gan — cân bằng sức khoẻ mỗi ngày từ bộ sản phẩm thảo dược thuần tự nhiên.</p>
+      <div class="hero-btns">
+        <button class="btn-primary" onclick="scrollTo('#products')">Mua ngay</button>
+        <button class="btn-outline" onclick="scrollTo('#combos')">Xem Combo ưu đãi</button>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><strong>10,000+</strong><span>Khách hàng tin dùng</span></div>
+        <div class="stat-divider"></div>
+        <div class="stat"><strong>100%</strong><span>Thảo dược tự nhiên</span></div>
+        <div class="stat-divider"></div>
+        <div class="stat"><strong>50+</strong><span>Sản phẩm đa dạng</span></div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <svg viewBox="0 0 300 340" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="150" cy="295" rx="100" ry="18" fill="rgba(255,255,255,0.08)"/>
+        <rect x="142" y="225" width="16" height="75" rx="8" fill="#4a7c3f"/>
+        <path d="M150 285C150 285 98 243 98 200C98 162 122 138 150 128C178 138 202 162 202 200C202 243 150 285 150 285Z" fill="#5a9450" opacity=".85"/>
+        <path d="M150 128C150 128 134 160 134 184C134 210 141 232 150 247C159 232 166 210 166 184C166 160 150 128 150 128Z" fill="#7aab6a"/>
+        <path d="M150 128L150 247" stroke="#2d5a27" stroke-width="2" stroke-linecap="round"/>
+        <path d="M150 163C150 163 130 156 117 138" stroke="#9fcf8a" stroke-width="2" stroke-linecap="round"/>
+        <path d="M150 183C150 183 170 176 183 158" stroke="#9fcf8a" stroke-width="2" stroke-linecap="round"/>
+        <path d="M150 204C150 204 133 197 124 182" stroke="#9fcf8a" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="100" cy="132" r="23" fill="#4a7c3f" opacity=".6"/>
+        <path d="M100 155C100 155 91 140 95 129C100 117 110 114 100 155Z" fill="#7aab6a"/>
+        <circle cx="200" cy="147" r="19" fill="#3d6a35" opacity=".7"/>
+        <path d="M200 166C200 166 192 153 196 143C200 133 207 131 200 166Z" fill="#7aab6a"/>
+        <rect x="112" y="272" width="76" height="32" rx="16" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.25)" stroke-width="1"/>
+        <text x="150" y="293" text-anchor="middle" fill="white" font-size="11" font-family="serif" opacity=".9">Herbré</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST STRIP -->
+<div class="trust-strip">
+  <div class="trust-inner">
+    <div class="trust-item"><span>🌿</span> 100% thảo dược tự nhiên</div>
+    <div class="trust-item"><span>🔬</span> Đã kiểm nghiệm an toàn</div>
+    <div class="trust-item"><span>🚚</span> Giao nhanh toàn quốc</div>
+    <div class="trust-item"><span>💳</span> Thanh toán VNPay an toàn</div>
+    <div class="trust-item"><span>↩️</span> Đổi trả trong 7 ngày</div>
+  </div>
+</div>
+
+<!-- PRODUCTS SECTION -->
+<section class="section" id="products">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">🛍 Sản phẩm</span>
+      <h2>Thảo dược lựa chọn cho bạn</h2>
+      <p>Mỗi sản phẩm bào chế từ thảo dược sạch, giúp cân bằng và phục hồi cơ thể tự nhiên</p>
+    </div>
+    <div class="filter-row">
+      <div class="filter-tabs" id="cat-tabs">
+        <button class="ftab active" data-cat="all">Tất cả</button>
+        <button class="ftab" data-cat="ngam-chan">Ngâm chân</button>
+        <button class="ftab" data-cat="am-bung">Làm ấm bụng</button>
+        <button class="ftab" data-cat="giai-doc">Giải độc</button>
+        <button class="ftab" data-cat="thu-gian">Thư giãn</button>
+        <button class="ftab" data-cat="ngu-ngon">Ngủ ngon</button>
+        <button class="ftab" data-cat="lam-dep">Làm đẹp</button>
+      </div>
+      <select class="sort-select" id="sort-select">
+        <option value="newest">Mới nhất</option>
+        <option value="popular">Bán chạy</option>
+        <option value="price-asc">Giá thấp → cao</option>
+        <option value="price-desc">Giá cao → thấp</option>
+        <option value="rating">Đánh giá cao</option>
+      </select>
+    </div>
+    <div class="products-grid" id="products-grid">
+      <div class="loading-grid">
+        <div class="skeleton-card"></div><div class="skeleton-card"></div>
+        <div class="skeleton-card"></div><div class="skeleton-card"></div>
+      </div>
+    </div>
+    <div class="load-more-wrap">
+      <button class="btn-load-more" id="btn-load-more" style="display:none">Xem thêm sản phẩm</button>
+    </div>
+  </div>
+</section>
+
+<!-- COMBOS SECTION -->
+<section class="section section-warm" id="combos">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">🎁 Combo ưu đãi</span>
+      <h2>Bộ combo tiết kiệm hơn</h2>
+      <p>Kết hợp nhiều sản phẩm — hiệu quả tốt hơn, giá ưu đãi hơn</p>
+    </div>
+    <div class="combo-grid" id="combos-grid">
+      <div class="loading-grid">
+        <div class="skeleton-card tall"></div><div class="skeleton-card tall"></div><div class="skeleton-card tall"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BENEFITS SECTION -->
+<section class="section section-mist" id="benefits">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">💚 Công dụng</span>
+      <h2>Sức khoẻ toàn diện từ thiên nhiên</h2>
+    </div>
+    <div class="benefits-grid">
+      <div class="benefit-card"><div class="benefit-icon">🦶</div><h4>Ngâm chân thảo dược</h4><p>Kích thích tuần hoàn, giảm mệt mỏi, khử mùi, an thần nhẹ</p></div>
+      <div class="benefit-card"><div class="benefit-icon">🌡️</div><h4>Làm ấm bụng</h4><p>Hỗ trợ tiêu hoá, giảm đau bụng kinh, ấm bụng ngày lạnh</p></div>
+      <div class="benefit-card"><div class="benefit-icon">🍃</div><h4>Giải độc gan</h4><p>Atiso, diệp hạ châu hỗ trợ thanh lọc, tăng cường chức năng gan</p></div>
+      <div class="benefit-card"><div class="benefit-icon">😴</div><h4>Ngủ ngon sâu giấc</h4><p>Lạc tiên, tâm sen giúp an thần, dễ ngủ không phụ thuộc thuốc</p></div>
+      <div class="benefit-card"><div class="benefit-icon">💆</div><h4>Giảm stress</h4><p>Oải hương, bạc hà thư giãn thần kinh, giảm đau đầu căng thẳng</p></div>
+      <div class="benefit-card"><div class="benefit-icon">🌸</div><h4>Làm đẹp từ bên trong</h4><p>Collagen thảo mộc, hoa hồi sáng da, cân bằng nội tiết tố</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- BLOG SECTION -->
+<section class="section" id="blogs">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">📝 Blog thảo dược</span>
+      <h2>Kiến thức thảo dược hàng ngày</h2>
+      <p>Bí quyết dùng thảo dược đúng cách, tối ưu hiệu quả cho cơ thể</p>
+    </div>
+    <div class="blog-filter">
+      <button class="ftab active" data-blogcat="all">Tất cả</button>
+      <button class="ftab" data-blogcat="kien-thuc">Kiến thức</button>
+      <button class="ftab" data-blogcat="lam-dep">Làm đẹp</button>
+      <button class="ftab" data-blogcat="suc-khoe">Sức khoẻ</button>
+      <button class="ftab" data-blogcat="cong-thuc">Công thức DIY</button>
+    </div>
+    <div class="blog-grid" id="blogs-grid">
+      <div class="loading-grid">
+        <div class="skeleton-card"></div><div class="skeleton-card"></div><div class="skeleton-card"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NEWSLETTER -->
+<section class="newsletter-section">
+  <div class="container">
+    <div class="newsletter-box">
+      <div class="newsletter-text">
+        <h3>🌿 Nhận ưu đãi thảo dược mỗi tuần</h3>
+        <p>Đăng ký nhận bản tin để không bỏ lỡ khuyến mãi và kiến thức thảo dược mới nhất</p>
+      </div>
+      <div class="newsletter-form">
+        <input type="email" id="nl-email" placeholder="Email của bạn...">
+        <button class="btn-primary" onclick="subscribeNewsletter()">Đăng ký ngay</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo"><span class="logo-text" style="color:#fff;font-size:1.5rem">Herb<em style="color:#b8955a">ré</em></span></div>
+        <p>Thảo dược thiên nhiên thuần Việt — mang sức khoẻ toàn diện đến từng gia đình.</p>
+        <div class="socials">
+          <a href="#" class="social">📘 Facebook</a>
+          <a href="#" class="social">📷 Instagram</a>
+          <a href="#" class="social">▶️ YouTube</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-title">Sản phẩm</div>
+        <ul class="footer-links">
+          <li><a href="#" onclick="filterCategory('ngam-chan')">Ngâm chân thảo dược</a></li>
+          <li><a href="#" onclick="filterCategory('am-bung')">Làm ấm bụng</a></li>
+          <li><a href="#" onclick="filterCategory('giai-doc')">Giải độc gan</a></li>
+          <li><a href="#" onclick="filterCategory('ngu-ngon')">Ngủ ngon</a></li>
+          <li><a href="#combos">Combo tiết kiệm</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-title">Hỗ trợ</div>
+        <ul class="footer-links">
+          <li><a href="#">Hướng dẫn sử dụng</a></li>
+          <li><a href="#">Chính sách đổi trả</a></li>
+          <li><a href="#" onclick="openTrackOrder()">Tra cứu đơn hàng</a></li>
+          <li><a href="#blogs">Blog thảo dược</a></li>
+          <li><a href="#">Câu hỏi thường gặp</a></li>
+        </ul>
+      </div>
+      <div class="footer-contact">
+        <div class="footer-title">Liên hệ</div>
+        <p>📞 <strong>1800 6868</strong> (miễn phí)</p>
+        <p>📧 hello@herbre.vn</p>
+        <p>📍 Hà Nội, Việt Nam</p>
+        <p>🕐 8:00 – 22:00 mỗi ngày</p>
+        <div class="payment-logos">
+          <span class="pay-logo-badge" style="background:#ee0033">VNPAY</span>
+          <span class="pay-logo-badge" style="background:#ae2070">MoMo</span>
+          <span class="pay-logo-badge" style="background:#0068ff">ZaloPay</span>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2025 Herbré. Bảo lưu mọi quyền. | Chứng nhận ATTP số 001/2025/BYT</div>
+  </div>
+</footer>
+
+<!-- ══ CART DRAWER ══ -->
+<div class="overlay" id="cart-overlay" onclick="closeCart()"></div>
+<div class="drawer" id="cart-drawer">
+  <div class="drawer-header">
+    <h3>🛒 Giỏ hàng (<span id="cart-count-text">0</span>)</h3>
+    <button class="btn-close" onclick="closeCart()">✕</button>
+  </div>
+  <div class="drawer-body" id="cart-items"></div>
+  <div class="drawer-footer" id="cart-footer" style="display:none">
+    <div class="cart-shipping-note" id="cart-shipping-note"></div>
+    <div class="cart-total-row">
+      <span>Tạm tính:</span><strong id="cart-subtotal">0đ</strong>
+    </div>
+    <div class="cart-total-row">
+      <span>Phí giao hàng:</span><strong id="cart-shipping">30,000đ</strong>
+    </div>
+    <div class="cart-total-row total">
+      <span>Tổng cộng:</span><strong id="cart-total">0đ</strong>
+    </div>
+    <button class="btn-primary full" onclick="openCheckout()">Đặt hàng ngay</button>
+    <button class="btn-vnpay full" onclick="openCheckout('vnpay')">
+      <span class="vnpay-tag">VNPAY</span> Thanh toán nhanh
+    </button>
+  </div>
+</div>
+
+<!-- ══ CHECKOUT MODAL ══ -->
+<div class="modal-overlay" id="checkout-overlay">
+  <div class="modal checkout-modal">
+    <div class="modal-header">
+      <h3>Đặt hàng Herbré</h3>
+      <button class="btn-close" onclick="closeCheckout()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="checkout-order-summary" id="checkout-summary"></div>
+      <div class="form-section-title">📦 Thông tin giao hàng</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Họ và tên *</label>
+          <input type="text" id="f-name" placeholder="Nguyễn Văn A">
+        </div>
+        <div class="form-group">
+          <label>Số điện thoại *</label>
+          <input type="tel" id="f-phone" placeholder="0912 345 678">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Email (nhận xác nhận)</label>
+        <input type="email" id="f-email" placeholder="email@gmail.com">
+      </div>
+      <div class="form-group">
+        <label>Địa chỉ giao hàng *</label>
+        <input type="text" id="f-addr" placeholder="Số nhà, đường, phường/xã...">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Tỉnh / Thành phố *</label>
+          <select id="f-city">
+            <option value="Hà Nội">Hà Nội</option>
+            <option value="TP. Hồ Chí Minh">TP. Hồ Chí Minh</option>
+            <option value="Đà Nẵng">Đà Nẵng</option>
+            <option value="Hải Phòng">Hải Phòng</option>
+            <option value="Cần Thơ">Cần Thơ</option>
+            <option value="Tỉnh khác">Tỉnh khác</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Ghi chú đơn hàng</label>
+          <input type="text" id="f-note" placeholder="VD: Giao giờ hành chính">
+        </div>
+      </div>
+      <div class="form-section-title">💳 Phương thức thanh toán</div>
+      <div class="pay-options" id="pay-options">
+        <div class="pay-opt selected" data-pay="vnpay" onclick="selectPayMethod(this)">
+          <span class="vnpay-tag">VNPAY</span>
+          <div>
+            <strong>VNPay</strong>
+            <small>ATM / QR Code / Visa / Master</small>
+          </div>
+        </div>
+        <div class="pay-opt" data-pay="momo" onclick="selectPayMethod(this)">
+          <span style="font-size:1.5rem">💜</span>
+          <div><strong>MoMo</strong><small>Ví điện tử MoMo</small></div>
+        </div>
+        <div class="pay-opt" data-pay="zalopay" onclick="selectPayMethod(this)">
+          <span style="font-size:1.5rem">🔵</span>
+          <div><strong>ZaloPay</strong><small>Ví ZaloPay</small></div>
+        </div>
+        <div class="pay-opt" data-pay="cod" onclick="selectPayMethod(this)">
+          <span style="font-size:1.5rem">🚚</span>
+          <div><strong>COD</strong><small>Thanh toán khi nhận hàng</small></div>
+        </div>
+      </div>
+      <div class="vnpay-info" id="vnpay-info">
+        🔒 Thanh toán bảo mật SSL 256-bit qua cổng VNPay. Hỗ trợ 40+ ngân hàng nội địa và quốc tế.
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-outline" onclick="closeCheckout()">Quay lại</button>
+      <button class="btn-primary" id="btn-place-order" onclick="placeOrder()">Xác nhận đặt hàng</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ AUTH MODAL ══ -->
+<div class="modal-overlay" id="auth-overlay">
+  <div class="modal auth-modal">
+    <div class="modal-header">
+      <h3 id="auth-title">Đăng nhập</h3>
+      <button class="btn-close" onclick="closeAuth()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="auth-tabs">
+        <button class="auth-tab active" onclick="switchAuth('login')">Đăng nhập</button>
+        <button class="auth-tab" onclick="switchAuth('register')">Đăng ký</button>
+      </div>
+      <div id="login-form">
+        <div class="form-group"><label>Email</label><input type="email" id="login-email" placeholder="email@gmail.com"></div>
+        <div class="form-group"><label>Mật khẩu</label><input type="password" id="login-pass" placeholder="Mật khẩu"></div>
+        <button class="btn-primary full" onclick="doLogin()">Đăng nhập</button>
+        <p class="auth-footer-text">Chưa có tài khoản? <a onclick="switchAuth('register')">Đăng ký ngay</a></p>
+      </div>
+      <div id="register-form" style="display:none">
+        <div class="form-group"><label>Họ và tên</label><input type="text" id="reg-name" placeholder="Nguyễn Văn A"></div>
+        <div class="form-group"><label>Email</label><input type="email" id="reg-email" placeholder="email@gmail.com"></div>
+        <div class="form-group"><label>Số điện thoại</label><input type="tel" id="reg-phone" placeholder="0912 345 678"></div>
+        <div class="form-group"><label>Mật khẩu</label><input type="password" id="reg-pass" placeholder="Tối thiểu 6 ký tự"></div>
+        <button class="btn-primary full" onclick="doRegister()">Tạo tài khoản</button>
+        <p class="auth-footer-text">Đã có tài khoản? <a onclick="switchAuth('login')">Đăng nhập</a></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PRODUCT DETAIL MODAL ══ -->
+<div class="modal-overlay" id="product-overlay">
+  <div class="modal product-modal" id="product-modal-content"></div>
+</div>
+
+<!-- ══ BLOG DETAIL MODAL ══ -->
+<div class="modal-overlay" id="blog-overlay">
+  <div class="modal blog-modal">
+    <div class="modal-header">
+      <h3 id="blog-modal-title">Bài viết</h3>
+      <button class="btn-close" onclick="closeBlog()">✕</button>
+    </div>
+    <div class="modal-body" id="blog-modal-body"></div>
+  </div>
+</div>
+
+<!-- ══ ORDER TRACK MODAL ══ -->
+<div class="modal-overlay" id="track-overlay">
+  <div class="modal track-modal">
+    <div class="modal-header">
+      <h3>🔍 Tra cứu đơn hàng</h3>
+      <button class="btn-close" onclick="document.getElementById('track-overlay').classList.remove('open')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label>Mã đơn hàng</label>
+        <input type="text" id="track-code" placeholder="VD: HB12345678001" style="text-transform:uppercase">
+      </div>
+      <button class="btn-primary full" onclick="trackOrder()">Tra cứu</button>
+      <div id="track-result" style="margin-top:1rem"></div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script src="/js/api.js"></script>
+<script src="/js/cart.js"></script>
+<script src="/js/auth.js"></script>
+<script src="/js/app.js"></script>
+</body>
+</html>

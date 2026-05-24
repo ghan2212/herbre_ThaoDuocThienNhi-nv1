@@ -1,0 +1,1137 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Admin – Herbré</title>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--g-dark:#2d5a27;--g-mid:#4a7c3f;--g-light:#7aab6a;--g-pale:#e8f2e5;--g-mist:#f2f8f0;--gold:#b8955a;--text:#2a2a2a;--text-mid:#555;--text-light:#888;--red:#ee0033;--radius:10px;--shadow:0 2px 16px rgba(45,90,39,.10)}
+body{font-family:'Be Vietnam Pro',sans-serif;background:#f5f7f5;color:var(--text);font-size:14px}
+a{text-decoration:none;color:inherit}
+button{font-family:'Be Vietnam Pro',sans-serif;cursor:pointer}
+
+/* LAYOUT */
+.layout{display:flex;min-height:100vh}
+.sidebar{width:240px;background:var(--g-dark);color:#c8e8b0;flex-shrink:0;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;display:flex;flex-direction:column;z-index:10}
+.main{margin-left:240px;flex:1;display:flex;flex-direction:column;min-height:100vh}
+.topbar{background:#fff;border-bottom:1px solid #e0e8d8;padding:0 2rem;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:9;box-shadow:0 1px 8px rgba(0,0,0,.06)}
+.content{padding:1.5rem 2rem;flex:1}
+
+/* SIDEBAR */
+.sidebar-logo{padding:1.4rem 1.2rem;border-bottom:1px solid rgba(255,255,255,.1)}
+.sidebar-logo-text{font-family:'Playfair Display',serif;font-size:1.3rem;color:#fff}
+.sidebar-logo-text em{color:var(--gold);font-style:italic}
+.sidebar-logo small{display:block;font-size:.72rem;color:#8ab886;margin-top:.1rem}
+.nav-section{padding:.6rem 0}
+.nav-section-title{font-size:.68rem;text-transform:uppercase;letter-spacing:1px;color:#5a8a56;padding:.5rem 1.2rem;margin-top:.3rem}
+.nav-item{display:flex;align-items:center;gap:.7rem;padding:.65rem 1.2rem;font-size:.85rem;color:#9ec89a;cursor:pointer;transition:all .2s;border-left:3px solid transparent}
+.nav-item:hover,.nav-item.active{background:rgba(255,255,255,.08);color:#fff;border-left-color:var(--g-light)}
+.nav-item .icon{font-size:1rem;width:20px;text-align:center}
+.sidebar-footer{margin-top:auto;padding:1rem 1.2rem;border-top:1px solid rgba(255,255,255,.1)}
+
+/* TOPBAR */
+.topbar-title{font-size:1rem;font-weight:600;color:var(--g-dark)}
+.topbar-actions{display:flex;align-items:center;gap:12px}
+.topbar-user{font-size:.85rem;color:var(--text-mid)}
+.btn-logout{background:none;border:1px solid #e0e0e0;border-radius:7px;padding:6px 14px;font-size:.82rem;color:var(--text-mid);transition:.2s}
+.btn-logout:hover{border-color:var(--red);color:var(--red)}
+
+/* STATS CARDS */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;margin-bottom:1.5rem}
+.stat-card{background:#fff;border-radius:var(--radius);padding:1.2rem;box-shadow:var(--shadow);border-left:4px solid var(--g-mid);transition:.2s}
+.stat-card:hover{transform:translateY(-2px);box-shadow:0 4px 24px rgba(45,90,39,.14)}
+.stat-card.gold{border-left-color:var(--gold)}
+.stat-card.red{border-left-color:var(--red)}
+.stat-card.blue{border-left-color:#3b82f6}
+.stat-label{font-size:.75rem;color:var(--text-light);font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-bottom:.4rem}
+.stat-value{font-size:1.6rem;font-weight:700;color:var(--g-dark);font-family:'Playfair Display',serif}
+.stat-sub{font-size:.75rem;color:var(--text-light);margin-top:.2rem}
+.stat-growth{font-size:.78rem;font-weight:600;margin-top:.3rem}
+.growth-up{color:#16a34a} .growth-down{color:var(--red)}
+
+/* TABLES */
+.card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+.card-header{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.2rem;border-bottom:1px solid #f0f0f0}
+.card-header h3{font-size:.95rem;font-weight:700;color:var(--g-dark)}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse}
+th{background:var(--g-mist);font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--text-mid);padding:.7rem 1rem;text-align:left;white-space:nowrap}
+td{padding:.7rem 1rem;border-bottom:1px solid #f5f5f5;font-size:.84rem;color:var(--text-mid);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:#fafcf8}
+
+/* BADGES */
+.badge{display:inline-block;border-radius:5px;padding:2px 8px;font-size:.72rem;font-weight:700;color:#fff}
+.badge-pending{background:#f59e0b}
+.badge-confirmed{background:var(--g-mid)}
+.badge-processing{background:#3b82f6}
+.badge-shipped{background:#8b5cf6}
+.badge-delivered{background:var(--g-dark)}
+.badge-cancelled{background:var(--red)}
+.badge-paid{background:var(--g-dark)}
+.badge-failed{background:var(--red)}
+
+/* BUTTONS */
+.btn-sm{border:none;border-radius:6px;padding:5px 12px;font-size:.78rem;font-weight:600;cursor:pointer;transition:.2s;font-family:'Be Vietnam Pro',sans-serif}
+.btn-green{background:var(--g-mist);color:var(--g-dark)} .btn-green:hover{background:var(--g-pale)}
+.btn-red{background:#fef2f2;color:var(--red)} .btn-red:hover{background:#fee2e2}
+.btn-primary-sm{background:var(--g-dark);color:#fff} .btn-primary-sm:hover{background:var(--g-mid)}
+
+/* FORMS */
+.form-inline{display:flex;gap:.5rem;align-items:center}
+.input-sm{border:1.5px solid #e0e8d8;border-radius:7px;padding:7px 12px;font-size:.84rem;outline:none;font-family:'Be Vietnam Pro',sans-serif}
+.input-sm:focus{border-color:var(--g-mid)}
+select.input-sm{cursor:pointer}
+
+/* SECTIONS */
+.sections-nav{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:1.5rem}
+.section-tab{background:#fff;border:1.5px solid #e0e8d8;border-radius:7px;padding:7px 16px;font-size:.82rem;font-weight:500;color:var(--text-mid);transition:.2s}
+.section-tab.active,.section-tab:hover{background:var(--g-dark);color:#fff;border-color:var(--g-dark)}
+.section-content{display:none}
+.section-content.active{display:block}
+
+/* GRID 2 COL */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem}
+
+/* TOP PRODUCTS */
+.top-product{display:flex;align-items:center;gap:10px;padding:.5rem 0;border-bottom:1px solid #f5f5f5}
+.top-product:last-child{border:none}
+.top-rank{width:22px;height:22px;background:var(--g-pale);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;color:var(--g-dark);flex-shrink:0}
+.top-rank.gold-rank{background:var(--gold);color:#fff}
+.top-product-info{flex:1}
+.top-product-info .name{font-size:.85rem;font-weight:600;color:var(--text)}
+.top-product-info .sub{font-size:.75rem;color:var(--text-light)}
+.top-product-sales{font-size:.85rem;font-weight:700;color:var(--g-dark);white-space:nowrap}
+
+/* STATUS FILTER */
+.status-filter{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1rem}
+.sfilter{background:#f5f5f5;border:none;border-radius:20px;padding:5px 13px;font-size:.78rem;font-weight:500;cursor:pointer;font-family:'Be Vietnam Pro',sans-serif;transition:.2s}
+.sfilter.active,.sfilter:hover{background:var(--g-dark);color:#fff}
+
+/* LOADING */
+.loader{text-align:center;padding:3rem;color:var(--text-light)}
+.empty-state{text-align:center;padding:3rem;color:var(--text-light)}
+.empty-state .empty-icon{font-size:3rem;margin-bottom:.8rem}
+
+/* ALERT */
+.alert{border-radius:8px;padding:.8rem 1.2rem;font-size:.85rem;margin-bottom:1rem}
+.alert-warning{background:#fffbeb;border:1px solid #fde68a;color:#92400e}
+.alert-success{background:#f0fdf4;border:1px solid #bbf7d0;color:#166534}
+.alert-error{background:#fef2f2;border:1px solid #fecaca;color:#991b1b}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:50;display:none;align-items:center;justify-content:center;padding:1rem}
+.modal-overlay.open{display:flex}
+.modal{background:#fff;border-radius:12px;max-width:500px;width:100%;max-height:90vh;overflow-y:auto;padding:1.5rem}
+.modal h3{font-size:1.1rem;color:var(--g-dark);margin-bottom:1.2rem}
+.form-group{margin-bottom:.9rem}
+.form-group label{font-size:.8rem;font-weight:600;color:var(--text-mid);display:block;margin-bottom:.3rem}
+.form-group input,.form-group select,.form-group textarea{width:100%;padding:9px 12px;border:1.5px solid #e0e8d8;border-radius:7px;font-size:.85rem;outline:none;font-family:'Be Vietnam Pro',sans-serif;transition:.2s}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--g-mid)}
+.modal-footer{display:flex;gap:8px;justify-content:flex-end;margin-top:1.2rem;padding-top:1rem;border-top:1px solid #f0f0f0}
+</style>
+</head>
+<body>
+<div class="layout">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="sidebar-logo-text">Herb<em>ré</em></div>
+      <small>Admin Dashboard</small>
+    </div>
+    <nav class="nav-section">
+      <div class="nav-section-title">Tổng quan</div>
+      <div class="nav-item active" onclick="showSection('dashboard', this)">
+        <span class="icon">📊</span> Dashboard
+      </div>
+    </nav>
+    <nav class="nav-section">
+      <div class="nav-section-title">Quản lý</div>
+      <div class="nav-item" onclick="showSection('orders', this)">
+        <span class="icon">📦</span> Đơn hàng
+      </div>
+      <div class="nav-item" onclick="showSection('products', this)">
+        <span class="icon">🌿</span> Sản phẩm
+      </div>
+      <div class="nav-item" onclick="showSection('combos', this)">
+        <span class="icon">🎁</span> Combo
+      </div>
+      <div class="nav-item" onclick="showSection('blogs', this)">
+        <span class="icon">📝</span> Blog
+      </div>
+      <div class="nav-item" onclick="showSection('users', this)">
+        <span class="icon">👥</span> Người dùng
+      </div>
+    </nav>
+    <nav class="nav-section">
+      <div class="nav-section-title">Kho hàng</div>
+      <div class="nav-item" onclick="showSection('stock', this)">
+        <span class="icon">📋</span> Tồn kho
+      </div>
+    </nav>
+    <div class="sidebar-footer">
+      <a href="/" style="font-size:.8rem;color:#8ab886;display:block;margin-bottom:.5rem">← Về trang web</a>
+      <div style="font-size:.75rem;color:#5a8a56">Herbré v1.0.0</div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="topbar">
+      <div class="topbar-title" id="topbar-title">Dashboard</div>
+      <div class="topbar-actions">
+        <span class="topbar-user" id="topbar-user">⏳ Đang tải...</span>
+        <button class="btn-logout" onclick="adminLogout()">Đăng xuất</button>
+      </div>
+    </div>
+
+    <div class="content">
+      <!-- DASHBOARD -->
+      <div class="section-content active" id="section-dashboard">
+        <div class="stats-grid" id="stats-grid">
+          <div class="stat-card"><div class="stat-label">Đang tải</div><div class="stat-value">...</div></div>
+        </div>
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-header"><h3>📦 Đơn hàng gần đây</h3></div>
+            <div class="table-wrap" id="recent-orders-table"><div class="loader">⏳ Đang tải...</div></div>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3>🏆 Sản phẩm bán chạy</h3></div>
+            <div id="top-products-list" style="padding:1rem"><div class="loader">⏳ Đang tải...</div></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <h3>📈 Doanh thu theo ngày (tháng này)</h3>
+          </div>
+          <div id="revenue-chart" style="padding:1.2rem;overflow-x:auto"></div>
+        </div>
+      </div>
+
+      <!-- ORDERS -->
+      <div class="section-content" id="section-orders">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:.5rem">
+          <div class="status-filter" id="order-status-filter">
+            <button class="sfilter active" data-status="">Tất cả</button>
+            <button class="sfilter" data-status="pending">Chờ xác nhận</button>
+            <button class="sfilter" data-status="confirmed">Đã xác nhận</button>
+            <button class="sfilter" data-status="processing">Đang xử lý</button>
+            <button class="sfilter" data-status="shipped">Đang giao</button>
+            <button class="sfilter" data-status="delivered">Đã giao</button>
+            <button class="sfilter" data-status="cancelled">Đã huỷ</button>
+          </div>
+          <div class="form-inline">
+            <input type="text" class="input-sm" id="order-search" placeholder="Tìm mã / tên / SĐT..." style="width:200px">
+            <button class="btn-sm btn-primary-sm" onclick="loadAdminOrders()">Tìm</button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="table-wrap" id="orders-table"><div class="loader">⏳ Đang tải...</div></div>
+        </div>
+      </div>
+
+      <!-- PRODUCTS -->
+      <div class="section-content" id="section-products">
+        <div style="display:flex;justify-content:space-between;margin-bottom:1rem;align-items:center;flex-wrap:wrap;gap:.5rem">
+          <div class="form-inline">
+            <input type="text" class="input-sm" id="prod-search" placeholder="Tìm sản phẩm..." style="width:180px">
+            <select class="input-sm" id="prod-cat-filter">
+              <option value="">Tất cả danh mục</option>
+              <option value="ngam-chan">Ngâm chân</option>
+              <option value="am-bung">Làm ấm bụng</option>
+              <option value="giai-doc">Giải độc</option>
+              <option value="thu-gian">Thư giãn</option>
+              <option value="ngu-ngon">Ngủ ngon</option>
+              <option value="lam-dep">Làm đẹp</option>
+            </select>
+            <button class="btn-sm btn-primary-sm" onclick="loadAdminProducts()">Lọc</button>
+          </div>
+          <button class="btn-sm btn-primary-sm" onclick="openAddProduct()">+ Thêm sản phẩm</button>
+        </div>
+        <div class="card">
+          <div class="table-wrap" id="products-table"><div class="loader">⏳ Đang tải...</div></div>
+        </div>
+      </div>
+
+      <!-- COMBOS -->
+      <div class="section-content" id="section-combos">
+        <div style="display:flex;justify-content:flex-end;margin-bottom:1rem">
+          <button class="btn-sm btn-primary-sm" onclick="openAddCombo()">+ Thêm combo</button>
+        </div>
+        <div class="card">
+          <div class="table-wrap" id="combos-table"><div class="loader">⏳ Đang tải...</div></div>
+        </div>
+      </div>
+
+      <!-- BLOGS -->
+      <div class="section-content" id="section-blogs">
+        <div style="display:flex;justify-content:flex-end;margin-bottom:1rem">
+          <button class="btn-sm btn-primary-sm" onclick="openAddBlog()">+ Đăng bài blog</button>
+        </div>
+        <div class="card">
+          <div class="table-wrap" id="blogs-table"><div class="loader">⏳ Đang tải...</div></div>
+        </div>
+      </div>
+
+      <!-- USERS -->
+      <div class="section-content" id="section-users">
+        <div class="card">
+          <div class="table-wrap" id="users-table"><div class="loader">⏳ Đang tải...</div></div>
+        </div>
+      </div>
+
+      <!-- STOCK -->
+      <div class="section-content" id="section-stock">
+        <div class="alert alert-warning">⚠️ Danh sách sản phẩm có tồn kho ≤ 30 sản phẩm cần nhập thêm hàng</div>
+        <div class="card">
+          <div class="table-wrap" id="stock-table"><div class="loader">⏳ Đang tải...</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- STATUS UPDATE MODAL -->
+<div class="modal-overlay" id="status-modal">
+  <div class="modal">
+    <h3>Cập nhật trạng thái đơn hàng</h3>
+    <input type="hidden" id="modal-order-id">
+    <div class="form-group">
+      <label>Trạng thái mới</label>
+      <select class="input-sm" id="modal-status" style="width:100%">
+        <option value="confirmed">Đã xác nhận</option>
+        <option value="processing">Đang xử lý</option>
+        <option value="shipped">Đang giao hàng</option>
+        <option value="delivered">Đã giao thành công</option>
+        <option value="cancelled">Huỷ đơn hàng</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Mã vận đơn (nếu có)</label>
+      <input type="text" class="input-sm" id="modal-tracking" placeholder="VD: GHNV123456" style="width:100%">
+    </div>
+    <div class="form-group">
+      <label>Ghi chú</label>
+      <input type="text" class="input-sm" id="modal-note" placeholder="Ghi chú nội bộ..." style="width:100%">
+    </div>
+    <div class="modal-footer">
+      <button class="btn-sm btn-green" onclick="closeStatusModal()">Huỷ</button>
+      <button class="btn-sm btn-primary-sm" onclick="confirmStatusUpdate()">Cập nhật</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADD/EDIT PRODUCT MODAL -->
+<div class="modal-overlay" id="product-modal">
+  <div class="modal" style="max-width:600px">
+    <h3 id="product-modal-title">Thêm sản phẩm mới</h3>
+    <input type="hidden" id="product-edit-id">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:.8rem">
+      <div class="form-group" style="grid-column:1/-1"><label>Tên sản phẩm *</label><input type="text" id="p-name" class="input-sm" style="width:100%"></div>
+      <div class="form-group"><label>Danh mục *</label>
+        <select id="p-cat" class="input-sm" style="width:100%">
+          <option value="ngam-chan">Ngâm chân</option>
+          <option value="am-bung">Làm ấm bụng</option>
+          <option value="giai-doc">Giải độc</option>
+          <option value="thu-gian">Thư giãn</option>
+          <option value="ngu-ngon">Ngủ ngon</option>
+          <option value="lam-dep">Làm đẹp</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Emoji</label><input type="text" id="p-emoji" class="input-sm" value="🌿" style="width:100%"></div>
+      <div class="form-group" style="grid-column:1/-1"><label>URL ảnh sản phẩm</label>
+        <div style="display:flex;gap:8px;align-items:flex-start">
+          <input type="url" id="p-image" class="input-sm" placeholder="https://example.com/image.jpg" style="flex:1">
+          <div id="p-img-preview" style="width:52px;height:52px;border-radius:8px;border:1px solid #e0e8d8;overflow:hidden;flex-shrink:0;background:var(--g-mist);display:flex;align-items:center;justify-content:center;font-size:1.5rem">🌿</div>
+        </div>
+      </div>
+      <div class="form-group"><label>Giá bán (đ) *</label><input type="number" id="p-price" class="input-sm" style="width:100%"></div>
+      <div class="form-group"><label>Giá gốc (đ)</label><input type="number" id="p-orig" class="input-sm" style="width:100%"></div>
+      <div class="form-group"><label>Tồn kho</label><input type="number" id="p-stock" class="input-sm" value="100" style="width:100%"></div>
+      <div class="form-group"><label>Nhãn</label>
+        <select id="p-badge" class="input-sm" style="width:100%">
+          <option value="">Không có</option>
+          <option value="Bán chạy">Bán chạy</option>
+          <option value="Mới">Mới</option>
+          <option value="Hot">Hot</option>
+          <option value="Sale">Sale</option>
+        </select>
+      </div>
+      <div class="form-group" style="grid-column:1/-1"><label>Mô tả ngắn</label><input type="text" id="p-short" class="input-sm" style="width:100%"></div>
+      <div class="form-group" style="grid-column:1/-1"><label>Mô tả chi tiết</label><textarea id="p-desc" class="input-sm" rows="3" style="width:100%"></textarea></div>
+      <div class="form-group" style="grid-column:1/-1"><label>Tags (phân cách bằng dấu phẩy)</label><input type="text" id="p-tags" class="input-sm" placeholder="Ngủ ngon, An thần, Thư giãn" style="width:100%"></div>
+      <div class="form-group"><label>Nổi bật</label>
+        <select id="p-featured" class="input-sm" style="width:100%">
+          <option value="false">Không</option>
+          <option value="true">Có</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-sm btn-green" onclick="closeProductModal()">Huỷ</button>
+      <button class="btn-sm btn-primary-sm" onclick="saveProduct()">Lưu sản phẩm</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADD/EDIT COMBO MODAL -->
+<div class="modal-overlay" id="combo-modal">
+  <div class="modal" style="max-width:620px;max-height:90vh;overflow-y:auto">
+    <h3 id="combo-modal-title">Thêm combo mới</h3>
+    <input type="hidden" id="combo-edit-id">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:.8rem">
+      <div class="form-group" style="grid-column:1/-1"><label>Tên combo *</label><input type="text" id="c-name" class="input-sm" style="width:100%" placeholder="Bộ Ngủ Sâu Giấc"></div>
+      <div class="form-group"><label>Emoji</label><input type="text" id="c-emoji" class="input-sm" value="🎁" style="width:100%"></div>
+      <div class="form-group"><label>Nhãn hiển thị</label><input type="text" id="c-label" class="input-sm" placeholder="🎁 Combo" style="width:100%"></div>
+      <div class="form-group" style="grid-column:1/-1"><label>Tagline</label><input type="text" id="c-tagline" class="input-sm" style="width:100%" placeholder="Giải pháp mất ngủ hoàn toàn tự nhiên"></div>
+      <div class="form-group"><label>Giá combo (đ) *</label><input type="number" id="c-price" class="input-sm" style="width:100%" oninput="calcSaving()"></div>
+      <div class="form-group"><label>Giá gốc (đ) *</label><input type="number" id="c-orig" class="input-sm" style="width:100%" oninput="calcSaving()"></div>
+      <div class="form-group"><label>Tồn kho</label><input type="number" id="c-stock" class="input-sm" value="50" style="width:100%"></div>
+      <div class="form-group"><label>Nổi bật</label>
+        <select id="c-featured" class="input-sm" style="width:100%">
+          <option value="false">Không</option>
+          <option value="true">Có</option>
+        </select>
+      </div>
+      <div class="form-group" style="grid-column:1/-1">
+        <label>Tiết kiệm: <span id="c-saving-display" style="color:var(--gold);font-weight:700">0đ</span></label>
+      </div>
+    </div>
+
+    <div style="margin-top:1rem">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.6rem">
+        <label style="font-weight:600;font-size:.85rem">Sản phẩm trong combo *</label>
+        <button class="btn-sm btn-green" onclick="addComboItem()">+ Thêm sản phẩm</button>
+      </div>
+      <div id="combo-items-list" style="display:grid;gap:.5rem"></div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-sm btn-green" onclick="closeComboModal()">Huỷ</button>
+      <button class="btn-sm btn-primary-sm" onclick="saveCombo()">Lưu combo</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADD BLOG MODAL -->
+<div class="modal-overlay" id="blog-modal">
+  <div class="modal" style="max-width:640px">
+    <h3 id="blog-modal-head">Đăng bài blog mới</h3>
+    <input type="hidden" id="blog-edit-id">
+    <div class="form-group"><label>Tiêu đề *</label><input type="text" id="b-title" class="input-sm" style="width:100%"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:.8rem">
+      <div class="form-group"><label>Danh mục</label>
+        <select id="b-cat" class="input-sm" style="width:100%">
+          <option value="kien-thuc">Kiến thức thảo dược</option>
+          <option value="lam-dep">Làm đẹp</option>
+          <option value="suc-khoe">Sức khoẻ</option>
+          <option value="cong-thuc">Công thức DIY</option>
+          <option value="tin-tuc">Tin tức</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Emoji</label><input type="text" id="b-emoji" class="input-sm" value="🌿" style="width:100%"></div>
+      <div class="form-group"><label>Thời gian đọc (phút)</label><input type="number" id="b-readtime" class="input-sm" value="5" style="width:100%"></div>
+      <div class="form-group"><label>Tác giả</label><input type="text" id="b-author" class="input-sm" placeholder="Đội ngũ Herbré" style="width:100%"></div>
+    </div>
+    <div class="form-group"><label>Tóm tắt bài viết *</label><textarea id="b-excerpt" class="input-sm" rows="2" style="width:100%"></textarea></div>
+    <div class="form-group"><label>Nội dung (HTML) *</label><textarea id="b-content" class="input-sm" rows="8" style="width:100%;font-family:monospace;font-size:.8rem" placeholder="<h2>Tiêu đề</h2><p>Nội dung...</p>"></textarea></div>
+    <div class="form-group"><label>Tags (phân cách bằng dấu phẩy)</label><input type="text" id="b-tags" class="input-sm" style="width:100%"></div>
+    <div class="form-group"><label>Nổi bật</label>
+      <select id="b-featured" class="input-sm">
+        <option value="false">Không</option>
+        <option value="true">Có – Hiển thị nổi bật</option>
+      </select>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-sm btn-green" onclick="closeBlogModal()">Huỷ</button>
+      <button class="btn-sm btn-primary-sm" onclick="saveBlog()">Đăng bài</button>
+    </div>
+  </div>
+</div>
+
+<script src="/js/api.js"></script>
+<script>
+// ─── Auth check ────────────────────────────────────────────────────────────
+const token = localStorage.getItem('hb_token');
+if (!token) { window.location.href = '/'; }
+
+AuthAPI.me().then(res => {
+  if (res.user.role !== 'admin') { alert('Không có quyền truy cập!'); window.location.href = '/'; return; }
+  document.getElementById('topbar-user').textContent = `👤 ${res.user.name}`;
+  loadDashboard();
+}).catch(() => { window.location.href = '/'; });
+
+function adminLogout() {
+  localStorage.removeItem('hb_token');
+  localStorage.removeItem('hb_user');
+  window.location.href = '/';
+}
+
+// ─── Navigation ────────────────────────────────────────────────────────────
+const sectionLoaders = {
+  orders: loadAdminOrders,
+  products: loadAdminProducts,
+  combos: loadAdminCombos,
+  blogs: loadAdminBlogs,
+  users: loadAdminUsers,
+  stock: loadStock
+};
+
+function showSection(name, navEl) {
+  document.querySelectorAll('.section-content').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById(`section-${name}`).classList.add('active');
+  if (navEl) navEl.classList.add('active');
+
+  const titles = { dashboard:'Dashboard', orders:'Quản lý đơn hàng', products:'Quản lý sản phẩm', combos:'Quản lý combo', blogs:'Quản lý blog', users:'Quản lý người dùng', stock:'Quản lý tồn kho' };
+  document.getElementById('topbar-title').textContent = titles[name] || name;
+
+  if (sectionLoaders[name]) sectionLoaders[name]();
+}
+
+// ─── Format ────────────────────────────────────────────────────────────────
+const fmtVND = n => new Intl.NumberFormat('vi-VN').format(n) + 'đ';
+const fmtDate = d => new Date(d).toLocaleDateString('vi-VN', {day:'2-digit',month:'2-digit',year:'numeric'});
+const fmtDateTime = d => new Date(d).toLocaleString('vi-VN', {day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
+
+const statusMap = {
+  pending: ['Chờ xác nhận','badge-pending'],
+  confirmed: ['Đã xác nhận','badge-confirmed'],
+  processing: ['Đang xử lý','badge-processing'],
+  shipped: ['Đang giao','badge-shipped'],
+  delivered: ['Đã giao','badge-delivered'],
+  cancelled: ['Đã huỷ','badge-cancelled']
+};
+
+// ─── Dashboard ─────────────────────────────────────────────────────────────
+async function loadDashboard() {
+  try {
+    const res = await AdminAPI.dashboard();
+    const d = res.data;
+    const s = d.summary;
+
+    document.getElementById('stats-grid').innerHTML = `
+      <div class="stat-card gold">
+        <div class="stat-label">Doanh thu tháng này</div>
+        <div class="stat-value">${fmtVND(s.thisMonthRevenue)}</div>
+        <div class="stat-growth ${s.revenueGrowth >= 0 ? 'growth-up' : 'growth-down'}">
+          ${s.revenueGrowth >= 0 ? '↑' : '↓'} ${Math.abs(s.revenueGrowth)}% so với tháng trước
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Đơn hàng tháng này</div>
+        <div class="stat-value">${s.thisMonthOrders}</div>
+        <div class="stat-sub">Chờ xác nhận: ${d.orderStatus.pending || 0}</div>
+      </div>
+      <div class="stat-card blue">
+        <div class="stat-label">Tổng người dùng</div>
+        <div class="stat-value">${s.totalUsers.toLocaleString()}</div>
+        <div class="stat-sub">Mới tháng này: +${s.newUsersThisMonth}</div>
+      </div>
+      <div class="stat-card ${s.lowStockProducts > 0 ? 'red' : ''}">
+        <div class="stat-label">Sản phẩm</div>
+        <div class="stat-value">${s.totalProducts}</div>
+        <div class="stat-sub">Sắp hết hàng: ${s.lowStockProducts}</div>
+      </div>`;
+
+    // Recent orders
+    const ordTbl = document.getElementById('recent-orders-table');
+    ordTbl.innerHTML = `<table>
+      <thead><tr><th>Mã đơn</th><th>Khách hàng</th><th>Tổng tiền</th><th>Thanh toán</th><th>Trạng thái</th></tr></thead>
+      <tbody>${d.recentOrders.map(o => {
+        const [label, cls] = statusMap[o.status] || [o.status,'badge-pending'];
+        return `<tr>
+          <td><strong>${o.orderCode}</strong></td>
+          <td>${o.customerInfo?.name || '-'}</td>
+          <td>${fmtVND(o.totalAmount)}</td>
+          <td>${o.paymentMethod?.toUpperCase()}</td>
+          <td><span class="badge ${cls}">${label}</span></td>
+        </tr>`;
+      }).join('')}</tbody>
+    </table>`;
+
+    // Top products
+    document.getElementById('top-products-list').innerHTML = d.topProducts.map((p, i) => `
+      <div class="top-product">
+        <div class="top-rank ${i === 0 ? 'gold-rank' : ''}">${i + 1}</div>
+        <div style="font-size:1.5rem">${p.emoji}</div>
+        <div class="top-product-info">
+          <div class="name">${p.name}</div>
+          <div class="sub">${fmtVND(p.price)}</div>
+        </div>
+        <div class="top-product-sales">${p.sold} bán</div>
+      </div>`).join('');
+
+    // Revenue chart (simple bar chart)
+    const chartEl = document.getElementById('revenue-chart');
+    if (d.revenueByDay?.length) {
+      const maxRev = Math.max(...d.revenueByDay.map(r => r.revenue));
+      chartEl.innerHTML = `
+        <div style="display:flex;align-items:flex-end;gap:6px;height:140px;padding:.5rem 0">
+          ${d.revenueByDay.slice(-14).map(r => {
+            const h = maxRev > 0 ? Math.max(4, (r.revenue / maxRev) * 120) : 4;
+            return `<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px">
+              <div style="font-size:.65rem;color:var(--text-light)">${fmtVND(r.revenue).replace('đ','')}</div>
+              <div style="width:100%;height:${h}px;background:var(--g-mid);border-radius:3px 3px 0 0;min-height:4px" title="${r._id}: ${fmtVND(r.revenue)}"></div>
+              <div style="font-size:.65rem;color:var(--text-light);white-space:nowrap">${r._id}</div>
+            </div>`;
+          }).join('')}
+        </div>`;
+    } else {
+      chartEl.innerHTML = '<div class="empty-state"><div class="empty-icon">📊</div><p>Chưa có dữ liệu doanh thu</p></div>';
+    }
+  } catch (err) {
+    document.getElementById('stats-grid').innerHTML = `<div class="alert alert-error">❌ ${err.message}</div>`;
+  }
+}
+
+// ─── Orders ────────────────────────────────────────────────────────────────
+let orderStatusFilter = '';
+document.querySelectorAll('#order-status-filter .sfilter').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('#order-status-filter .sfilter').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+    orderStatusFilter = this.dataset.status;
+    loadAdminOrders();
+  });
+});
+
+async function loadAdminOrders() {
+  const tbl = document.getElementById('orders-table');
+  tbl.innerHTML = '<div class="loader">⏳ Đang tải...</div>';
+  const search = document.getElementById('order-search')?.value || '';
+  try {
+    const res = await OrderAPI.list({ status: orderStatusFilter, search, limit: 30 });
+    if (!res.data.length) { tbl.innerHTML = '<div class="empty-state"><div class="empty-icon">📭</div><p>Không có đơn hàng</p></div>'; return; }
+    tbl.innerHTML = `<table>
+      <thead><tr><th>Mã đơn</th><th>Khách hàng</th><th>SĐT</th><th>Sản phẩm</th><th>Tổng tiền</th><th>Thanh toán</th><th>Trạng thái</th><th>Ngày đặt</th><th>Thao tác</th></tr></thead>
+      <tbody>${res.data.map(o => {
+        const [label, cls] = statusMap[o.status] || [o.status,'badge-pending'];
+        const payClsMap = {paid:'badge-delivered',pending:'badge-pending',failed:'badge-cancelled'};
+        return `<tr>
+          <td><strong>${o.orderCode}</strong></td>
+          <td>${o.customerInfo?.name || '-'}</td>
+          <td>${o.customerInfo?.phone || '-'}</td>
+          <td style="max-width:180px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${o.items?.map(i => `${i.emoji||'🌿'} ${i.name}`).join(', ')}</td>
+          <td><strong>${fmtVND(o.totalAmount)}</strong></td>
+          <td><div>${o.paymentMethod?.toUpperCase()}</div><span class="badge ${payClsMap[o.paymentStatus]||'badge-pending'}" style="font-size:.68rem">${o.paymentStatus==='paid'?'Đã TT':'Chưa TT'}</span></td>
+          <td><span class="badge ${cls}">${label}</span></td>
+          <td>${fmtDateTime(o.createdAt)}</td>
+          <td>
+            ${!['delivered','cancelled'].includes(o.status) ? `<button class="btn-sm btn-green" onclick="openStatusModal('${o._id}','${o.status}')">Cập nhật</button>` : ''}
+          </td>
+        </tr>`;
+      }).join('')}</tbody>
+    </table>`;
+  } catch (err) {
+    tbl.innerHTML = `<div class="alert alert-error">❌ ${err.message}</div>`;
+  }
+}
+
+function openStatusModal(orderId, currentStatus) {
+  document.getElementById('modal-order-id').value = orderId;
+  document.getElementById('modal-status').value = currentStatus === 'pending' ? 'confirmed' : currentStatus;
+  document.getElementById('modal-tracking').value = '';
+  document.getElementById('modal-note').value = '';
+  document.getElementById('status-modal').classList.add('open');
+}
+function closeStatusModal() { document.getElementById('status-modal').classList.remove('open'); }
+
+async function confirmStatusUpdate() {
+  const id = document.getElementById('modal-order-id').value;
+  const status = document.getElementById('modal-status').value;
+  const note = document.getElementById('modal-note').value;
+  const trackingNumber = document.getElementById('modal-tracking').value;
+  try {
+    await OrderAPI.updateStatus(id, { status, note, trackingNumber });
+    closeStatusModal();
+    loadAdminOrders();
+    showAdminToast('✅ Cập nhật đơn hàng thành công');
+  } catch (err) { showAdminToast('❌ ' + err.message, 'error'); }
+}
+
+// ─── Products ──────────────────────────────────────────────────────────────
+async function loadAdminProducts() {
+  const tbl = document.getElementById('products-table');
+  tbl.innerHTML = '<div class="loader">⏳ Đang tải...</div>';
+  const search = document.getElementById('prod-search')?.value || '';
+  const category = document.getElementById('prod-cat-filter')?.value || '';
+  try {
+    const res = await ProductAPI.list({ search, category, limit: 30, sort: 'newest' });
+    if (!res.data.length) { tbl.innerHTML = '<div class="empty-state"><div class="empty-icon">🌿</div><p>Không có sản phẩm</p></div>'; return; }
+    const catLabels = {'ngam-chan':'Ngâm chân','am-bung':'Ấm bụng','giai-doc':'Giải độc','thu-gian':'Thư giãn','ngu-ngon':'Ngủ ngon','lam-dep':'Làm đẹp'};
+    tbl.innerHTML = `<table>
+      <thead><tr><th>Sản phẩm</th><th>Danh mục</th><th>Giá</th><th>Tồn kho</th><th>Đã bán</th><th>Đánh giá</th><th>Nhãn</th><th>Thao tác</th></tr></thead>
+      <tbody>${res.data.map(p => `<tr>
+        <td>
+          <div style="display:flex;align-items:center;gap:8px">
+            <span style="font-size:1.5rem">${p.emoji||'🌿'}</span>
+            <div>
+              <div style="font-weight:600;font-size:.85rem">${p.name}</div>
+              <div style="font-size:.75rem;color:var(--text-light)">${p.weight||''}</div>
+            </div>
+          </div>
+        </td>
+        <td>${catLabels[p.category]||p.category}</td>
+        <td>
+          ${p.originalPrice ? `<div style="font-size:.75rem;color:var(--text-light);text-decoration:line-through">${fmtVND(p.originalPrice)}</div>` : ''}
+          <strong>${fmtVND(p.price)}</strong>
+        </td>
+        <td><span style="font-weight:700;color:${p.stock<=20?'var(--red)':p.stock<=50?'#f59e0b':'var(--g-dark)'}">${p.stock}</span></td>
+        <td>${p.sold||0}</td>
+        <td>⭐ ${(p.rating||0).toFixed(1)} (${p.numReviews||0})</td>
+        <td>${p.badge ? `<span class="badge badge-confirmed">${p.badge}</span>` : '-'}</td>
+        <td style="white-space:nowrap">
+          <button class="btn-sm btn-green" onclick="editProduct('${p._id}')">Sửa</button>
+          <button class="btn-sm btn-red" onclick="deleteProduct('${p._id}','${p.name.replace(/'/g,'')}')">Ẩn</button>
+        </td>
+      </tr>`).join('')}</tbody>
+    </table>`;
+  } catch (err) {
+    tbl.innerHTML = `<div class="alert alert-error">❌ ${err.message}</div>`;
+  }
+}
+
+function openAddProduct() {
+  document.getElementById('product-edit-id').value = '';
+  document.getElementById('product-modal-title').textContent = 'Thêm sản phẩm mới';
+  ['p-name','p-emoji','p-price','p-orig','p-short','p-desc','p-tags','p-image'].forEach(id => { const el = document.getElementById(id); if(el) el.value = id==='p-emoji'?'🌿':''; });
+  const prev = document.getElementById('p-img-preview'); if(prev) { prev.innerHTML = '🌿'; }
+  document.getElementById('p-stock').value = 100;
+  document.getElementById('p-cat').value = 'ngam-chan';
+  document.getElementById('p-badge').value = '';
+  document.getElementById('p-featured').value = 'false';
+  document.getElementById('product-modal').classList.add('open');
+}
+
+async function editProduct(id) {
+  try {
+    const res = await ProductAPI.get(id);
+    const p = res.data;
+    document.getElementById('product-edit-id').value = p._id;
+    document.getElementById('product-modal-title').textContent = 'Chỉnh sửa sản phẩm';
+    document.getElementById('p-name').value = p.name;
+    document.getElementById('p-emoji').value = p.emoji || '🌿';
+    const imgVal = (p.images && p.images[0]) || '';
+    const imgEl = document.getElementById('p-image'); if(imgEl) imgEl.value = imgVal;
+    const prevEl = document.getElementById('p-img-preview');
+    if(prevEl) prevEl.innerHTML = imgVal ? `<img src="${imgVal}" style="width:100%;height:100%;object-fit:cover" onerror="this.outerHTML='🌿'">` : '🌿';
+    document.getElementById('p-cat').value = p.category;
+    document.getElementById('p-price').value = p.price;
+    document.getElementById('p-orig').value = p.originalPrice || '';
+    document.getElementById('p-stock').value = p.stock;
+    document.getElementById('p-badge').value = p.badge || '';
+    document.getElementById('p-short').value = p.shortDesc || '';
+    document.getElementById('p-desc').value = p.description || '';
+    document.getElementById('p-tags').value = (p.tags||[]).join(', ');
+    document.getElementById('p-featured').value = p.isFeatured ? 'true' : 'false';
+    document.getElementById('product-modal').classList.add('open');
+  } catch (err) { showAdminToast('❌ ' + err.message, 'error'); }
+}
+
+async function saveProduct() {
+  const id = document.getElementById('product-edit-id').value;
+  const data = {
+    name: document.getElementById('p-name').value.trim(),
+    emoji: document.getElementById('p-emoji').value.trim() || '🌿',
+    images: [document.getElementById('p-image')?.value?.trim()].filter(Boolean),
+    category: document.getElementById('p-cat').value,
+    price: Number(document.getElementById('p-price').value),
+    originalPrice: Number(document.getElementById('p-orig').value) || undefined,
+    stock: Number(document.getElementById('p-stock').value),
+    badge: document.getElementById('p-badge').value || null,
+    shortDesc: document.getElementById('p-short').value.trim(),
+    description: document.getElementById('p-desc').value.trim(),
+    tags: document.getElementById('p-tags').value.split(',').map(t=>t.trim()).filter(Boolean),
+    isFeatured: document.getElementById('p-featured').value === 'true'
+  };
+  if (!data.name || !data.price) { showAdminToast('Vui lòng nhập tên và giá sản phẩm', 'error'); return; }
+  try {
+    if (id) { await ProductAPI.update(id, data); } else { await ProductAPI.create(data); }
+    closeProductModal();
+    loadAdminProducts();
+    showAdminToast('✅ Lưu sản phẩm thành công');
+  } catch (err) { showAdminToast('❌ ' + err.message, 'error'); }
+}
+
+async function deleteProduct(id, name) {
+  if (!confirm(`Ẩn sản phẩm "${name}"?`)) return;
+  try { await ProductAPI.delete(id); loadAdminProducts(); showAdminToast('✅ Đã ẩn sản phẩm'); }
+  catch (err) { showAdminToast('❌ ' + err.message, 'error'); }
+}
+
+function closeProductModal() { document.getElementById('product-modal').classList.remove('open'); }
+
+// Live image preview in product form
+document.addEventListener('DOMContentLoaded', () => {
+  const imgInput = document.getElementById('p-image');
+  if (imgInput) {
+    imgInput.addEventListener('input', () => {
+      const prev = document.getElementById('p-img-preview');
+      if (!prev) return;
+      const url = imgInput.value.trim();
+      if (url) {
+        prev.innerHTML = `<img src="${url}" style="width:100%;height:100%;object-fit:cover" onerror="this.parentElement.innerHTML='<span style=\\'font-size:1.2rem\\'>⚠️</span>'">`;
+      } else {
+        prev.innerHTML = document.getElementById('p-emoji')?.value || '🌿';
+      }
+    });
+    document.getElementById('p-emoji')?.addEventListener('input', (e) => {
+      const prev = document.getElementById('p-img-preview');
+      if (prev && !document.getElementById('p-image')?.value?.trim()) prev.innerHTML = e.target.value || '🌿';
+    });
+  }
+});
+
+// ─── Combos ────────────────────────────────────────────────────────────────
+async function loadAdminCombos() {
+  const tbl = document.getElementById('combos-table');
+  tbl.innerHTML = '<div class="loader">⏳ Đang tải...</div>';
+  try {
+    const res = await ComboAPI.list();
+    if (!res.data.length) { tbl.innerHTML = '<div class="empty-state"><div class="empty-icon">🎁</div><p>Chưa có combo</p></div>'; return; }
+    tbl.innerHTML = `<table>
+      <thead><tr><th>Combo</th><th>Sản phẩm</th><th>Giá gốc</th><th>Giá combo</th><th>Tiết kiệm</th><th>Tồn kho</th><th>Bán</th><th>Thao tác</th></tr></thead>
+      <tbody>${res.data.map(c => `<tr>
+        <td>
+          <div style="font-weight:600">${c.emoji||'🎁'} ${c.name}</div>
+          <div style="font-size:.75rem;color:var(--text-light)">${c.tagline||''}</div>
+        </td>
+        <td style="font-size:.78rem;color:var(--text-mid)">${(c.items||[]).length} sản phẩm</td>
+        <td style="text-decoration:line-through;color:var(--text-light)">${fmtVND(c.originalPrice)}</td>
+        <td><strong style="color:var(--g-dark)">${fmtVND(c.price)}</strong></td>
+        <td><span style="color:var(--gold);font-weight:600">${fmtVND(c.savingAmount||0)}</span></td>
+        <td>${c.stock}</td>
+        <td>${c.sold||0}</td>
+        <td style="white-space:nowrap">
+          <button class="btn-sm btn-green" onclick="editCombo('${c._id}')">Sửa</button>
+          <button class="btn-sm btn-red" onclick="deleteCombo('${c._id}')">Ẩn</button>
+        </td>
+      </tr>`).join('')}</tbody>
+    </table>`;
+  } catch (err) {
+    tbl.innerHTML = `<div class="alert alert-error">❌ ${err.message}</div>`;
+  }
+}
+
+async function deleteCombo(id) {
+  if (!confirm('Ẩn combo này?')) return;
+  try { await ComboAPI.delete(id); loadAdminCombos(); showAdminToast('✅ Đã ẩn combo'); }
+  catch (err) { showAdminToast('❌ ' + err.message, 'error'); }
+}
+
+// ─── Combo Admin Functions ───────────────────────────────────────────────────
+let allAdminProducts = [];
+
+async function ensureProductsLoaded() {
+  if (allAdminProducts.length) return;
+  try {
+    const res = await ProductAPI.list({ limit: 100 });
+    allAdminProducts = res.data || [];
+  } catch (_) {}
+}
+
+function fmtVNDAdmin(n) {
+  return n ? Number(n).toLocaleString('vi-VN') + 'đ' : '0đ';
+}
+
+function calcSaving() {
+  const orig = Number(document.getElementById('c-orig')?.value || 0);
+  const price = Number(document.getElementById('c-price')?.value || 0);
+  const saving = orig - price;
+  const el = document.getElementById('c-saving-display');
+  if (el) el.textContent = saving > 0 ? fmtVNDAdmin(saving) : '0đ';
+}
+
+function addComboItem(productId = '', quantity = 1) {
+  const list = document.getElementById('combo-items-list');
+  const idx = list.children.length;
+  const row = document.createElement('div');
+  row.style.cssText = 'display:grid;grid-template-columns:1fr 80px 32px;gap:6px;align-items:center';
+  row.innerHTML = `
+    <select class="input-sm combo-item-product" style="width:100%">
+      <option value="">-- Chọn sản phẩm --</option>
+      ${allAdminProducts.map(p => `<option value="${p._id}" ${p._id === productId ? 'selected' : ''}>${p.emoji||'🌿'} ${p.name} (${fmtVNDAdmin(p.price)})</option>`).join('')}
+    </select>
+    <input type="number" class="input-sm combo-item-qty" min="1" value="${quantity}" style="width:100%" placeholder="SL">
+    <button onclick="this.parentElement.remove()" style="border:none;background:#fef2f2;color:#e53935;border-radius:6px;cursor:pointer;padding:4px 8px;font-size:1rem">✕</button>
+  `;
+  list.appendChild(row);
+}
+
+function openAddCombo() {
+  ensureProductsLoaded().then(() => {
+    document.getElementById('combo-edit-id').value = '';
+    document.getElementById('combo-modal-title').textContent = 'Thêm combo mới';
+    ['c-name','c-emoji','c-label','c-tagline','c-price','c-orig'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.value = id === 'c-emoji' ? '🎁' : '';
+    });
+    document.getElementById('c-stock').value = 50;
+    document.getElementById('c-featured').value = 'false';
+    document.getElementById('c-saving-display').textContent = '0đ';
+    document.getElementById('combo-items-list').innerHTML = '';
+    addComboItem();
+    document.getElementById('combo-modal').classList.add('open');
+  });
+}
+
+async function editCombo(id) {
+  await ensureProductsLoaded();
+  try {
+    const res = await ComboAPI.get(id);
+    const c = res.data;
+    document.getElementById('combo-edit-id').value = c._id;
+    document.getElementById('combo-modal-title').textContent = 'Chỉnh sửa combo';
+    document.getElementById('c-name').value = c.name;
+    document.getElementById('c-emoji').value = c.emoji || '🎁';
+    document.getElementById('c-label').value = c.label || '';
+    document.getElementById('c-tagline').value = c.tagline || '';
+    document.getElementById('c-price').value = c.price;
+    document.getElementById('c-orig').value = c.originalPrice;
+    document.getElementById('c-stock').value = c.stock || 50;
+    document.getElementById('c-featured').value = c.isFeatured ? 'true' : 'false';
+    calcSaving();
+    document.getElementById('combo-items-list').innerHTML = '';
+    (c.items || []).forEach(item => {
+      const pid = item.product?._id || item.product;
+      addComboItem(pid, item.quantity || 1);
+    });
+    document.getElementById('combo-modal').classList.add('open');
+  } catch (err) { showAdminToast('❌ ' + err.message, 'error'); }
+}
+
+async function saveCombo() {
+  const id = document.getElementById('combo-edit-id').value;
+  const name = document.getElementById('c-name').value.trim();
+  const price = Number(document.getElementById('c-price').value);
+  const originalPrice = Number(document.getElementById('c-orig').value);
+  if (!name || !price || !originalPrice) {
+    showAdminToast('Vui lòng nhập tên, giá combo và giá gốc', 'error'); return;
+  }
+
+  const itemRows = document.getElementById('combo-items-list').children;
+  const items = [];
+  for (const row of itemRows) {
+    const pid = row.querySelector('.combo-item-product')?.value;
+    const qty = Number(row.querySelector('.combo-item-qty')?.value || 1);
+    if (pid) items.push({ product: pid, quantity: qty });
+  }
+  if (!items.length) { showAdminToast('Thêm ít nhất 1 sản phẩm vào combo', 'error'); return; }
+
+  const data = {
+    name,
+    emoji: document.getElementById('c-emoji').value || '🎁',
+    label: document.getElementById('c-label').value.trim() || '🎁 Combo',
+    tagline: document.getElementById('c-tagline').value.trim(),
+    price, originalPrice,
+    savingAmount: originalPrice - price,
+    stock: Number(document.getElementById('c-stock').value) || 50,
+    isFeatured: document.getElementById('c-featured').value === 'true',
+    items,
+    slug: name.toLowerCase().replace(/[^a-z0-9]+/gi, '-') + '-' + Date.now()
+  };
+
+  try {
+    if (id) { await ComboAPI.update(id, data); } else { await ComboAPI.create(data); }
+    closeComboModal();
+    loadAdminCombos();
+    showAdminToast('✅ Lưu combo thành công');
+  } catch (err) { showAdminToast('❌ ' + err.message, 'error'); }
+}
+
+function closeComboModal() { document.getElementById('combo-modal').classList.remove('open'); }
+
+// ─── Blogs ─────────────────────────────────────────────────────────────────
+async function loadAdminBlogs() {
+  const tbl = document.getElementById('blogs-table');
+  tbl.innerHTML = '<div class="loader">⏳ Đang tải...</div>';
+  try {
+    const res = await BlogAPI.list({ limit: 30 });
+    const catLabels = {'kien-thuc':'Kiến thức','lam-dep':'Làm đẹp','suc-khoe':'Sức khoẻ','cong-thuc':'Công thức','tin-tuc':'Tin tức'};
+    if (!res.data.length) { tbl.innerHTML = '<div class="empty-state"><div class="empty-icon">📝</div><p>Chưa có bài viết</p></div>'; return; }
+    tbl.innerHTML = `<table>
+      <thead><tr><th>Bài viết</th><th>Danh mục</th><th>Tác giả</th><th>Lượt xem</th><th>Ngày đăng</th><th>Nổi bật</th><th>Thao tác</th></tr></thead>
+      <tbody>${res.data.map(b => `<tr>
+        <td>
+          <div style="font-weight:600;max-width:220px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${b.emoji||'🌿'} ${b.title}</div>
+          <div style="font-size:.75rem;color:var(--text-light)">${b.readTime} phút đọc</div>
+        </td>
+        <td>${catLabels[b.category]||b.category}</td>
+        <td style="font-size:.82rem">${b.author?.name||'-'}</td>
+        <td>👁 ${b.views||0}</td>
+        <td>${fmtDate(b.createdAt)}</td>
+        <td>${b.isFeatured?'<span class="badge badge-confirmed">Nổi bật</span>':'-'}</td>
+        <td style="white-space:nowrap">
+          <button class="btn-sm btn-green" onclick="editBlog('${b._id}')">Sửa</button>
+          <button class="btn-sm btn-red" onclick="deleteBlog('${b._id}')">Ẩn</button>
+        </td>
+      </tr>`).join('')}</tbody>
+    </table>`;
+  } catch (err) {
+    tbl.innerHTML = `<div class="alert alert-error">❌ ${err.message}</div>`;
+  }
+}
+
+function openAddBlog() {
+  document.getElementById('blog-edit-id').value = '';
+  document.getElementById('blog-modal-head').textContent = 'Đăng bài blog mới';
+  ['b-title','b-excerpt','b-content','b-tags','b-author'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('b-emoji').value = '🌿';
+  document.getElementById('b-readtime').value = 5;
+  document.getElementById('b-cat').value = 'kien-thuc';
+  document.getElementById('b-featured').value = 'false';
+  document.getElementById('blog-modal').classList.add('open');
+}
+
+async function editBlog(id) {
+  try {
+    const res = await BlogAPI.get(id);
+    const b = res.data;
+    document.getElementById('blog-edit-id').value = b._id;
+    document.getElementById('blog-modal-head').textContent = 'Chỉnh sửa bài viết';
+    document.getElementById('b-title').value = b.title;
+    document.getElementById('b-cat').value = b.category;
+    document.getElementById('b-emoji').value = b.emoji || '🌿';
+    document.getElementById('b-readtime').value = b.readTime || 5;
+    document.getElementById('b-author').value = b.author?.name || '';
+    document.getElementById('b-excerpt').value = b.excerpt;
+    document.getElementById('b-content').value = b.content;
+    document.getElementById('b-tags').value = (b.tags||[]).join(', ');
+    document.getElementById('b-featured').value = b.isFeatured ? 'true' : 'false';
+    document.getElementById('blog-modal').classList.add('open');
+  } catch (err) { showAdminToast('❌ ' + err.message, 'error'); }
+}
+
+async function saveBlog() {
+  const id = document.getElementById('blog-edit-id').value;
+  const authorName = document.getElementById('b-author').value.trim();
+  const data = {
+    title: document.getElementById('b-title').value.trim(),
+    category: document.getElementById('b-cat').value,
+    emoji: document.getElementById('b-emoji').value.trim() || '🌿',
+    readTime: Number(document.getElementById('b-readtime').value),
+    author: { name: authorName || 'Đội ngũ Herbré' },
+    excerpt: document.getElementById('b-excerpt').value.trim(),
+    content: document.getElementById('b-content').value.trim(),
+    tags: document.getElementById('b-tags').value.split(',').map(t=>t.trim()).filter(Boolean),
+    isFeatured: document.getElementById('b-featured').value === 'true',
+    isPublished: true
+  };
+  if (!data.title || !data.excerpt || !data.content) { showAdminToast('Vui lòng điền tiêu đề, tóm tắt và nội dung', 'error'); return; }
+  try {
+    if (id) { await BlogAPI.update(id, data); } else { await BlogAPI.create(data); }
+    closeBlogModal();
+    loadAdminBlogs();
+    showAdminToast('✅ Lưu bài viết thành công');
+  } catch (err) { showAdminToast('❌ ' + err.message, 'error'); }
+}
+
+async function deleteBlog(id) {
+  if (!confirm('Ẩn bài viết này?')) return;
+  try { await BlogAPI.delete(id); loadAdminBlogs(); showAdminToast('✅ Đã ẩn bài viết'); }
+  catch (err) { showAdminToast('❌ ' + err.message, 'error'); }
+}
+
+function closeBlogModal() { document.getElementById('blog-modal').classList.remove('open'); }
+
+// ─── Users ─────────────────────────────────────────────────────────────────
+async function loadAdminUsers() {
+  const tbl = document.getElementById('users-table');
+  tbl.innerHTML = '<div class="loader">⏳ Đang tải...</div>';
+  try {
+    const res = await AdminAPI.users({ limit: 30 });
+    tbl.innerHTML = `<table>
+      <thead><tr><th>Tên</th><th>Email</th><th>SĐT</th><th>Vai trò</th><th>Trạng thái</th><th>Ngày đăng ký</th><th>Thao tác</th></tr></thead>
+      <tbody>${res.data.map(u => `<tr>
+        <td><strong>${u.name}</strong></td>
+        <td>${u.email}</td>
+        <td>${u.phone||'-'}</td>
+        <td><span class="badge ${u.role==='admin'?'badge-shipped':'badge-confirmed'}">${u.role}</span></td>
+        <td><span class="badge ${u.isActive?'badge-confirmed':'badge-cancelled'}">${u.isActive?'Hoạt động':'Bị khoá'}</span></td>
+        <td>${fmtDate(u.createdAt)}</td>
+        <td>${u.role!=='admin'?`<button class="btn-sm ${u.isActive?'btn-red':'btn-green'}" onclick="toggleUser('${u._id}')">${u.isActive?'Khoá':'Mở khoá'}</button>`:'-'}</td>
+      </tr>`).join('')}</tbody>
+    </table>`;
+  } catch (err) {
+    tbl.innerHTML = `<div class="alert alert-error">❌ ${err.message}</div>`;
+  }
+}
+
+async function toggleUser(id) {
+  try { await AdminAPI.toggleUser(id); loadAdminUsers(); showAdminToast('✅ Cập nhật trạng thái người dùng'); }
+  catch (err) { showAdminToast('❌ ' + err.message, 'error'); }
+}
+
+// ─── Stock ─────────────────────────────────────────────────────────────────
+async function loadStock() {
+  const tbl = document.getElementById('stock-table');
+  tbl.innerHTML = '<div class="loader">⏳ Đang tải...</div>';
+  try {
+    const res = await AdminAPI.lowStock();
+    const catLabels = {'ngam-chan':'Ngâm chân','am-bung':'Ấm bụng','giai-doc':'Giải độc','thu-gian':'Thư giãn','ngu-ngon':'Ngủ ngon','lam-dep':'Làm đẹp'};
+    if (!res.data.length) {
+      tbl.innerHTML = '<div class="empty-state"><div class="empty-icon">✅</div><p>Tất cả sản phẩm đều đủ hàng!</p></div>';
+      return;
+    }
+    tbl.innerHTML = `<table>
+      <thead><tr><th>Sản phẩm</th><th>Danh mục</th><th>Tồn kho</th><th>Đã bán</th><th>Giá</th><th>Nhập thêm</th></tr></thead>
+      <tbody>${res.data.map(p => `<tr>
+        <td><span style="font-size:1.3rem">${p.emoji||'🌿'}</span> <strong>${p.name}</strong></td>
+        <td>${catLabels[p.category]||p.category}</td>
+        <td><strong style="color:${p.stock<=10?'var(--red)':'#f59e0b'}">${p.stock}</strong></td>
+        <td>${p.sold||0}</td>
+        <td>${fmtVND(p.price)}</td>
+        <td>
+          <div class="form-inline">
+            <input type="number" class="input-sm" id="restock-${p._id}" value="50" min="1" style="width:70px">
+            <button class="btn-sm btn-primary-sm" onclick="restock('${p._id}')">Nhập hàng</button>
+          </div>
+        </td>
+      </tr>`).join('')}</tbody>
+    </table>`;
+  } catch (err) {
+    tbl.innerHTML = `<div class="alert alert-error">❌ ${err.message}</div>`;
+  }
+}
+
+async function restock(id) {
+  const qty = document.getElementById(`restock-${id}`)?.value;
+  if (!qty || qty <= 0) return;
+  try {
+    await AdminAPI.restock(id, qty);
+    loadStock();
+    showAdminToast(`✅ Đã nhập thêm ${qty} sản phẩm`);
+  } catch (err) { showAdminToast('❌ ' + err.message, 'error'); }
+}
+
+// ─── Toast ─────────────────────────────────────────────────────────────────
+function showAdminToast(msg, type='success') {
+  let t = document.getElementById('admin-toast');
+  if (!t) {
+    t = document.createElement('div');
+    t.id = 'admin-toast';
+    t.style.cssText = 'position:fixed;bottom:1.5rem;right:1.5rem;border-radius:10px;padding:12px 18px;font-size:.85rem;font-weight:500;z-index:999;transform:translateY(100px);opacity:0;transition:.3s;max-width:300px;box-shadow:0 4px 20px rgba(0,0,0,.15)';
+    document.body.appendChild(t);
+  }
+  t.textContent = msg;
+  t.style.background = type === 'error' ? '#c62828' : '#2d5a27';
+  t.style.color = '#fff';
+  t.style.transform = 'translateY(0)';
+  t.style.opacity = '1';
+  clearTimeout(window._adminToast);
+  window._adminToast = setTimeout(() => { t.style.transform = 'translateY(100px)'; t.style.opacity = '0'; }, 3000);
+}
+
+// Close modals on overlay click
+['status-modal','product-modal','blog-modal','combo-modal'].forEach(id => {
+  document.getElementById(id)?.addEventListener('click', function(e) {
+    if (e.target === this) this.classList.remove('open');
+  });
+});
+</script>
+</body>
+</html>

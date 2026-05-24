@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Kết quả thanh toán – Herbré</title>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Playfair+Display:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Be Vietnam Pro',sans-serif;background:linear-gradient(135deg,#f2f8f0,#e8f2e5);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:1rem}
+.card{background:#fff;border-radius:20px;padding:3rem 2.5rem;max-width:480px;width:100%;text-align:center;box-shadow:0 8px 40px rgba(45,90,39,.15)}
+.icon{font-size:4.5rem;margin-bottom:1.2rem;display:block}
+h1{font-family:'Playfair Display',serif;font-size:1.8rem;margin-bottom:.75rem}
+.h1-success{color:#2d5a27} .h1-fail{color:#c62828} .h1-warn{color:#b45309}
+p{color:#555;font-size:.95rem;line-height:1.7;margin-bottom:.5rem}
+.order-code{background:#f2f8f0;border-radius:10px;padding:.9rem 1.2rem;margin:1.2rem 0;font-size:1rem}
+.order-code strong{color:#2d5a27;font-size:1.15rem;letter-spacing:1px}
+.info-row{display:flex;justify-content:space-between;font-size:.88rem;color:#555;padding:.4rem 0;border-bottom:1px dashed #e8f0e5}
+.info-row:last-child{border:none}
+.info-box{background:#f8faf6;border-radius:10px;padding:1rem;margin:1rem 0;text-align:left}
+.btn{display:inline-block;border:none;border-radius:10px;padding:12px 28px;font-size:.92rem;font-weight:600;cursor:pointer;font-family:'Be Vietnam Pro',sans-serif;text-decoration:none;transition:.2s;margin:.4rem}
+.btn-green{background:#2d5a27;color:#fff} .btn-green:hover{background:#4a7c3f}
+.btn-outline{background:transparent;border:1.5px solid #2d5a27;color:#2d5a27} .btn-outline:hover{background:#2d5a27;color:#fff}
+.btn-red{background:#ee0033;color:#fff} .btn-red:hover{background:#c50028}
+.steps{display:flex;justify-content:center;gap:1.5rem;margin:1.5rem 0;flex-wrap:wrap}
+.step{display:flex;flex-direction:column;align-items:center;gap:.3rem;font-size:.8rem;color:#888}
+.step-icon{width:36px;height:36px;background:#f0f0f0;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem}
+.step.done .step-icon{background:#e8f5e0} .step.active .step-icon{background:#2d5a27;color:#fff}
+.progress-bar{width:100%;height:6px;background:#f0f0f0;border-radius:3px;margin:1.2rem 0;overflow:hidden}
+.progress-fill{height:100%;border-radius:3px;transition:width .6s ease}
+.fill-success{background:linear-gradient(90deg,#4a7c3f,#7aab6a)}
+.fill-fail{background:#ee0033}
+</style>
+</head>
+<body>
+<div class="card" id="result-card">
+  <div style="text-align:center;padding:2rem;color:#888">⏳ Đang xử lý kết quả...</div>
+</div>
+
+<script>
+const params = new URLSearchParams(window.location.search);
+const status = params.get('status');
+const orderCode = params.get('orderCode');
+const amount = params.get('amount');
+const code = params.get('code');
+const card = document.getElementById('result-card');
+
+const fmtVND = n => new Intl.NumberFormat('vi-VN').format(Number(n)/100) + 'đ';
+
+const vnpayErrorCodes = {
+  '07':'Giao dịch bị nghi ngờ gian lận.',
+  '09':'Thẻ chưa đăng ký Internet Banking.',
+  '10':'Xác thực thông tin thẻ quá 3 lần.',
+  '11':'Phiên thanh toán hết hạn. Vui lòng thử lại.',
+  '12':'Thẻ bị khoá.',
+  '13':'Sai OTP xác thực. Vui lòng thử lại.',
+  '24':'Khách hàng huỷ giao dịch.',
+  '51':'Tài khoản không đủ số dư.',
+  '65':'Vượt hạn mức giao dịch trong ngày.',
+  '75':'Ngân hàng đang bảo trì.',
+  '79':'Sai mật khẩu thanh toán quá số lần quy định.',
+};
+
+function renderSuccess() {
+  card.innerHTML = `
+    <span class="icon">✅</span>
+    <h1 class="h1-success">Thanh toán thành công!</h1>
+    <p>Cảm ơn bạn đã mua hàng tại <strong>Herbré</strong>. Đơn hàng của bạn đã được xác nhận.</p>
+    
+    ${orderCode ? `
+    <div class="order-code">
+      Mã đơn hàng<br>
+      <strong>${orderCode}</strong>
+    </div>` : ''}
+
+    ${amount ? `
+    <div class="info-box">
+      <div class="info-row"><span>Số tiền đã thanh toán</span><strong style="color:#2d5a27">${fmtVND(amount)}</strong></div>
+      <div class="info-row"><span>Phương thức</span><span><strong style="background:#ee0033;color:#fff;border-radius:4px;padding:1px 7px;font-size:.78rem;font-weight:800">VNPAY</strong></span></div>
+      <div class="info-row"><span>Trạng thái</span><span style="color:#16a34a;font-weight:600">✓ Thành công</span></div>
+    </div>` : ''}
+
+    <div class="progress-bar"><div class="progress-fill fill-success" style="width:100%"></div></div>
+
+    <div class="steps">
+      <div class="step done"><div class="step-icon">✓</div><span>Đặt hàng</span></div>
+      <div class="step done"><div class="step-icon">✓</div><span>Thanh toán</span></div>
+      <div class="step active"><div class="step-icon">📦</div><span>Chuẩn bị</span></div>
+      <div class="step"><div class="step-icon">🚚</div><span>Giao hàng</span></div>
+      <div class="step"><div class="step-icon">🎉</div><span>Hoàn thành</span></div>
+    </div>
+
+    <p style="font-size:.82rem;color:#888;margin-bottom:1.5rem">
+      Chúng tôi sẽ liên hệ xác nhận và giao hàng trong vòng <strong>1–3 ngày làm việc</strong>.<br>
+      Kiểm tra email để nhận thông tin đơn hàng.
+    </p>
+    <div>
+      <a href="/" class="btn btn-green">🏠 Về trang chủ</a>
+      <button class="btn btn-outline" onclick="trackThisOrder()">🔍 Theo dõi đơn hàng</button>
+    </div>`;
+}
+
+function renderFailed() {
+  const errMsg = vnpayErrorCodes[code] || 'Giao dịch không thành công. Vui lòng kiểm tra lại thông tin thanh toán.';
+  card.innerHTML = `
+    <span class="icon">❌</span>
+    <h1 class="h1-fail">Thanh toán thất bại</h1>
+    <p>${errMsg}</p>
+
+    ${orderCode ? `
+    <div class="order-code" style="border:1px solid #fecaca;background:#fef2f2">
+      Đơn hàng <strong style="color:#c62828">${orderCode}</strong> chưa được thanh toán
+    </div>` : ''}
+
+    <div class="info-box" style="background:#fef2f2">
+      ${code ? `<div class="info-row"><span>Mã lỗi VNPay</span><span style="color:#c62828;font-weight:600">${code}</span></div>` : ''}
+      <div class="info-row"><span>Trạng thái</span><span style="color:#c62828;font-weight:600">✗ Thất bại</span></div>
+    </div>
+
+    <div class="progress-bar"><div class="progress-fill fill-fail" style="width:40%"></div></div>
+
+    <p style="font-size:.85rem;color:#888;margin:1rem 0">
+      Đơn hàng vẫn được giữ lại. Bạn có thể thử thanh toán lại hoặc chọn COD.
+    </p>
+    <div>
+      <button class="btn btn-red" onclick="retryPayment()">🔄 Thử lại</button>
+      <a href="/" class="btn btn-outline">🏠 Về trang chủ</a>
+    </div>`;
+}
+
+function renderInvalid() {
+  card.innerHTML = `
+    <span class="icon">⚠️</span>
+    <h1 class="h1-warn">Giao dịch không hợp lệ</h1>
+    <p>Chữ ký giao dịch không khớp. Vui lòng liên hệ hỗ trợ nếu tiền đã bị trừ.</p>
+    <div style="margin-top:1.5rem">
+      <a href="/" class="btn btn-green">Về trang chủ</a>
+      <a href="tel:18006868" class="btn btn-outline">📞 Hotline 1800 6868</a>
+    </div>`;
+}
+
+function renderError() {
+  card.innerHTML = `
+    <span class="icon">😔</span>
+    <h1 class="h1-warn">Có lỗi xảy ra</h1>
+    <p>Hệ thống gặp sự cố khi xử lý giao dịch. Vui lòng thử lại hoặc liên hệ hỗ trợ.</p>
+    <div style="margin-top:1.5rem">
+      <a href="/" class="btn btn-green">Về trang chủ</a>
+      <a href="tel:18006868" class="btn btn-outline">📞 1800 6868</a>
+    </div>`;
+}
+
+function trackThisOrder() {
+  if (orderCode) {
+    sessionStorage.setItem('hb_track_code', orderCode);
+  }
+  window.location.href = '/?track=' + (orderCode || '');
+}
+
+function retryPayment() {
+  window.location.href = '/';
+}
+
+// Render based on status
+switch(status) {
+  case 'success': renderSuccess(); break;
+  case 'failed':  renderFailed();  break;
+  case 'invalid': renderInvalid(); break;
+  default:        renderError();   break;
+}
+
+// Clean URL
+history.replaceState({}, '', window.location.pathname);
+</script>
+</body>
+</html>

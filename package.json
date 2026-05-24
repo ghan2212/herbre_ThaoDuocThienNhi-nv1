@@ -1,0 +1,12 @@
+{
+  "name": "herbre-fullstack",
+  "version": "1.0.0",
+  "description": "Herbré – Thảo Dược Thiên Nhiên | Full-stack Node.js + MongoDB",
+  "private": true,
+  "scripts": {
+    "install:backend": "cd backend && npm install",
+    "seed": "cd backend && npm run seed",
+    "dev": "cd backend && npm run dev",
+    "start": "cd backend && npm start"
+  }
+}
