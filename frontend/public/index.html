@@ -27,6 +27,7 @@
       <a href="#combos" class="nav-link" data-page="combos">Combo</a>
       <a href="#benefits" class="nav-link">Công dụng</a>
       <a href="#blogs" class="nav-link" data-page="blogs">Blog</a>
+      <a href="#contact" class="nav-link">Tư vấn</a>
     </div>
     <div class="nav-actions">
       <button class="btn-icon" id="btn-search-open" title="Tìm kiếm">🔍</button>
@@ -39,7 +40,7 @@
     <button class="btn-hamburger" id="btn-menu">☰</button>
   </div>
 </nav>
-
+ 
 <!-- SEARCH BAR -->
 <div class="search-bar" id="search-bar">
   <div class="search-inner">
@@ -48,7 +49,7 @@
   </div>
   <div class="search-results" id="search-results"></div>
 </div>
-
+ 
 <!-- HERO -->
 <section class="hero" id="home">
   <div class="hero-bg"></div>
@@ -89,7 +90,7 @@
     </div>
   </div>
 </section>
-
+ 
 <!-- TRUST STRIP -->
 <div class="trust-strip">
   <div class="trust-inner">
@@ -100,7 +101,7 @@
     <div class="trust-item"><span>↩️</span> Đổi trả trong 7 ngày</div>
   </div>
 </div>
-
+ 
 <!-- PRODUCTS SECTION -->
 <section class="section" id="products">
   <div class="container">
@@ -138,7 +139,7 @@
     </div>
   </div>
 </section>
-
+ 
 <!-- COMBOS SECTION -->
 <section class="section section-warm" id="combos">
   <div class="container">
@@ -154,7 +155,7 @@
     </div>
   </div>
 </section>
-
+ 
 <!-- BENEFITS SECTION -->
 <section class="section section-mist" id="benefits">
   <div class="container">
@@ -172,7 +173,7 @@
     </div>
   </div>
 </section>
-
+ 
 <!-- BLOG SECTION -->
 <section class="section" id="blogs">
   <div class="container">
@@ -195,7 +196,7 @@
     </div>
   </div>
 </section>
-
+ 
 <!-- NEWSLETTER -->
 <section class="newsletter-section">
   <div class="container">
@@ -211,7 +212,107 @@
     </div>
   </div>
 </section>
-
+ 
+<!-- ══ CONTACT SECTION (Để lại thông tin) ══ -->
+<section class="contact-section" id="contact">
+  <div class="container">
+    <div class="contact-inner">
+      <div class="contact-text reveal-left">
+        <span class="section-tag">💬 Tư vấn miễn phí</span>
+        <h2>Để lại thông tin — chúng tôi gọi lại cho bạn</h2>
+        <p>Mỗi túi chườm trao đi, chúng tôi mong gửi trọn lời chúc an nhiên bình dị và sức khoẻ tròn đầy tới gia đình bạn.</p>
+        <div class="contact-trust">
+          <div class="contact-trust-item reveal reveal-d1">
+            <span class="cti-icon">🕐</span>
+            <span>Phản hồi trong vòng 30 phút (8:00 – 22:00)</span>
+          </div>
+          <div class="contact-trust-item reveal reveal-d2">
+            <span class="cti-icon">🌿</span>
+            <span>Tư vấn tận tâm — không ép mua</span>
+          </div>
+          <div class="contact-trust-item reveal reveal-d3">
+            <span class="cti-icon">🎁</span>
+            <span>Gói quà theo đúng tâm tình bạn gửi trao</span>
+          </div>
+          <div class="contact-trust-item reveal reveal-d4">
+            <span class="cti-icon">🚚</span>
+            <span>Giao hàng toàn quốc trong 1–3 ngày</span>
+          </div>
+        </div>
+      </div>
+      <div class="contact-form-box reveal-right">
+        <h3>📋 Để lại thông tin</h3>
+        <div class="form-group">
+          <label>Họ &amp; Tên bạn *</label>
+          <input type="text" id="cf-name" placeholder="Nguyễn Văn A">
+        </div>
+        <div class="form-group">
+          <label>Số điện thoại / Zalo của bạn *</label>
+          <input type="tel" id="cf-phone" placeholder="09xx xxx xxx">
+        </div>
+        <div class="form-group">
+          <label>Ghi chú (Tình trạng đau nhức / Sản phẩm quan tâm)</label>
+          <textarea id="cf-note" placeholder="Tôi muốn được tư vấn túi chườm mắt thảo mộc cho học sinh giảm áp lực thi cử..."></textarea>
+        </div>
+        <button class="btn-contact-submit" onclick="submitContactForm()">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          Gửi thông tin đăng ký tư vấn
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+ 
+<!-- ══ ZALO CONNECT SECTION ══ -->
+<section class="zalo-section" id="zalo-connect">
+  <div class="container">
+    <div class="zalo-inner">
+      <div class="zalo-text reveal-left">
+        <span class="zalo-tag">Đặt hàng trực tiếp</span>
+        <h2>Kết nối Zalo với <em>Ấm</em></h2>
+        <p>Ấm không dùng hệ thống thanh toán tự động vô hồn. Chúng tôi muốn lắng nghe từng chia sẻ, tư vấn tận tâm cho tình trạng đau nhức của bạn hoặc bọc gói món quà tre đan xinh xắn theo đúng tâm tình bạn gửi trao.</p>
+      </div>
+      <div class="zalo-card reveal-right">
+        <div class="zalo-phone-row">
+          <span class="zalo-phone-label">SĐT Zalo:</span>
+          <span class="zalo-phone-num">0987 654 321</span>
+        </div>
+        <button class="btn-zalo-copy" onclick="copyZaloPhone()">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          Sao chép số điện thoại
+        </button>
+        <button class="btn-zalo-chat" onclick="openZaloChat()">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          Trò chuyện qua Zalo tư vấn
+        </button>
+        <div class="zalo-qr-box">
+          <div class="zalo-qr-placeholder">
+            <svg width="72" height="72" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="4" y="4" width="22" height="22" rx="3" fill="#1a3e17"/>
+              <rect x="8" y="8" width="14" height="14" rx="1" fill="#fff"/>
+              <rect x="11" y="11" width="8" height="8" rx="1" fill="#1a3e17"/>
+              <rect x="34" y="4" width="22" height="22" rx="3" fill="#1a3e17"/>
+              <rect x="38" y="8" width="14" height="14" rx="1" fill="#fff"/>
+              <rect x="41" y="11" width="8" height="8" rx="1" fill="#1a3e17"/>
+              <rect x="4" y="34" width="22" height="22" rx="3" fill="#1a3e17"/>
+              <rect x="8" y="38" width="14" height="14" rx="1" fill="#fff"/>
+              <rect x="11" y="41" width="8" height="8" rx="1" fill="#1a3e17"/>
+              <rect x="34" y="34" width="6" height="6" rx="1" fill="#1a3e17"/>
+              <rect x="42" y="34" width="6" height="6" rx="1" fill="#1a3e17"/>
+              <rect x="50" y="34" width="6" height="6" rx="1" fill="#1a3e17"/>
+              <rect x="34" y="42" width="6" height="6" rx="1" fill="#1a3e17"/>
+              <rect x="50" y="42" width="6" height="6" rx="1" fill="#1a3e17"/>
+              <rect x="34" y="50" width="6" height="6" rx="1" fill="#1a3e17"/>
+              <rect x="42" y="50" width="14" height="6" rx="1" fill="#1a3e17"/>
+            </svg>
+          </div>
+          <div class="zalo-qr-label">Quét mã Zalo</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+ 
 <!-- FOOTER -->
 <footer>
   <div class="footer-inner">
@@ -261,7 +362,7 @@
     <div class="footer-bottom">© 2025 Herbré. Bảo lưu mọi quyền. | Chứng nhận ATTP số 001/2025/BYT</div>
   </div>
 </footer>
-
+ 
 <!-- ══ CART DRAWER ══ -->
 <div class="overlay" id="cart-overlay" onclick="closeCart()"></div>
 <div class="drawer" id="cart-drawer">
@@ -287,7 +388,7 @@
     </button>
   </div>
 </div>
-
+ 
 <!-- ══ CHECKOUT MODAL ══ -->
 <div class="modal-overlay" id="checkout-overlay">
   <div class="modal checkout-modal">
@@ -365,7 +466,7 @@
     </div>
   </div>
 </div>
-
+ 
 <!-- ══ AUTH MODAL ══ -->
 <div class="modal-overlay" id="auth-overlay">
   <div class="modal auth-modal">
@@ -395,12 +496,12 @@
     </div>
   </div>
 </div>
-
+ 
 <!-- ══ PRODUCT DETAIL MODAL ══ -->
 <div class="modal-overlay" id="product-overlay">
   <div class="modal product-modal" id="product-modal-content"></div>
 </div>
-
+ 
 <!-- ══ BLOG DETAIL MODAL ══ -->
 <div class="modal-overlay" id="blog-overlay">
   <div class="modal blog-modal">
@@ -411,7 +512,7 @@
     <div class="modal-body" id="blog-modal-body"></div>
   </div>
 </div>
-
+ 
 <!-- ══ ORDER TRACK MODAL ══ -->
 <div class="modal-overlay" id="track-overlay">
   <div class="modal track-modal">
@@ -429,13 +530,48 @@
     </div>
   </div>
 </div>
-
+ 
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
-
+ 
 <script src="/js/api.js"></script>
 <script src="/js/cart.js"></script>
 <script src="/js/auth.js"></script>
 <script src="/js/app.js"></script>
+<script>
+/* ── Scroll reveal ───────────────────────────────── */
+(function(){
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('revealed'); obs.unobserve(e.target); } });
+  }, { threshold:0.12 });
+  document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el => obs.observe(el));
+  const nav = document.getElementById('navbar');
+  window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 30), { passive:true });
+})();
+ 
+/* ── Contact form ────────────────────────────────── */
+async function submitContactForm() {
+  const name  = document.getElementById('cf-name')?.value?.trim();
+  const phone = document.getElementById('cf-phone')?.value?.trim();
+  if (!name || !phone) { showToast('Vui lòng nhập họ tên và số điện thoại', 'error'); return; }
+  const btn = document.querySelector('.btn-contact-submit');
+  if (btn) { btn.disabled=true; btn.textContent='Đang gửi...'; }
+  await new Promise(r => setTimeout(r, 800));
+  showToast('✅ Đã nhận thông tin! Chúng tôi sẽ liên hệ lại sớm.', 'success');
+  ['cf-name','cf-phone','cf-note'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
+  if (btn) { btn.disabled=false; btn.innerHTML='<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Gửi thông tin đăng ký tư vấn'; }
+}
+ 
+/* ── Zalo helpers ────────────────────────────────── */
+function copyZaloPhone() {
+  const num = '0987654321';
+  (navigator.clipboard ? navigator.clipboard.writeText(num) : Promise.reject()).catch(() => {
+    const ta = document.createElement('textarea'); ta.value=num; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
+  }).finally(() => showToast('📋 Đã sao chép số Zalo!', 'success'));
+  const btn = document.querySelector('.btn-zalo-copy');
+  if (btn) { const orig=btn.innerHTML; btn.textContent='✅ Đã sao chép!'; setTimeout(()=>{ btn.innerHTML=orig; },2000); }
+}
+function openZaloChat() { window.open('https://zalo.me/0987654321','_blank'); }
+</script>
 </body>
 </html>
