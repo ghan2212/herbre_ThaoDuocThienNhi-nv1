@@ -23,8 +23,8 @@
       <span class="logo-text">Herb<em>ré</em></span>
     </a>
     <div class="nav-links">
-      <a href="#products" class="nav-link" data-page="products">Sản phẩm</a>
-      <a href="#combos" class="nav-link" data-page="combos">Combo</a>
+      <a href="#featured" class="nav-link">Sản phẩm</a>
+      <a href="#shop" class="nav-link" id="nav-shop-link">Cửa hàng</a>
       <a href="#benefits" class="nav-link">Công dụng</a>
       <a href="#blogs" class="nav-link" data-page="blogs">Blog</a>
       <a href="#contact" class="nav-link">Tư vấn</a>
@@ -59,8 +59,8 @@
       <h1>Thư giãn &amp; phục hồi<br>từ <em>thiên nhiên</em></h1>
       <p>Ngâm chân thảo dược, làm ấm bụng, giải độc gan — cân bằng sức khoẻ mỗi ngày từ bộ sản phẩm thảo dược thuần tự nhiên.</p>
       <div class="hero-btns">
-        <button class="btn-primary" onclick="scrollTo('#products')">Mua ngay</button>
-        <button class="btn-outline" onclick="scrollTo('#combos')">Xem Combo ưu đãi</button>
+        <button class="btn-primary" onclick="scrollTo('#featured')">Khám phá ngay</button>
+        <button class="btn-outline" onclick="scrollTo('#shop')">Xem toàn bộ sản phẩm</button>
       </div>
       <div class="hero-stats">
         <div class="stat"><strong>10,000+</strong><span>Khách hàng tin dùng</span></div>
@@ -102,82 +102,173 @@
   </div>
 </div>
  
-<!-- PRODUCTS SECTION -->
-<section class="section" id="products">
+<!-- ══ FEATURED PRODUCTS (5 tiêu biểu) ══ -->
+<section class="section" id="featured">
   <div class="container">
-    <div class="section-header">
-      <span class="section-tag">🛍 Sản phẩm</span>
-      <h2>Thảo dược lựa chọn cho bạn</h2>
-      <p>Mỗi sản phẩm bào chế từ thảo dược sạch, giúp cân bằng và phục hồi cơ thể tự nhiên</p>
+    <div class="section-header reveal">
+      <span class="section-tag">⭐ Nổi bật</span>
+      <h2>Sản phẩm được yêu thích nhất</h2>
+      <p>5 sản phẩm bán chạy, được hàng nghìn khách tin dùng mỗi tháng</p>
     </div>
-    <div class="filter-row">
-      <div class="filter-tabs" id="cat-tabs">
-        <button class="ftab active" data-cat="all">Tất cả</button>
-        <button class="ftab" data-cat="ngam-chan">Ngâm chân</button>
-        <button class="ftab" data-cat="am-bung">Làm ấm bụng</button>
-        <button class="ftab" data-cat="giai-doc">Giải độc</button>
-        <button class="ftab" data-cat="thu-gian">Thư giãn</button>
-        <button class="ftab" data-cat="ngu-ngon">Ngủ ngon</button>
-        <button class="ftab" data-cat="lam-dep">Làm đẹp</button>
-      </div>
-      <select class="sort-select" id="sort-select">
-        <option value="newest">Mới nhất</option>
-        <option value="popular">Bán chạy</option>
-        <option value="price-asc">Giá thấp → cao</option>
-        <option value="price-desc">Giá cao → thấp</option>
-        <option value="rating">Đánh giá cao</option>
-      </select>
-    </div>
-    <div class="products-grid" id="products-grid">
+    <div class="products-grid" id="featured-grid">
       <div class="loading-grid">
         <div class="skeleton-card"></div><div class="skeleton-card"></div>
         <div class="skeleton-card"></div><div class="skeleton-card"></div>
       </div>
     </div>
-    <div class="load-more-wrap">
-      <button class="btn-load-more" id="btn-load-more" style="display:none">Xem thêm sản phẩm</button>
+    <div style="text-align:center;margin-top:2.5rem" class="reveal">
+      <button class="btn-outline" style="padding:.85rem 2.5rem;font-size:1rem" onclick="scrollTo('#shop');openShopTab('products')">
+        Xem tất cả sản phẩm →
+      </button>
     </div>
   </div>
 </section>
  
-<!-- COMBOS SECTION -->
-<section class="section section-warm" id="combos">
+<!-- ══ BENEFITS SECTION (redesigned) ══ -->
+<section class="section benefits-section" id="benefits">
   <div class="container">
-    <div class="section-header">
-      <span class="section-tag">🎁 Combo ưu đãi</span>
-      <h2>Bộ combo tiết kiệm hơn</h2>
-      <p>Kết hợp nhiều sản phẩm — hiệu quả tốt hơn, giá ưu đãi hơn</p>
-    </div>
-    <div class="combo-grid" id="combos-grid">
-      <div class="loading-grid">
-        <div class="skeleton-card tall"></div><div class="skeleton-card tall"></div><div class="skeleton-card tall"></div>
-      </div>
-    </div>
-  </div>
-</section>
- 
-<!-- BENEFITS SECTION -->
-<section class="section section-mist" id="benefits">
-  <div class="container">
-    <div class="section-header">
+    <div class="section-header reveal">
       <span class="section-tag">💚 Công dụng</span>
       <h2>Sức khoẻ toàn diện từ thiên nhiên</h2>
+      <p>Mỗi thảo dược được chọn lọc kỹ càng, mang lại hiệu quả thực sự cho cơ thể bạn</p>
     </div>
-    <div class="benefits-grid">
-      <div class="benefit-card"><div class="benefit-icon">🦶</div><h4>Ngâm chân thảo dược</h4><p>Kích thích tuần hoàn, giảm mệt mỏi, khử mùi, an thần nhẹ</p></div>
-      <div class="benefit-card"><div class="benefit-icon">🌡️</div><h4>Làm ấm bụng</h4><p>Hỗ trợ tiêu hoá, giảm đau bụng kinh, ấm bụng ngày lạnh</p></div>
-      <div class="benefit-card"><div class="benefit-icon">🍃</div><h4>Giải độc gan</h4><p>Atiso, diệp hạ châu hỗ trợ thanh lọc, tăng cường chức năng gan</p></div>
-      <div class="benefit-card"><div class="benefit-icon">😴</div><h4>Ngủ ngon sâu giấc</h4><p>Lạc tiên, tâm sen giúp an thần, dễ ngủ không phụ thuộc thuốc</p></div>
-      <div class="benefit-card"><div class="benefit-icon">💆</div><h4>Giảm stress</h4><p>Oải hương, bạc hà thư giãn thần kinh, giảm đau đầu căng thẳng</p></div>
-      <div class="benefit-card"><div class="benefit-icon">🌸</div><h4>Làm đẹp từ bên trong</h4><p>Collagen thảo mộc, hoa hồi sáng da, cân bằng nội tiết tố</p></div>
+    <div class="benefits-showcase">
+      <div class="benefit-item reveal reveal-d1" data-idx="0">
+        <div class="benefit-visual">
+          <div class="benefit-circle">
+            <span class="benefit-emoji">🦶</span>
+          </div>
+          <div class="benefit-line"></div>
+        </div>
+        <div class="benefit-content">
+          <h4>Ngâm chân thảo dược</h4>
+          <p>Kích thích tuần hoàn máu, giảm mệt mỏi cuối ngày, khử mùi và an thần nhẹ giúp ngủ sâu hơn</p>
+          <div class="benefit-herbs">
+            <span>🌿 Ngải cứu</span><span>🌿 Gừng</span><span>🌿 Quế</span>
+          </div>
+        </div>
+      </div>
+      <div class="benefit-item reveal reveal-d2" data-idx="1">
+        <div class="benefit-visual">
+          <div class="benefit-circle">
+            <span class="benefit-emoji">🌡️</span>
+          </div>
+          <div class="benefit-line"></div>
+        </div>
+        <div class="benefit-content">
+          <h4>Làm ấm bụng</h4>
+          <p>Hỗ trợ tiêu hoá, giảm đau bụng kinh nguyệt, sưởi ấm cơ thể trong những ngày lạnh giá</p>
+          <div class="benefit-herbs">
+            <span>🌿 Đinh hương</span><span>🌿 Hồi</span><span>🌿 Gừng khô</span>
+          </div>
+        </div>
+      </div>
+      <div class="benefit-item reveal reveal-d3" data-idx="2">
+        <div class="benefit-visual">
+          <div class="benefit-circle">
+            <span class="benefit-emoji">🍃</span>
+          </div>
+          <div class="benefit-line"></div>
+        </div>
+        <div class="benefit-content">
+          <h4>Giải độc gan</h4>
+          <p>Atiso, diệp hạ châu hỗ trợ thanh lọc cơ thể, tăng cường chức năng gan và mật</p>
+          <div class="benefit-herbs">
+            <span>🌿 Atiso</span><span>🌿 Diệp hạ châu</span><span>🌿 Actiso</span>
+          </div>
+        </div>
+      </div>
+      <div class="benefit-item reveal reveal-d1" data-idx="3">
+        <div class="benefit-visual">
+          <div class="benefit-circle">
+            <span class="benefit-emoji">😴</span>
+          </div>
+          <div class="benefit-line"></div>
+        </div>
+        <div class="benefit-content">
+          <h4>Ngủ ngon sâu giấc</h4>
+          <p>Lạc tiên, tâm sen giúp an thần tự nhiên, dễ ngủ, không phụ thuộc thuốc, thức dậy sảng khoái</p>
+          <div class="benefit-herbs">
+            <span>🌿 Lạc tiên</span><span>🌿 Tâm sen</span><span>🌿 Hoa cúc</span>
+          </div>
+        </div>
+      </div>
+      <div class="benefit-item reveal reveal-d2" data-idx="4">
+        <div class="benefit-visual">
+          <div class="benefit-circle">
+            <span class="benefit-emoji">💆</span>
+          </div>
+          <div class="benefit-line"></div>
+        </div>
+        <div class="benefit-content">
+          <h4>Giảm stress</h4>
+          <p>Oải hương, bạc hà thư giãn thần kinh, giảm đau đầu căng thẳng, cân bằng tâm trạng</p>
+          <div class="benefit-herbs">
+            <span>🌿 Oải hương</span><span>🌿 Bạc hà</span><span>🌿 Sả</span>
+          </div>
+        </div>
+      </div>
+      <div class="benefit-item reveal reveal-d3" data-idx="5">
+        <div class="benefit-visual">
+          <div class="benefit-circle">
+            <span class="benefit-emoji">🌸</span>
+          </div>
+        </div>
+        <div class="benefit-content">
+          <h4>Làm đẹp từ bên trong</h4>
+          <p>Collagen thảo mộc, hoa hồi sáng da tự nhiên, cân bằng nội tiết tố, tươi trẻ từ gốc</p>
+          <div class="benefit-herbs">
+            <span>🌿 Hoa hồi</span><span>🌿 Nghệ</span><span>🌿 Trà xanh</span>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
  
-<!-- BLOG SECTION -->
+<!-- ══ INTRO BLOG (1 bài giới thiệu web) ══ -->
+<section class="section intro-blog-section" id="intro-blog">
+  <div class="container">
+    <div class="intro-blog-card reveal">
+      <div class="intro-blog-badge">📖 Câu chuyện của Herbré</div>
+      <div class="intro-blog-inner">
+        <div class="intro-blog-text">
+          <h2>Herbré — Khi thảo dược trở thành<br><em>ngôn ngữ của yêu thương</em></h2>
+          <p>Herbré ra đời từ một câu hỏi giản dị: <strong>"Làm sao để chăm sóc sức khoẻ gia đình một cách tự nhiên nhất?"</strong> Chúng tôi tin rằng thiên nhiên đã chuẩn bị sẵn mọi thứ — từ những búp gừng tươi, lá ngải cứu thơm, đến bông hoa cúc vàng — chỉ cần biết cách kết hợp đúng.</p>
+          <p>Mỗi sản phẩm Herbré là một công thức được nghiên cứu kỹ càng, bào chế từ thảo dược sạch, không hoá chất, không chất bảo quản — chỉ là tình yêu thương và thiên nhiên thuần khiết.</p>
+          <div class="intro-blog-stats">
+            <div class="ibs-item"><strong>2020</strong><span>Năm thành lập</span></div>
+            <div class="ibs-divider"></div>
+            <div class="ibs-item"><strong>50+</strong><span>Công thức thảo dược</span></div>
+            <div class="ibs-divider"></div>
+            <div class="ibs-item"><strong>10,000+</strong><span>Gia đình tin dùng</span></div>
+          </div>
+          <button class="btn-primary" onclick="scrollTo('#blogs')" style="margin-top:1.5rem">Đọc thêm bài viết →</button>
+        </div>
+        <div class="intro-blog-visual">
+          <div class="ibv-card ibv-card-1">
+            <div class="ibv-emoji">🌿</div>
+            <p>100% thảo dược<br>thiên nhiên</p>
+          </div>
+          <div class="ibv-card ibv-card-2">
+            <div class="ibv-emoji">🔬</div>
+            <p>Đã kiểm nghiệm<br>an toàn BYT</p>
+          </div>
+          <div class="ibv-card ibv-card-3">
+            <div class="ibv-emoji">❤️</div>
+            <p>Yêu thương<br>trong từng gói</p>
+          </div>
+          <div class="ibv-center-leaf">🍃</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+ 
+<!-- ══ BLOG SECTION ══ -->
 <section class="section" id="blogs">
   <div class="container">
-    <div class="section-header">
+    <div class="section-header reveal">
       <span class="section-tag">📝 Blog thảo dược</span>
       <h2>Kiến thức thảo dược hàng ngày</h2>
       <p>Bí quyết dùng thảo dược đúng cách, tối ưu hiệu quả cho cơ thể</p>
@@ -197,8 +288,62 @@
   </div>
 </section>
  
+<!-- ══ SHOP TAB (Sản phẩm + Combo đầy đủ) ══ -->
+<section class="section section-mist" id="shop">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-tag">🛒 Cửa hàng</span>
+      <h2>Toàn bộ sản phẩm Herbré</h2>
+    </div>
+    <div class="shop-tabs reveal">
+      <button class="shop-tab active" id="stab-products" onclick="openShopTab('products')">🛍 Sản phẩm</button>
+      <button class="shop-tab" id="stab-combos" onclick="openShopTab('combos')">🎁 Combo ưu đãi</button>
+    </div>
+ 
+    <!-- Products tab -->
+    <div id="shop-products-panel">
+      <div class="filter-row">
+        <div class="filter-tabs" id="cat-tabs">
+          <button class="ftab active" data-cat="all">Tất cả</button>
+          <button class="ftab" data-cat="ngam-chan">Ngâm chân</button>
+          <button class="ftab" data-cat="am-bung">Làm ấm bụng</button>
+          <button class="ftab" data-cat="giai-doc">Giải độc</button>
+          <button class="ftab" data-cat="thu-gian">Thư giãn</button>
+          <button class="ftab" data-cat="ngu-ngon">Ngủ ngon</button>
+          <button class="ftab" data-cat="lam-dep">Làm đẹp</button>
+        </div>
+        <select class="sort-select" id="sort-select">
+          <option value="newest">Mới nhất</option>
+          <option value="popular">Bán chạy</option>
+          <option value="price-asc">Giá thấp → cao</option>
+          <option value="price-desc">Giá cao → thấp</option>
+          <option value="rating">Đánh giá cao</option>
+        </select>
+      </div>
+      <div class="products-grid" id="products-grid">
+        <div class="loading-grid">
+          <div class="skeleton-card"></div><div class="skeleton-card"></div>
+          <div class="skeleton-card"></div><div class="skeleton-card"></div>
+        </div>
+      </div>
+      <div class="load-more-wrap">
+        <button class="btn-load-more" id="btn-load-more" style="display:none">Xem thêm sản phẩm</button>
+      </div>
+    </div>
+ 
+    <!-- Combos tab -->
+    <div id="shop-combos-panel" style="display:none">
+      <div class="combo-grid" id="combos-grid">
+        <div class="loading-grid">
+          <div class="skeleton-card tall"></div><div class="skeleton-card tall"></div><div class="skeleton-card tall"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+ 
 <!-- NEWSLETTER -->
-<!-- <section class="newsletter-section">
+<section class="newsletter-section">
   <div class="container">
     <div class="newsletter-box">
       <div class="newsletter-text">
@@ -211,7 +356,7 @@
       </div>
     </div>
   </div>
-</section> -->
+</section>
  
 <!-- ══ CONTACT SECTION (Để lại thông tin) ══ -->
 <section class="contact-section" id="contact">
@@ -269,13 +414,13 @@
     <div class="zalo-inner">
       <div class="zalo-text reveal-left">
         <span class="zalo-tag">Đặt hàng trực tiếp</span>
-        <h2>Kết nối Zalo với <em>Herbre</em></h2>
-        <p>Herbre không dùng hệ thống thanh toán tự động vô hồn. Chúng tôi muốn lắng nghe từng chia sẻ, tư vấn tận tâm cho tình trạng của bạn hoặc bọc gói món quà tre đan xinh xắn theo đúng tâm tình bạn gửi trao.</p>
+        <h2>Kết nối Zalo với <em>Ấm</em></h2>
+        <p>Ấm không dùng hệ thống thanh toán tự động vô hồn. Chúng tôi muốn lắng nghe từng chia sẻ, tư vấn tận tâm cho tình trạng đau nhức của bạn hoặc bọc gói món quà tre đan xinh xắn theo đúng tâm tình bạn gửi trao.</p>
       </div>
       <div class="zalo-card reveal-right">
         <div class="zalo-phone-row">
           <span class="zalo-phone-label">SĐT Zalo:</span>
-          <span class="zalo-phone-num">0972 011 531</span>
+          <span class="zalo-phone-num">0987 654 321</span>
         </div>
         <button class="btn-zalo-copy" onclick="copyZaloPhone()">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
@@ -348,7 +493,7 @@
       </div>
       <div class="footer-contact">
         <div class="footer-title">Liên hệ</div>
-        <p>📞 <strong>0972 011 531</strong> (miễn phí)</p>
+        <p>📞 <strong>1800 6868</strong> (miễn phí)</p>
         <p>📧 hello@herbre.vn</p>
         <p>📍 Hà Nội, Việt Nam</p>
         <p>🕐 8:00 – 22:00 mỗi ngày</p>

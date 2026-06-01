@@ -1,10 +1,10 @@
 /* app.js – Main application logic */
-
+ 
 // ─── State ────────────────────────────────────────────────────────────────────
 let productsState = { data: [], page: 1, pages: 1, filter: { cat: 'all', sort: 'newest' } };
 let blogsState = { data: [], page: 1, pages: 1, filter: { cat: 'all' } };
 const bgColors = ['blog-bg-1','blog-bg-2','blog-bg-3','blog-bg-4','blog-bg-5'];
-
+ 
 // ─── Format / Helper ──────────────────────────────────────────────────────────
 const catLabels = {
   'ngam-chan':'Ngâm chân','am-bung':'Làm ấm bụng','giai-doc':'Giải độc',
@@ -14,16 +14,16 @@ const catBlogLabels = {
   'kien-thuc':'Kiến thức','lam-dep':'Làm đẹp','suc-khoe':'Sức khoẻ',
   'cong-thuc':'Công thức DIY','tin-tuc':'Tin tức'
 };
-
+ 
 function renderStars(rating) {
   const full = Math.round(rating || 0);
   return '★'.repeat(full) + '☆'.repeat(5 - full);
 }
-
+ 
 function scrollTo(selector) {
   document.querySelector(selector)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
-
+ 
 function filterCategory(cat) {
   scrollTo('#products');
   productsState.filter.cat = cat;
@@ -33,19 +33,53 @@ function filterCategory(cat) {
   });
   loadProducts(true);
 }
-
+ 
 function subscribeNewsletter() {
   const email = document.getElementById('nl-email')?.value?.trim();
   if (!email || !email.includes('@')) { showToast('Email không hợp lệ', 'error'); return; }
   showToast('🎉 Đăng ký thành công! Cảm ơn bạn.', 'success');
   document.getElementById('nl-email').value = '';
 }
-
+ 
+// ─── Featured Products (5 nổi bật) ───────────────────────────────────────────
+async function loadFeatured() {
+  const grid = document.getElementById('featured-grid');
+  if (!grid) return;
+  try {
+    const res = await ProductAPI.list({ page: 1, limit: 5, sort: 'popular' });
+    grid.innerHTML = res.data.map(renderProductCard).join('') ||
+      '<div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--text-light)">Không có sản phẩm nào</div>';
+  } catch (err) {
+    grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:3rem;color:#e53935">❌ ${err.message}</div>`;
+  }
+}
+ 
+// ─── Shop Tab switcher ────────────────────────────────────────────────────────
+function openShopTab(tab) {
+  const prodPanel  = document.getElementById('shop-products-panel');
+  const comboPanel = document.getElementById('shop-combos-panel');
+  const tabProd    = document.getElementById('stab-products');
+  const tabCombo   = document.getElementById('stab-combos');
+  if (!prodPanel || !comboPanel) return;
+ 
+  if (tab === 'combos') {
+    prodPanel.style.display  = 'none';
+    comboPanel.style.display = 'block';
+    tabProd?.classList.remove('active');
+    tabCombo?.classList.add('active');
+  } else {
+    prodPanel.style.display  = 'block';
+    comboPanel.style.display = 'none';
+    tabCombo?.classList.remove('active');
+    tabProd?.classList.add('active');
+  }
+}
+ 
 // ─── Products ─────────────────────────────────────────────────────────────────
 async function loadProducts(reset = false) {
   const grid = document.getElementById('products-grid');
   if (!grid) return;
-
+ 
   if (reset) {
     productsState.page = 1;
     grid.innerHTML = `<div class="loading-grid">
@@ -53,24 +87,24 @@ async function loadProducts(reset = false) {
       <div class="skeleton-card"></div><div class="skeleton-card"></div>
     </div>`;
   }
-
+ 
   try {
     const params = { page: productsState.page, limit: 8, sort: productsState.filter.sort };
     if (productsState.filter.cat !== 'all') params.category = productsState.filter.cat;
-
+ 
     const res = await ProductAPI.list(params);
     productsState.pages = res.pagination.pages;
-
+ 
     const cards = res.data.map(renderProductCard).join('');
-
+ 
     if (reset || productsState.page === 1) {
       grid.innerHTML = cards || `<div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--text-light)">Không tìm thấy sản phẩm nào</div>`;
     } else {
       grid.insertAdjacentHTML('beforeend', cards);
     }
-
+ 
     productsState.data = reset ? res.data : [...productsState.data, ...res.data];
-
+ 
     const loadMoreBtn = document.getElementById('btn-load-more');
     if (loadMoreBtn) {
       loadMoreBtn.style.display = productsState.page < productsState.pages ? 'inline-block' : 'none';
@@ -79,13 +113,13 @@ async function loadProducts(reset = false) {
     grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:3rem;color:#e53935">❌ ${err.message}</div>`;
   }
 }
-
+ 
 function renderProductCard(p) {
   const badgeMap = { 'Bán chạy':'badge-ban-chay', 'Hot':'badge-hot', 'Mới':'badge-moi', 'Sale':'badge-sale' };
   const hasDiscount = p.originalPrice && p.originalPrice > p.price;
   const badgeCls = badgeMap[p.badge] || '';
   const isWishlisted = currentUser?.wishlist?.some(w => (w._id || w) === p._id);
-
+ 
   const imgSrc = (p.images && p.images[0]) ? p.images[0] : '';
   return `
   <div class="product-card" onclick="openProductModal('${p._id}')">
@@ -114,19 +148,19 @@ function renderProductCard(p) {
     </div>
   </div>`;
 }
-
+ 
 function loadMoreProducts() {
   productsState.page++;
   loadProducts(false);
 }
-
+ 
 // ─── Wishlist Toggle ──────────────────────────────────────────────────────────
 async function toggleWishlist(productId, btnEl) {
   if (!currentUser) { openAuth(); return; }
   try {
     const res = await AuthAPI.toggleWishlist(productId);
     const added = res.added;
-
+ 
     // Update local user wishlist state
     if (!currentUser.wishlist) currentUser.wishlist = [];
     if (added) {
@@ -135,7 +169,7 @@ async function toggleWishlist(productId, btnEl) {
       currentUser.wishlist = currentUser.wishlist.filter(w => (w._id || w) !== productId);
     }
     localStorage.setItem('hb_user', JSON.stringify(currentUser));
-
+ 
     // Update all wishlist buttons for this product
     document.querySelectorAll(`.btn-wishlist-card`).forEach(btn => {
       if (btn.getAttribute('onclick')?.includes(productId)) {
@@ -149,19 +183,19 @@ async function toggleWishlist(productId, btnEl) {
       modalHeart.textContent = added ? '❤️' : '🤍';
       modalHeart.classList.toggle('active', added);
     }
-
+ 
     showToast(added ? '❤️ Đã thêm vào yêu thích!' : '🤍 Đã bỏ khỏi yêu thích', 'success');
   } catch (err) {
     showToast(err.message, 'error');
   }
 }
-
+ 
 // ─── Product Detail Modal ──────────────────────────────────────────────────────
 async function openProductModal(id) {
   const overlay = document.getElementById('product-overlay');
   const content = document.getElementById('product-modal-content');
   if (!overlay || !content) return;
-
+ 
   content.innerHTML = `
     <div class="modal-header">
       <h3>Chi tiết sản phẩm</h3>
@@ -170,13 +204,13 @@ async function openProductModal(id) {
     <div class="modal-body" style="text-align:center;padding:3rem;color:var(--text-light)">⏳ Đang tải...</div>`;
   overlay.classList.add('open');
   document.body.style.overflow = 'hidden';
-
+ 
   try {
     const res = await ProductAPI.get(id);
     const p = res.data;
     const hasDiscount = p.originalPrice && p.originalPrice > p.price;
     const isWishlisted = currentUser?.wishlist?.some(w => (w._id || w) === p._id);
-
+ 
     content.innerHTML = `
       <div class="modal-header">
         <h3 style="font-size:1rem">${p.name}</h3>
@@ -218,7 +252,7 @@ async function openProductModal(id) {
             </div>
           </div>
         </div>
-
+ 
         <div style="border-top:1px solid #f0f0f0;padding-top:1.2rem">
           <h4 style="font-size:.95rem;color:var(--g-dark);margin-bottom:.8rem">🌿 Thành phần thảo dược</h4>
           <div class="ingredients-list">
@@ -229,25 +263,25 @@ async function openProductModal(id) {
               </div>`).join('')}
           </div>
         </div>
-
+ 
         ${p.usage ? `
         <div style="margin-top:1.2rem">
           <h4 style="font-size:.95rem;color:var(--g-dark);margin-bottom:.6rem">📋 Hướng dẫn sử dụng</h4>
           <div class="usage-box">💡 ${p.usage}</div>
         </div>` : ''}
-
+ 
         ${p.description ? `
         <div style="margin-top:1.2rem">
           <h4 style="font-size:.95rem;color:var(--g-dark);margin-bottom:.6rem">📝 Mô tả chi tiết</h4>
           <p style="font-size:.88rem;color:var(--text-mid);line-height:1.8">${p.description}</p>
         </div>` : ''}
-
+ 
         ${p.benefits?.length ? `
         <div style="margin-top:1.2rem;background:var(--g-mist);border-radius:10px;padding:1rem">
           <h4 style="font-size:.95rem;color:var(--g-dark);margin-bottom:.6rem">✨ Công dụng nổi bật</h4>
           <ul style="padding-left:1.2rem">${p.benefits.map(b=>`<li style="font-size:.85rem;color:var(--text-mid);padding:.2rem 0">${b}</li>`).join('')}</ul>
         </div>` : ''}
-
+ 
         <!-- REVIEWS SECTION -->
         <div style="margin-top:1.5rem;border-top:1px solid #f0f0f0;padding-top:1.2rem" id="reviews-section-${p._id}">
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem">
@@ -286,10 +320,10 @@ async function openProductModal(id) {
             </div>`).join('') : `<div style="text-align:center;padding:1.5rem;color:var(--text-light);font-size:.88rem">Chưa có đánh giá nào. Hãy là người đầu tiên! 🌿</div>`}
         </div>
       </div>`;
-
+ 
     window._detailProductId = p._id;
     window._detailQty = 1;
-
+ 
     // Check if user can review (has purchased, not yet reviewed)
     if (currentUser) {
       try {
@@ -313,12 +347,12 @@ async function openProductModal(id) {
     content.querySelector('.modal-body').innerHTML = `<div style="text-align:center;color:#e53935;padding:2rem">❌ ${err.message}</div>`;
   }
 }
-
+ 
 function openReviewForm(productId) {
   const form = document.getElementById(`review-form-${productId}`);
   if (form) form.style.display = form.style.display === 'none' ? 'block' : 'none';
 }
-
+ 
 function pickStar(productId, val) {
   document.getElementById(`review-rating-${productId}`).value = val;
   document.querySelectorAll(`#star-picker-${productId} .star-pick`).forEach((s, i) => {
@@ -326,17 +360,17 @@ function pickStar(productId, val) {
     s.style.color = i < val ? 'var(--gold)' : '';
   });
 }
-
+ 
 async function submitReview(productId) {
   const rating = parseInt(document.getElementById(`review-rating-${productId}`)?.value || 0);
   const comment = document.getElementById(`review-comment-${productId}`)?.value?.trim();
-
+ 
   if (!rating || rating < 1) { showToast('Vui lòng chọn số sao đánh giá', 'error'); return; }
   if (!comment || comment.length < 10) { showToast('Nhận xét cần ít nhất 10 ký tự', 'error'); return; }
-
+ 
   const btn = document.querySelector(`#review-form-${productId} .btn-primary`);
   if (btn) { btn.disabled = true; btn.textContent = 'Đang gửi...'; }
-
+ 
   try {
     await ProductAPI.addReview(productId, { rating, comment });
     showToast('🎉 Cảm ơn bạn đã đánh giá!', 'success');
@@ -348,29 +382,29 @@ async function submitReview(productId) {
     if (btn) { btn.disabled = false; btn.textContent = 'Gửi đánh giá'; }
   }
 }
-
+ 
 function closeProductModal() {
   document.getElementById('product-overlay').classList.remove('open');
   document.body.style.overflow = '';
 }
-
+ 
 function changeDetailQty(delta) {
   window._detailQty = Math.max(1, (window._detailQty || 1) + delta);
   const el = document.getElementById('detail-qty-num');
   if (el) el.textContent = window._detailQty;
 }
-
+ 
 async function addToCartFromModal(productId, buyNow = false) {
   const qty = window._detailQty || 1;
   await addToCart(productId, qty);
   if (buyNow) { closeProductModal(); openCart(); }
 }
-
+ 
 // ─── Combos ───────────────────────────────────────────────────────────────────
 async function loadCombos() {
   const grid = document.getElementById('combos-grid');
   if (!grid) return;
-
+ 
   try {
     const res = await ComboAPI.list();
     if (!res.data.length) {
@@ -382,7 +416,7 @@ async function loadCombos() {
     grid.innerHTML = `<div style="text-align:center;color:#e53935;padding:2rem">❌ ${err.message}</div>`;
   }
 }
-
+ 
 function renderComboCard(c) {
   const imgSrc = c.image || (c.images && c.images[0]) || '';
   return `
@@ -410,23 +444,23 @@ function renderComboCard(c) {
     </div>
   </div>`;
 }
-
+ 
 // ─── Blogs ────────────────────────────────────────────────────────────────────
 async function loadBlogs(reset = false) {
   const grid = document.getElementById('blogs-grid');
   if (!grid) return;
-
+ 
   if (reset) {
     grid.innerHTML = `<div class="loading-grid">
       <div class="skeleton-card"></div><div class="skeleton-card"></div><div class="skeleton-card"></div>
     </div>`;
   }
-
+ 
   try {
     const params = { page: blogsState.page, limit: 6 };
     if (blogsState.filter.cat !== 'all') params.category = blogsState.filter.cat;
     const res = await BlogAPI.list(params);
-
+ 
     const cards = res.data.map((b, i) => renderBlogCard(b, i)).join('');
     grid.innerHTML = cards || `<div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--text-light)">Không có bài viết nào</div>`;
     blogsState.data = res.data;
@@ -434,7 +468,7 @@ async function loadBlogs(reset = false) {
     grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;color:#e53935;padding:2rem">❌ ${err.message}</div>`;
   }
 }
-
+ 
 function renderBlogCard(b, idx) {
   const bg = bgColors[idx % bgColors.length];
   return `
@@ -452,17 +486,17 @@ function renderBlogCard(b, idx) {
     </div>
   </div>`;
 }
-
+ 
 async function openBlogModal(slug) {
   const overlay = document.getElementById('blog-overlay');
   const body = document.getElementById('blog-modal-body');
   const titleEl = document.getElementById('blog-modal-title');
   if (!overlay) return;
-
+ 
   if (body) body.innerHTML = '<div style="text-align:center;padding:3rem;color:var(--text-light)">⏳ Đang tải...</div>';
   overlay.classList.add('open');
   document.body.style.overflow = 'hidden';
-
+ 
   try {
     const res = await BlogAPI.get(slug);
     const b = res.data;
@@ -502,17 +536,17 @@ async function openBlogModal(slug) {
     if (body) body.innerHTML = `<div style="text-align:center;color:#e53935;padding:2rem">❌ ${err.message}</div>`;
   }
 }
-
+ 
 function closeBlog() {
   document.getElementById('blog-overlay').classList.remove('open');
   document.body.style.overflow = '';
 }
-
+ 
 // ─── Wishlist Modal ───────────────────────────────────────────────────────────
 async function showWishlist() {
   document.getElementById('user-menu')?.remove();
   if (!currentUser) { openAuth(); return; }
-
+ 
   let overlay = document.getElementById('wishlist-overlay');
   if (!overlay) {
     overlay = document.createElement('div');
@@ -530,18 +564,18 @@ async function showWishlist() {
     document.body.appendChild(overlay);
     overlay.addEventListener('click', function(e) { if (e.target === this) closeWishlist(); });
   }
-
+ 
   overlay.classList.add('open');
   document.body.style.overflow = 'hidden';
-
+ 
   const body = document.getElementById('wishlist-body');
   body.innerHTML = '<div style="text-align:center;padding:2rem;color:var(--text-light)">⏳ Đang tải...</div>';
-
+ 
   try {
     const res = await AuthAPI.me();
     currentUser = res.user;
     localStorage.setItem('hb_user', JSON.stringify(currentUser));
-
+ 
     const wishlist = currentUser.wishlist || [];
     if (!wishlist.length) {
       body.innerHTML = `<div style="text-align:center;padding:3rem">
@@ -551,7 +585,7 @@ async function showWishlist() {
       </div>`;
       return;
     }
-
+ 
     body.innerHTML = `<div style="display:grid;gap:.8rem;padding:.5rem 0">
       ${wishlist.map(p => `
         <div style="display:flex;align-items:center;gap:12px;padding:.8rem;border:1px solid #e8f0e5;border-radius:12px;background:#fff;cursor:pointer" onclick="closeWishlist();openProductModal('${p._id}')">
@@ -572,7 +606,7 @@ async function showWishlist() {
     body.innerHTML = `<div style="text-align:center;color:#e53935;padding:2rem">❌ ${err.message}</div>`;
   }
 }
-
+ 
 async function removeFromWishlist(productId) {
   try {
     await AuthAPI.toggleWishlist(productId);
@@ -586,31 +620,31 @@ async function removeFromWishlist(productId) {
     showToast(err.message, 'error');
   }
 }
-
+ 
 function closeWishlist() {
   document.getElementById('wishlist-overlay')?.classList.remove('open');
   document.body.style.overflow = '';
 }
-
+ 
 // ─── Search ───────────────────────────────────────────────────────────────────
 let searchTimer = null;
-
+ 
 function openSearch() {
   const bar = document.getElementById('search-bar');
   bar.classList.add('open');
   document.getElementById('search-input')?.focus();
 }
-
+ 
 function closeSearch() {
   document.getElementById('search-bar')?.classList.remove('open');
   document.getElementById('search-results').innerHTML = '';
   document.getElementById('search-input').value = '';
 }
-
+ 
 async function handleSearch(query) {
   const resultsEl = document.getElementById('search-results');
   if (!query.trim() || query.length < 2) { resultsEl.innerHTML = ''; return; }
-
+ 
   try {
     const res = await ProductAPI.search(query);
     if (!res.data.length) {
@@ -631,14 +665,14 @@ async function handleSearch(query) {
       </div>`).join('');
   } catch (_) {}
 }
-
+ 
 // ─── Navbar behavior ──────────────────────────────────────────────────────────
 function initNavbar() {
   window.addEventListener('scroll', () => {
     const nav = document.getElementById('navbar');
     nav?.classList.toggle('scrolled', window.scrollY > 20);
   });
-
+ 
   // Mobile menu
   const menuBtn = document.getElementById('btn-menu');
   if (menuBtn) {
@@ -665,7 +699,7 @@ function initNavbar() {
       document.body.appendChild(mobileNav);
     });
   }
-
+ 
   // Search
   document.getElementById('btn-search-open')?.addEventListener('click', openSearch);
   document.getElementById('btn-search-close')?.addEventListener('click', closeSearch);
@@ -676,7 +710,7 @@ function initNavbar() {
   document.getElementById('search-input')?.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') closeSearch();
   });
-
+ 
   // Filter tabs - products
   document.querySelectorAll('#cat-tabs .ftab').forEach(btn => {
     btn.addEventListener('click', function() {
@@ -686,13 +720,13 @@ function initNavbar() {
       loadProducts(true);
     });
   });
-
+ 
   // Sort select
   document.getElementById('sort-select')?.addEventListener('change', function() {
     productsState.filter.sort = this.value;
     loadProducts(true);
   });
-
+ 
   // Filter tabs - blogs
   document.querySelectorAll('.blog-filter .ftab').forEach(btn => {
     btn.addEventListener('click', function() {
@@ -702,35 +736,35 @@ function initNavbar() {
       loadBlogs(true);
     });
   });
-
+ 
   // Load more
   document.getElementById('btn-load-more')?.addEventListener('click', loadMoreProducts);
-
+ 
   // Wishlist button
   document.getElementById('btn-wishlist')?.addEventListener('click', () => {
     if (!currentUser) { openAuth(); return; }
     showWishlist();
   });
 }
-
+ 
 // ─── Payment result page ──────────────────────────────────────────────────────
 function handlePaymentResult() {
   const urlParams = new URLSearchParams(window.location.search);
   const status = urlParams.get('status');
   const orderCode = urlParams.get('orderCode');
-
+ 
   if (!status) return;
-
+ 
   const messages = {
     success: { icon: '✅', title: 'Thanh toán thành công!', msg: `Đơn hàng <strong>${orderCode}</strong> đã được thanh toán qua VNPay.`, type: 'success' },
     failed:  { icon: '❌', title: 'Thanh toán thất bại', msg: `Đơn hàng <strong>${orderCode}</strong> chưa được thanh toán. Vui lòng thử lại.`, type: 'error' },
     invalid: { icon: '⚠️', title: 'Giao dịch không hợp lệ', msg: 'Phản hồi từ VNPay không hợp lệ.', type: 'error' },
     error:   { icon: '⚠️', title: 'Có lỗi xảy ra', msg: 'Vui lòng liên hệ hỗ trợ.', type: 'error' }
   };
-
+ 
   const info = messages[status];
   if (!info) return;
-
+ 
   setTimeout(() => {
     showToast(`${info.icon} ${info.title}`, info.type);
     if (status === 'success' && orderCode) {
@@ -738,16 +772,17 @@ function handlePaymentResult() {
       if (trackInput) { trackInput.value = orderCode; }
     }
   }, 500);
-
+ 
   history.replaceState({}, '', window.location.pathname);
 }
-
+ 
 // ─── Init ─────────────────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', async () => {
   initNavbar();
   handlePaymentResult();
-
+ 
   await Promise.all([
+    loadFeatured(),
     loadProducts(true),
     loadCombos(),
     loadBlogs(true)

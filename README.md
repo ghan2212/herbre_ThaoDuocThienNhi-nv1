@@ -54,7 +54,7 @@ herbre/
             └── index.html       # Trang kết quả VNPay
 ```
 
----
+<!-- ---
 
 ## ⚡ Cài đặt và chạy
 
@@ -341,4 +341,4 @@ server {
 
 ---
 
-*Herbré © 2025 – Thảo dược thiên nhiên thuần Việt*
+*Herbré © 2025 – Thảo dược thiên nhiên thuần Việt* -->
