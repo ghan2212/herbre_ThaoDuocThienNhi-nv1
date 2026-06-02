@@ -270,11 +270,11 @@
     <div class="zalo-inner">
       <div class="zalo-text reveal-left">
         <span class="zalo-tag">Đặt hàng trực tiếp</span>
-        <h2>Kết nối Zalo với <em>Ấm</em></h2>
-        <p>Ấm không dùng hệ thống thanh toán tự động vô hồn. Chúng tôi muốn lắng nghe từng chia sẻ, tư vấn tận tâm cho tình trạng đau nhức của bạn hoặc bọc gói món quà tre đan xinh xắn theo đúng tâm tình bạn gửi trao.</p>
+        <h2>Kết nối Zalo với <em>Herbre</em></h2>
+        <p>Herbre không dùng hệ thống thanh toán tự động vô hồn. Chúng tôi muốn lắng nghe từng chia sẻ, tư vấn tận tâm cho tình trạng đau nhức của bạn hoặc bọc gói món quà tre đan xinh xắn theo đúng tâm tình bạn gửi trao.</p>
       </div>
       <div class="zalo-card reveal-right">
-        <div class="zalo-phone-row"><span class="zalo-phone-label">SĐT Zalo:</span><span class="zalo-phone-num">0987 654 321</span></div>
+        <div class="zalo-phone-row"><span class="zalo-phone-label">SĐT Zalo:</span><span class="zalo-phone-num">0378 654 625</span></div>
         <button class="btn-zalo-copy" onclick="copyZaloPhone()"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Sao chép số điện thoại</button>
         <button class="btn-zalo-chat" onclick="openZaloChat()"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Trò chuyện qua Zalo tư vấn</button>
         <div class="zalo-qr-box">
@@ -731,9 +731,9 @@ function copyZaloPhone() {
   const num = '0987654321';
   (navigator.clipboard ? navigator.clipboard.writeText(num) : Promise.reject()).catch(() => {
     const ta = document.createElement('textarea'); ta.value=num; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
-  }).finally(() => showToast('📋 Đã sao chép số Zalo!', 'success'));
+  }).finally(() => showToast(' Đã sao chép số Zalo!', 'success'));
   const btn = document.querySelector('.btn-zalo-copy');
-  if (btn) { const orig=btn.innerHTML; btn.textContent='✅ Đã sao chép!'; setTimeout(()=>{ btn.innerHTML=orig; },2000); }
+  if (btn) { const orig=btn.innerHTML; btn.textContent=' Đã sao chép!'; setTimeout(()=>{ btn.innerHTML=orig; },2000); }
 }
 function openZaloChat() { window.open('https://zalo.me/0987654321','_blank'); }
 </script>
