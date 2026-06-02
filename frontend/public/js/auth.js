@@ -631,4 +631,4 @@ document.addEventListener('DOMContentLoaded', () => {
       }).catch(() => logout());
     } catch (_) { logout(); }
   }
-});
+}); 
