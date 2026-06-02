@@ -743,4 +743,38 @@ footer{background:var(--g-dark);color:#9ec89a;padding:3rem 1.5rem 1.5rem}
   .ibv-card { min-width:90px; padding:.8rem .7rem; font-size:.76rem; }
 }
  
-
+/* ═══ PAGE SYSTEM ═══ */
+.page { display:none; animation:fadeInUp .3s ease; }
+.page.active { display:block; }
+ 
+.page-hero-bar {
+  background:var(--g-dark);
+  padding:3.5rem 0 2.5rem;
+  position:relative;
+  overflow:hidden;
+}
+.page-hero-bar::before {
+  content:'';
+  position:absolute;
+  inset:0;
+  background:radial-gradient(ellipse at 70% 50%, rgba(124,171,106,.2) 0%, transparent 60%);
+  pointer-events:none;
+}
+.page-hero-bar h1 {
+  font-family:'Playfair Display',serif;
+  font-size:2.4rem;
+  color:#fff;
+  margin-bottom:.5rem;
+  position:relative;
+}
+.page-hero-bar p {
+  color:rgba(255,255,255,.7);
+  font-size:1rem;
+  position:relative;
+}
+ 
+/* Active nav link */
+.nav-link.page-active {
+  color:var(--g-dark);
+  font-weight:700;
+} 
