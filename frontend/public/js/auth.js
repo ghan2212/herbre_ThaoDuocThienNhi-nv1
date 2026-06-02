@@ -1,16 +1,16 @@
 /* auth.js – Authentication state + modal UI */
-
+ 
 let currentUser = null;
-
+ 
 function getCurrentUser() { return currentUser; }
-
+ 
 function setUser(user, token) {
   currentUser = user;
   if (token) localStorage.setItem('hb_token', token);
   if (user) localStorage.setItem('hb_user', JSON.stringify(user));
   updateAuthUI();
 }
-
+ 
 function logout() {
   currentUser = null;
   localStorage.removeItem('hb_token');
@@ -19,31 +19,32 @@ function logout() {
   showToast('👋 Đã đăng xuất', 'success');
   loadCart();
 }
-
+ 
 function updateAuthUI() {
   const btn = document.getElementById('btn-auth');
   if (!btn) return;
   if (currentUser) {
-    btn.textContent = `👤 ${currentUser.name.split(' ').pop()}`;
+    const initial = currentUser.name ? currentUser.name.trim()[0].toUpperCase() : 'U';
+    btn.innerHTML = `<span class="btn-auth-avatar">${initial}</span> ${currentUser.name.split(' ').pop()}`;
     btn.onclick = showUserMenu;
   } else {
-    btn.textContent = 'Đăng nhập';
+    btn.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:5px;vertical-align:middle"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Đăng nhập`;
     btn.onclick = openAuth;
   }
 }
-
+ 
 // ─── Auth Modal ───────────────────────────────────────────────────────────────
 function openAuth() {
   document.getElementById('auth-overlay').classList.add('open');
   document.body.style.overflow = 'hidden';
   switchAuth('login');
 }
-
+ 
 function closeAuth() {
   document.getElementById('auth-overlay').classList.remove('open');
   document.body.style.overflow = '';
 }
-
+ 
 function switchAuth(mode) {
   const loginForm = document.getElementById('login-form');
   const regForm = document.getElementById('register-form');
@@ -56,7 +57,7 @@ function switchAuth(mode) {
     tabs[0].classList.remove('active'); tabs[1].classList.add('active');
   }
 }
-
+ 
 async function doLogin() {
   const email = document.getElementById('login-email')?.value?.trim();
   const pass = document.getElementById('login-pass')?.value;
@@ -75,7 +76,7 @@ async function doLogin() {
     if (btn) { btn.disabled = false; btn.textContent = 'Đăng nhập'; }
   }
 }
-
+ 
 async function doRegister() {
   const name = document.getElementById('reg-name')?.value?.trim();
   const email = document.getElementById('reg-email')?.value?.trim();
@@ -96,13 +97,13 @@ async function doRegister() {
     if (btn) { btn.disabled = false; btn.textContent = 'Tạo tài khoản'; }
   }
 }
-
+ 
 // ─── User Menu ────────────────────────────────────────────────────────────────
 function showUserMenu(e) {
   e.stopPropagation();
   let menu = document.getElementById('user-menu');
   if (menu) { menu.remove(); return; }
-
+ 
   menu = document.createElement('div');
   menu.id = 'user-menu';
   menu.style.cssText = `position:fixed;top:68px;right:1rem;background:#fff;border:1px solid #e0e8d8;border-radius:12px;box-shadow:0 8px 32px rgba(45,90,39,.15);z-index:150;min-width:210px;padding:.5rem;animation:slideUp .2s ease;`;
@@ -120,21 +121,21 @@ function showUserMenu(e) {
     <div style="border-top:1px solid #f0f0f0;margin:.4rem 0"></div>
     <button class="menu-item danger" onclick="logout()">🚪 Đăng xuất</button>
   `;
-
+ 
   const style = document.createElement('style');
   style.textContent = `.menu-item{display:block;width:100%;text-align:left;background:none;border:none;padding:.6rem 1rem;border-radius:8px;font-size:.85rem;cursor:pointer;color:var(--text);font-family:'Be Vietnam Pro',sans-serif;transition:background .15s}.menu-item:hover{background:var(--g-mist)}.menu-item.danger:hover{background:#fef2f2;color:#e53935}.menu-item.admin-item{color:var(--g-dark);font-weight:600}`;
   document.head.appendChild(style);
   document.body.appendChild(menu);
-
+ 
   const closeMenu = (ev) => { if (!menu.contains(ev.target)) { menu.remove(); document.removeEventListener('click', closeMenu); } };
   setTimeout(() => document.addEventListener('click', closeMenu), 0);
 }
-
+ 
 // ─── Account Modal (Thông tin / Địa chỉ / Đổi mật khẩu) ────────────────────
 function showMyAccount() {
   document.getElementById('user-menu')?.remove();
   if (!currentUser) { openAuth(); return; }
-
+ 
   let overlay = document.getElementById('account-modal-overlay');
   if (!overlay) {
     overlay = document.createElement('div');
@@ -161,17 +162,17 @@ function showMyAccount() {
     document.body.appendChild(overlay);
     overlay.addEventListener('click', (e) => { if (e.target === overlay) closeAccountModal(); });
   }
-
+ 
   overlay.classList.add('open');
   document.body.style.overflow = 'hidden';
   loadAccountTab('profile');
 }
-
+ 
 function closeAccountModal() {
   document.getElementById('account-modal-overlay')?.classList.remove('open');
   document.body.style.overflow = '';
 }
-
+ 
 function switchAccountTab(tab, btn) {
   document.querySelectorAll('#account-modal-overlay .account-tab').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('#account-modal-overlay .account-tab-panel').forEach(p => p.classList.remove('active'));
@@ -180,13 +181,13 @@ function switchAccountTab(tab, btn) {
   panel.classList.add('active');
   loadAccountTab(tab);
 }
-
+ 
 function loadAccountTab(tab) {
   if (tab === 'profile') renderProfileTab();
   else if (tab === 'address') renderAddressTab();
   else if (tab === 'password') renderPasswordTab();
 }
-
+ 
 function renderProfileTab() {
   const el = document.getElementById('account-tab-profile');
   const u = currentUser;
@@ -220,7 +221,7 @@ function renderProfileTab() {
     <button class="btn-primary full" style="margin-top:.4rem" onclick="saveProfile()">Lưu thay đổi</button>
   `;
 }
-
+ 
 async function saveProfile() {
   const name = document.getElementById('acc-name')?.value?.trim();
   const phone = document.getElementById('acc-phone')?.value?.trim();
@@ -236,11 +237,11 @@ async function saveProfile() {
     showToast(err.message, 'error');
   }
 }
-
+ 
 function renderAddressTab() {
   const el = document.getElementById('account-tab-address');
   const addrs = currentUser.addresses || [];
-
+ 
   el.innerHTML = `
     <div id="addr-list">
       ${addrs.length ? addrs.map(a => renderAddressCard(a)).join('') : `<div style="text-align:center;padding:1.5rem;color:var(--text-light);font-size:.88rem">📍 Chưa có địa chỉ nào</div>`}
@@ -273,7 +274,7 @@ function renderAddressTab() {
     </div>
   `;
 }
-
+ 
 function renderAddressCard(a) {
   return `
     <div class="address-card ${a.isDefault ? 'default-addr' : ''}">
@@ -285,13 +286,13 @@ function renderAddressCard(a) {
       </div>
     </div>`;
 }
-
+ 
 function toggleAddrForm() {
   const f = document.getElementById('addr-form');
   f.classList.toggle('open');
   if (f.classList.contains('open')) document.getElementById('af-name').focus();
 }
-
+ 
 async function saveNewAddress() {
   const fullName = document.getElementById('af-name')?.value?.trim();
   const phone = document.getElementById('af-phone')?.value?.trim();
@@ -300,9 +301,9 @@ async function saveNewAddress() {
   const label = document.getElementById('af-label')?.value;
   const ward = document.getElementById('af-ward')?.value?.trim();
   const district = document.getElementById('af-district')?.value?.trim();
-
+ 
   if (!fullName || !phone || !address || !city) { showToast('Vui lòng điền đủ thông tin bắt buộc', 'error'); return; }
-
+ 
   try {
     const res = await AuthAPI.addAddress({ fullName, phone, address, city, ward, district, label });
     currentUser.addresses = res.addresses || currentUser.addresses;
@@ -313,7 +314,7 @@ async function saveNewAddress() {
     showToast(err.message, 'error');
   }
 }
-
+ 
 async function deleteAddress(id) {
   if (!confirm('Xoá địa chỉ này?')) return;
   try {
@@ -326,7 +327,7 @@ async function deleteAddress(id) {
     showToast(err.message, 'error');
   }
 }
-
+ 
 function renderPasswordTab() {
   const el = document.getElementById('account-tab-password');
   el.innerHTML = `
@@ -349,7 +350,7 @@ function renderPasswordTab() {
     <button class="btn-primary full" onclick="doChangePassword()">Đổi mật khẩu</button>
   `;
 }
-
+ 
 function checkPwStrength(val) {
   const bar = document.getElementById('pw-strength-bar');
   if (!bar) return;
@@ -358,7 +359,7 @@ function checkPwStrength(val) {
   else if (val.length < 10 || !/[A-Z0-9]/.test(val)) bar.className = 'pw-strength medium';
   else bar.className = 'pw-strength strong';
 }
-
+ 
 async function doChangePassword() {
   const current = document.getElementById('pw-current')?.value;
   const newPw = document.getElementById('pw-new')?.value;
@@ -375,7 +376,7 @@ async function doChangePassword() {
     showToast(err.message, 'error');
   }
 }
-
+ 
 // ─── My Orders Modal (Lịch sử + Theo dõi) ───────────────────────────────────
 const statusMap = {
   pending:    { label: 'Chờ xác nhận', cls: 'status-pending',    step: 0 },
@@ -385,14 +386,14 @@ const statusMap = {
   delivered:  { label: 'Đã giao',       cls: 'status-delivered',  step: 4 },
   cancelled:  { label: 'Đã huỷ',        cls: 'status-cancelled',  step: -1 }
 };
-
+ 
 let _ordersFilter = 'all';
 let _ordersData = [];
-
+ 
 async function showMyOrders() {
   document.getElementById('user-menu')?.remove();
   if (!currentUser) { openAuth(); return; }
-
+ 
   let overlay = document.getElementById('orders-modal-overlay');
   if (!overlay) {
     overlay = document.createElement('div');
@@ -421,24 +422,24 @@ async function showMyOrders() {
     document.body.appendChild(overlay);
     overlay.addEventListener('click', (e) => { if (e.target === overlay) closeOrdersModal(); });
   }
-
+ 
   overlay.classList.add('open');
   document.body.style.overflow = 'hidden';
   _ordersFilter = 'all';
   document.querySelectorAll('.order-ftab').forEach((t,i) => t.classList.toggle('active', i===0));
   await fetchAndRenderOrders();
 }
-
+ 
 function closeOrdersModal() {
   document.getElementById('orders-modal-overlay')?.classList.remove('open');
   document.body.style.overflow = '';
 }
-
+ 
 async function fetchAndRenderOrders() {
   const body = document.getElementById('orders-list-body');
   if (!body) return;
   body.innerHTML = '<div style="text-align:center;padding:2rem;color:var(--text-light)">⏳ Đang tải...</div>';
-
+ 
   try {
     const res = await OrderAPI.myOrders({ limit: 50 });
     _ordersData = res.data || [];
@@ -447,20 +448,20 @@ async function fetchAndRenderOrders() {
     body.innerHTML = `<div style="text-align:center;color:#e53935;padding:2rem">${err.message}</div>`;
   }
 }
-
+ 
 function filterOrders(status, btn) {
   _ordersFilter = status;
   document.querySelectorAll('.order-ftab').forEach(t => t.classList.remove('active'));
   btn.classList.add('active');
   renderOrdersList();
 }
-
+ 
 function renderOrdersList() {
   const body = document.getElementById('orders-list-body');
   if (!body) return;
-
+ 
   const filtered = _ordersFilter === 'all' ? _ordersData : _ordersData.filter(o => o.status === _ordersFilter);
-
+ 
   if (!filtered.length) {
     body.innerHTML = `<div style="text-align:center;padding:3rem;color:var(--text-light)">
       <div style="font-size:3rem;margin-bottom:1rem">📭</div>
@@ -469,7 +470,7 @@ function renderOrdersList() {
     </div>`;
     return;
   }
-
+ 
   body.innerHTML = filtered.map(o => {
     const s = statusMap[o.status] || { label: o.status, cls: 'status-pending' };
     const itemNames = (o.items || []).map(i => i.name).join(' · ');
@@ -492,11 +493,11 @@ function renderOrdersList() {
       </div>`;
   }).join('');
 }
-
+ 
 async function showOrderDetail(orderId) {
   const order = _ordersData.find(o => o._id === orderId);
   if (!order) return;
-
+ 
   let overlay = document.getElementById('order-detail-overlay');
   if (!overlay) {
     overlay = document.createElement('div');
@@ -514,7 +515,7 @@ async function showOrderDetail(orderId) {
     document.body.appendChild(overlay);
     overlay.addEventListener('click', (e) => { if (e.target === overlay) closeOrderDetail(); });
   }
-
+ 
   const s = statusMap[order.status] || { label: order.status, cls: 'status-pending', step: 0 };
   const steps = [
     { key: 'pending',    icon: '📝', label: 'Đặt hàng' },
@@ -523,10 +524,10 @@ async function showOrderDetail(orderId) {
     { key: 'shipped',    icon: '🚚', label: 'Đang giao' },
     { key: 'delivered',  icon: '🎉', label: 'Đã nhận' },
   ];
-
+ 
   const isCancelled = order.status === 'cancelled';
   const curStep = isCancelled ? -1 : (s.step ?? 0);
-
+ 
   const timelineHTML = isCancelled
     ? `<div class="timeline-step cancelled"><div class="timeline-dot">✕</div><div class="timeline-text"><strong>Đơn hàng đã huỷ</strong><span>${order.cancelReason || 'Không rõ lý do'}</span></div></div>`
     : steps.map((st, i) => {
@@ -537,10 +538,10 @@ async function showOrderDetail(orderId) {
           <div class="timeline-text"><strong>${st.label}</strong><span>${isDone || isActive ? (i === 0 ? new Date(order.createdAt).toLocaleDateString('vi-VN') : '') : 'Chờ cập nhật'}</span></div>
         </div>`;
       }).join('');
-
+ 
   const addr = order.shippingAddress;
   const addrText = addr ? [addr.fullName, addr.phone, addr.address, addr.ward, addr.district, addr.city].filter(Boolean).join(', ') : 'Không có';
-
+ 
   const itemsHTML = (order.items || []).map(item => {
     const imgSrc = item.image || (item.images && item.images[0]) || '';
     return `
@@ -555,40 +556,40 @@ async function showOrderDetail(orderId) {
         <div class="order-item-price">${formatVND(item.price * item.quantity)}</div>
       </div>`;
   }).join('');
-
+ 
   document.getElementById('order-detail-body').innerHTML = `
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.6rem">
       <strong style="color:var(--g-dark);font-size:1rem">${order.orderCode}</strong>
       <span class="status-badge ${s.cls}">${s.label}</span>
     </div>
     <div style="font-size:.8rem;color:var(--text-light);margin-bottom:1rem">Đặt lúc ${new Date(order.createdAt).toLocaleDateString('vi-VN',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'})}</div>
-
+ 
     <h4 style="font-size:.88rem;color:var(--g-dark);margin-bottom:.5rem">📍 Giao đến</h4>
     <div style="background:var(--g-mist);border-radius:8px;padding:.75rem;font-size:.83rem;color:var(--text-mid);margin-bottom:1rem">${addrText}</div>
-
+ 
     <h4 style="font-size:.88rem;color:var(--g-dark);margin-bottom:.4rem">🛒 Sản phẩm</h4>
     <div class="order-detail-items">${itemsHTML}</div>
-
+ 
     <div style="background:var(--g-mist);border-radius:8px;padding:.75rem;font-size:.83rem;margin-bottom:1rem">
       <div style="display:flex;justify-content:space-between;padding:3px 0"><span style="color:var(--text-mid)">Tạm tính</span><span>${formatVND(order.totalAmount)}</span></div>
       <div style="display:flex;justify-content:space-between;padding:3px 0"><span style="color:var(--text-mid)">Phí vận chuyển</span><span style="color:var(--g-mid)">Miễn phí</span></div>
       <div style="display:flex;justify-content:space-between;padding:6px 0;border-top:1px solid #d4e8c8;margin-top:4px"><strong style="color:var(--g-dark)">Tổng cộng</strong><strong style="color:var(--g-dark)">${formatVND(order.totalAmount)}</strong></div>
     </div>
-
+ 
     <h4 style="font-size:.88rem;color:var(--g-dark);margin-bottom:.4rem">📬 Theo dõi đơn hàng</h4>
     <div class="order-timeline">${timelineHTML}</div>
-
+ 
     ${['pending','confirmed'].includes(order.status) ? `
     <button class="btn-outline full" style="margin-top:.4rem;border-color:#ef4444;color:#ef4444" onclick="cancelOrder('${order._id}',this)">Huỷ đơn hàng</button>` : ''}
   `;
-
+ 
   overlay.classList.add('open');
 }
-
+ 
 function closeOrderDetail() {
   document.getElementById('order-detail-overlay')?.classList.remove('open');
 }
-
+ 
 async function cancelOrder(orderId, btn) {
   if (!confirm('Bạn chắc chắn muốn huỷ đơn hàng này?')) return;
   if (btn) { btn.disabled = true; btn.textContent = 'Đang huỷ...'; }
@@ -602,8 +603,8 @@ async function cancelOrder(orderId, btn) {
     if (btn) { btn.disabled = false; btn.textContent = 'Huỷ đơn'; }
   }
 }
-
-
+ 
+ 
 // ─── Close auth on overlay click ────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('auth-overlay')?.addEventListener('click', function(e) {
@@ -615,7 +616,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('blog-overlay')?.addEventListener('click', function(e) {
     if (e.target === this) closeBlog();
   });
-
+ 
   // Restore session
   const savedUser = localStorage.getItem('hb_user');
   const savedToken = localStorage.getItem('hb_token');

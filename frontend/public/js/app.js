@@ -471,17 +471,20 @@ async function loadBlogs(reset = false) {
  
 function renderBlogCard(b, idx) {
   const bg = bgColors[idx % bgColors.length];
+  const imgHtml = b.thumbnail || b.image
+    ? `<img src="${b.thumbnail || b.image}" alt="${b.title}" loading="lazy" onerror="this.parentElement.classList.add('no-img')">`
+    : `<div class="blog-img-placeholder ${bg}"><svg viewBox="0 0 60 60" fill="none" width="48" height="48" opacity=".4"><path d="M30 8C30 8 18 16 18 26C18 34 23 40 30 43C37 40 42 34 42 26C42 16 30 8 30 8Z" stroke="currentColor" stroke-width="2" fill="none"/><line x1="30" y1="8" x2="30" y2="43" stroke="currentColor" stroke-width="1.5"/><path d="M30 20C30 20 24 18 21 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M30 26C30 26 36 24 39 19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>`;
   return `
   <div class="blog-card" onclick="openBlogModal('${b.slug || b._id}')">
-    <div class="blog-img ${bg}">${b.emoji || '🌿'}</div>
+    <div class="blog-img ${b.thumbnail || b.image ? 'has-img' : ''}">${imgHtml}</div>
     <div class="blog-meta">
       <div class="blog-cat">${catBlogLabels[b.category] || b.category}</div>
       <div class="blog-title">${b.title}</div>
       <div class="blog-excerpt">${b.excerpt}</div>
       <div class="blog-info">
-        <span>🕐 ${b.readTime || 5} phút đọc</span>
-        <span>📅 ${new Date(b.createdAt || Date.now()).toLocaleDateString('vi-VN')}</span>
-        <span>👁 ${b.views || 0}</span>
+        <span>${b.readTime || 5} phút đọc</span>
+        <span>${new Date(b.createdAt || Date.now()).toLocaleDateString('vi-VN')}</span>
+        <span>${b.views || 0} lượt xem</span>
       </div>
     </div>
   </div>`;

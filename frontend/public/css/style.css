@@ -777,4 +777,40 @@ footer{background:var(--g-dark);color:#9ec89a;padding:3rem 1.5rem 1.5rem}
 .nav-link.page-active {
   color:var(--g-dark);
   font-weight:700;
-} 
+}
+ 
+/* ═══ BLOG IMAGE FIX ═══ */
+.blog-img { overflow:hidden; background:#f0f4ec; position:relative; }
+.blog-img.has-img img {
+  width:100%; height:100%;
+  object-fit:cover;
+  display:block;
+  transition:transform .4s ease;
+}
+.blog-card:hover .blog-img.has-img img { transform:scale(1.05); }
+.blog-img-placeholder {
+  width:100%; height:100%;
+  display:flex; align-items:center; justify-content:center;
+  color:var(--g-mid);
+}
+ 
+/* ═══ BTN-AUTH FIX ═══ */
+.btn-auth {
+  display:flex !important;
+  align-items:center;
+  gap:5px;
+  white-space:nowrap;
+}
+.btn-auth-avatar {
+  width:22px; height:22px;
+  background:rgba(255,255,255,.25);
+  border-radius:50%;
+  display:inline-flex; align-items:center; justify-content:center;
+  font-size:.72rem; font-weight:700;
+  flex-shrink:0;
+}
+ 
+/* ═══ MOBILE BTN-AUTH ═══ */
+@media(max-width:640px){
+  .btn-auth { padding:6px 10px; font-size:.76rem; }
+}
