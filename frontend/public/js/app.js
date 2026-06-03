@@ -1,3 +1,4 @@
+
 /* app.js – Main application logic */
  
 // ─── State ────────────────────────────────────────────────────────────────────
@@ -464,6 +465,26 @@ async function loadBlogs(reset = false) {
     const cards = res.data.map((b, i) => renderBlogCard(b, i)).join('');
     grid.innerHTML = cards || `<div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--text-light)">Không có bài viết nào</div>`;
     blogsState.data = res.data;
+  } catch (err) {
+    grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;color:#e53935;padding:2rem">❌ ${err.message}</div>`;
+  }
+}
+ 
+// Load blog theo danh mục công dụng cho page Benefits
+async function loadBenefitBlogs(cat = 'all') {
+  const grid = document.getElementById('benefit-blogs-grid');
+  if (!grid) return;
+ 
+  grid.innerHTML = `<div class="loading-grid">
+    <div class="skeleton-card"></div><div class="skeleton-card"></div><div class="skeleton-card"></div>
+  </div>`;
+ 
+  try {
+    const params = { page: 1, limit: 12 };
+    if (cat !== 'all') params.category = cat;
+    const res = await BlogAPI.list(params);
+    const cards = res.data.map((b, i) => renderBlogCard(b, i)).join('');
+    grid.innerHTML = cards || `<div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--text-light)">Không có bài viết nào trong danh mục này</div>`;
   } catch (err) {
     grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;color:#e53935;padding:2rem">❌ ${err.message}</div>`;
   }
