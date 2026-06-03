@@ -1087,7 +1087,6 @@ async function editBlog(id) {
     document.getElementById('blog-modal').classList.add('open');
   } catch (err) { showAdminToast('❌ ' + err.message, 'error'); }
 }
-}
  
 async function saveBlog() {
   const id = document.getElementById('blog-edit-id').value;
