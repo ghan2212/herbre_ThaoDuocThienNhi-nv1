@@ -85,7 +85,7 @@ async function removeCartItem(itemId) {
     cartState = res.data;
     renderCartDrawer();
     updateCartBadge();
-    showToast('🗑 Đã xoá khỏi giỏ hàng');
+    showToast('✨ Đã xoá khỏi giỏ hàng');
   } catch (err) {
     showToast(err.message, 'error');
   }

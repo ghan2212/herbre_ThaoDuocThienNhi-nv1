@@ -16,7 +16,7 @@ function logout() {
   localStorage.removeItem('hb_token');
   localStorage.removeItem('hb_user');
   updateAuthUI();
-  showToast('👋 Đã đăng xuất', 'success');
+  showToast('✨ Đã đăng xuất', 'success');
   loadCart();
 }
  
@@ -68,7 +68,7 @@ async function doLogin() {
     const res = await AuthAPI.login(email, pass);
     setUser(res.user, res.token);
     closeAuth();
-    showToast(`🎉 Chào mừng, ${res.user.name}!`, 'success');
+    showToast(`✨ Chào mừng, ${res.user.name}!`, 'success');
     await loadCart();
   } catch (err) {
     showToast(err.message, 'error');
@@ -90,7 +90,7 @@ async function doRegister() {
     const res = await AuthAPI.register({ name, email, phone, password: pass });
     setUser(res.user, res.token);
     closeAuth();
-    showToast(`🎉 Tạo tài khoản thành công! Chào ${res.user.name}!`, 'success');
+    showToast(`✨ Tạo tài khoản thành công! Chào ${res.user.name}!`, 'success');
   } catch (err) {
     showToast(err.message, 'error');
   } finally {
