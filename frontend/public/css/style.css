@@ -17,12 +17,16 @@ i[class^="fas"],
 i[class*=" fas"],
 i[class^="fab"],
 i[class*=" fab"] {
-  display: inline-block;
+  display: inline-block !important;
   vertical-align: -0.125em;
-  font-style: normal;
-  font-variant: normal;
-  text-rendering: auto;
+  font-style: normal !important;
+  font-variant: normal !important;
+  text-rendering: auto !important;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1;
+  font-family: 'Font Awesome 6 Free', 'Font Awesome 6 Brands', sans-serif !important;
+}
 }
 
 body{font-family:'Be Vietnam Pro',sans-serif;background:var(--cream);color:var(--text);font-size:15px;line-height:1.7;overflow-x:hidden}
