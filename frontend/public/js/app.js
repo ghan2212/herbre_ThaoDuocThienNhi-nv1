@@ -38,7 +38,7 @@ function filterCategory(cat) {
 function subscribeNewsletter() {
   const email = document.getElementById('nl-email')?.value?.trim();
   if (!email || !email.includes('@')) { showToast('Email không hợp lệ', 'error'); return; }
-  showToast('✨ Đăng ký thành công! Cảm ơn bạn.', 'success');
+  showToast('<i class="fas fa-check-circle"></i> Đăng ký thành công! Cảm ơn bạn.', 'success');
   document.getElementById('nl-email').value = '';
 }
  
@@ -185,7 +185,7 @@ async function toggleWishlist(productId, btnEl) {
       modalHeart.classList.toggle('active', added);
     }
  
-    showToast(added ? '💕 Đã thêm vào yêu thích!' : '✨ Đã bỏ khỏi yêu thích', 'success');
+    showToast(added ? '<i class="fas fa-heart"></i> Đã thêm vào yêu thích!' : '<i class="fas fa-times-circle"></i> Đã bỏ khỏi yêu thích', 'success');
   } catch (err) {
     showToast(err.message, 'error');
   }
@@ -374,7 +374,7 @@ async function submitReview(productId) {
  
   try {
     await ProductAPI.addReview(productId, { rating, comment });
-    showToast('✨ Cảm ơn bạn đã đánh giá!', 'success');
+    showToast('<i class="fas fa-star"></i> Cảm ơn bạn đã đánh giá!', 'success');
     // Reload modal to show new review
     closeProductModal();
     openProductModal(productId);
@@ -639,7 +639,7 @@ async function removeFromWishlist(productId) {
       localStorage.setItem('hb_user', JSON.stringify(currentUser));
     }
     showWishlist(); // reload
-    showToast('✨ Đã xoá khỏi yêu thích', 'success');
+    showToast('<i class="fas fa-trash"></i> Đã xoá khỏi yêu thích', 'success');
   } catch (err) {
     showToast(err.message, 'error');
   }

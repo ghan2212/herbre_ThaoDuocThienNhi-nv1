@@ -85,7 +85,7 @@ async function removeCartItem(itemId) {
     cartState = res.data;
     renderCartDrawer();
     updateCartBadge();
-    showToast('✨ Đã xoá khỏi giỏ hàng');
+    showToast('<i class="fas fa-trash"></i> Đã xoá khỏi giỏ hàng');
   } catch (err) {
     showToast(err.message, 'error');
   }
@@ -296,7 +296,7 @@ async function placeOrder() {
  
     // VNPay redirect
     if (selectedPayMethod === 'vnpay') {
-      showToast('⏳ Đang chuyển đến trang thanh toán VNPay...', 'success');
+      showToast('<i class="fas fa-spinner fa-spin"></i> Đang chuyển đến trang thanh toán VNPay...', 'success');
       try {
         const payRes = await PaymentAPI.createVNPay(order._id);
         if (payRes.payUrl) {
@@ -318,7 +318,7 @@ async function placeOrder() {
 }
  
 function showOrderSuccess(orderCode) {
-  showToast(`✅ Đặt hàng thành công! Mã: ${orderCode}`, 'success');
+  showToast(`<i class="fas fa-check-circle"></i> Đặt hàng thành công! Mã: ${orderCode}`, 'success');
   // Reset form
   ['f-name','f-phone','f-email','f-addr','f-note'].forEach(id => {
     const el = document.getElementById(id);

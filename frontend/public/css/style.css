@@ -11,6 +11,20 @@
   --shadow-lg:0 8px 40px rgba(45,90,39,.15);
   --transition:.22s ease;
 }
+
+/* ═══ FONT AWESOME ═══ */
+i[class^="fas"],
+i[class*=" fas"],
+i[class^="fab"],
+i[class*=" fab"] {
+  display: inline-block;
+  vertical-align: -0.125em;
+  font-style: normal;
+  font-variant: normal;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+}
+
 body{font-family:'Be Vietnam Pro',sans-serif;background:var(--cream);color:var(--text);font-size:15px;line-height:1.7;overflow-x:hidden}
 a{text-decoration:none;color:inherit;cursor:pointer}
 img{max-width:100%;display:block}

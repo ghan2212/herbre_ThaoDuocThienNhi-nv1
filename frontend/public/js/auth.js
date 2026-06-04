@@ -16,7 +16,7 @@ function logout() {
   localStorage.removeItem('hb_token');
   localStorage.removeItem('hb_user');
   updateAuthUI();
-  showToast('✨ Đã đăng xuất', 'success');
+  showToast('<i class="fas fa-sign-out-alt"></i> Đã đăng xuất', 'success');
   loadCart();
 }
  
@@ -68,7 +68,7 @@ async function doLogin() {
     const res = await AuthAPI.login(email, pass);
     setUser(res.user, res.token);
     closeAuth();
-    showToast(`✨ Chào mừng, ${res.user.name}!`, 'success');
+    showToast(`<i class="fas fa-check-circle"></i> Chào mừng, ${res.user.name}!`, 'success');
     await loadCart();
   } catch (err) {
     showToast(err.message, 'error');
@@ -90,7 +90,7 @@ async function doRegister() {
     const res = await AuthAPI.register({ name, email, phone, password: pass });
     setUser(res.user, res.token);
     closeAuth();
-    showToast(`✨ Tạo tài khoản thành công! Chào ${res.user.name}!`, 'success');
+    showToast(`<i class="fas fa-check-circle"></i> Tạo tài khoản thành công! Chào ${res.user.name}!`, 'success');
   } catch (err) {
     showToast(err.message, 'error');
   } finally {
@@ -231,7 +231,7 @@ async function saveProfile() {
     currentUser = { ...currentUser, name: res.user.name, phone: res.user.phone };
     localStorage.setItem('hb_user', JSON.stringify(currentUser));
     updateAuthUI();
-    showToast('✅ Đã cập nhật thông tin', 'success');
+    showToast('<i class="fas fa-check-circle"></i> Đã cập nhật thông tin', 'success');
     renderProfileTab();
   } catch (err) {
     showToast(err.message, 'error');
@@ -308,7 +308,7 @@ async function saveNewAddress() {
     const res = await AuthAPI.addAddress({ fullName, phone, address, city, ward, district, label });
     currentUser.addresses = res.addresses || currentUser.addresses;
     localStorage.setItem('hb_user', JSON.stringify(currentUser));
-    showToast('✅ Đã thêm địa chỉ mới', 'success');
+    showToast('<i class="fas fa-check-circle"></i> Đã thêm địa chỉ mới', 'success');
     renderAddressTab();
   } catch (err) {
     showToast(err.message, 'error');
@@ -321,7 +321,7 @@ async function deleteAddress(id) {
     const res = await AuthAPI.deleteAddress(id);
     currentUser.addresses = (currentUser.addresses || []).filter(a => a._id !== id);
     localStorage.setItem('hb_user', JSON.stringify(currentUser));
-    showToast('✅ Đã xoá địa chỉ', 'success');
+    showToast('<i class="fas fa-check-circle"></i> Đã xoá địa chỉ', 'success');
     renderAddressTab();
   } catch (err) {
     showToast(err.message, 'error');
@@ -369,7 +369,7 @@ async function doChangePassword() {
   if (newPw !== confirm) { showToast('Mật khẩu xác nhận không khớp', 'error'); return; }
   try {
     await AuthAPI.changePassword({ currentPassword: current, newPassword: newPw });
-    showToast('✅ Đổi mật khẩu thành công! Vui lòng đăng nhập lại.', 'success');
+    showToast('<i class="fas fa-check-circle"></i> Đổi mật khẩu thành công! Vui lòng đăng nhập lại.', 'success');
     closeAccountModal();
     setTimeout(logout, 1500);
   } catch (err) {
