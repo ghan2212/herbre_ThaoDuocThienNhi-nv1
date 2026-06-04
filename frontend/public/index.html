@@ -489,11 +489,11 @@
         <p><i class="fas fa-envelope"></i> hello@herbre.vn</p>
         <p><i class="fas fa-map-marker-alt"></i> Hà Nội, Việt Nam</p>
         <p><i class="fas fa-clock"></i> 8:00 – 22:00 mỗi ngày</p>
-        <div class="payment-logos">
+        <!-- <div class="payment-logos">
           <span class="pay-logo-badge" style="background:#ee0033">VNPAY</span>
           <span class="pay-logo-badge" style="background:#ae2070">MoMo</span>
           <span class="pay-logo-badge" style="background:#0068ff">ZaloPay</span>
-        </div>
+        </div> -->
       </div>
     </div>
     <div class="footer-bottom">© 2026 Herbré. Bảo lưu mọi quyền. | Chứng nhận ATTP số 001/2025/BYT</div>
@@ -520,9 +520,9 @@
       <span>Tổng cộng:</span><strong id="cart-total">0đ</strong>
     </div>
     <button class="btn-primary full" onclick="openCheckout()">Đặt hàng ngay</button>
-    <button class="btn-vnpay full" onclick="openCheckout('vnpay')" style="display:none">
+    <!-- <button class="btn-vnpay full" onclick="openCheckout('vnpay')" style="display:none">
       <span class="vnpay-tag">VNPAY</span> Thanh toán nhanh
-    </button>
+    </button> -->
   </div>
 </div>
  
@@ -573,22 +573,22 @@
       </div>
       <div class="form-section-title"><i class="fas fa-credit-card"></i> Phương thức thanh toán</div>
       <div class="pay-options" id="pay-options">
-        <div class="pay-opt selected" data-pay="momo" onclick="selectPayMethod(this)">
+        <!-- <div class="pay-opt selected" data-pay="momo" onclick="selectPayMethod(this)">
           <i class="fas fa-heart" style="font-size:1.5rem"></i>
           <div><strong>MoMo</strong><small>Ví điện tử MoMo</small></div>
         </div>
         <div class="pay-opt" data-pay="zalopay" onclick="selectPayMethod(this)">
           <i class="fas fa-dot-circle" style="font-size:1.5rem"></i>
-          <!-- <div><strong>ZaloPay</strong><small>Ví ZaloPay</small></div> -->
-        </div>
+          <div><strong>ZaloPay</strong><small>Ví ZaloPay</small></div>
+        </div> -->
         <div class="pay-opt" data-pay="cod" onclick="selectPayMethod(this)">
           <i class="fas fa-truck" style="font-size:1.5rem"></i>
           <div><strong>COD</strong><small>Thanh toán khi nhận hàng</small></div>
         </div>
       </div>
-      <div class="vnpay-info" id="vnpay-info" style="display:none">
+      <!-- <div class="vnpay-info" id="vnpay-info" style="display:none">
         <i class="fas fa-lock"></i> Thanh toán bảo mật SSL 256-bit qua cổng VNPay. Hỗ trợ 40+ ngân hàng nội địa và quốc tế.
-      </div>
+      </div> -->
     </div>
     <div class="modal-footer">
       <button class="btn-outline" onclick="closeCheckout()">Quay lại</button>
