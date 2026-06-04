@@ -6,7 +6,7 @@
 <title>Herbré – Thảo Dược Thiên Nhiên</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/css/style.css">
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 <!-- NAV -->
@@ -53,11 +53,11 @@
     <!-- <span class="material-icons">favorite_border</span> -->
 </button>
       <button class="btn-icon btn-cart-nav" id="btn-cart" title="Giỏ hàng">
-        <span class="material-icons">shopping_cart</span><span class="badge" id="cart-badge">0</span>
+        <i class="fas fa-shopping-cart"></i><span class="badge" id="cart-badge">0</span>
       </button>
       <button class="btn-auth" id="btn-auth">Đăng nhập</button>
     </div>
-    <button class="btn-hamburger" id="btn-menu"><span class="material-icons">menu</span></button>
+    <button class="btn-hamburger" id="btn-menu"><i class="fas fa-bars"></i></button>
   </div>
 </nav>
  
@@ -65,7 +65,7 @@
 <div class="search-bar" id="search-bar">
   <div class="search-inner">
     <input type="text" id="search-input" placeholder="Tìm thảo dược, công dụng..." autocomplete="off">
-    <button id="btn-search-close"><span class="material-icons">close</span></button>
+    <button id="btn-search-close"><i class="fas fa-times"></i></button>
   </div>
   <div class="search-results" id="search-results"></div>
 </div>
@@ -458,9 +458,9 @@
         <div class="logo"><span class="logo-text" style="color:#fff;font-size:1.5rem">Herb<em style="color:#b8955a">ré</em></span></div>
         <p>Thảo dược thiên nhiên thuần Việt — mang sức khoẻ toàn diện đến từng gia đình.</p>
         <div class="socials">
-          <a href="#" class="social"><span class="material-icons">language</span> Facebook</a>
-          <a href="#" class="social"><span class="material-icons">photo_camera</span> Instagram</a>
-          <a href="#" class="social"><span class="material-icons">video_library</span> YouTube</a>
+          <a href="#" class="social"><i class="fas fa-globe"></i> Facebook</a>
+          <a href="#" class="social"><i class="fas fa-camera"></i> Instagram</a>
+          <a href="#" class="social"><i class="fas fa-video"></i> YouTube</a>
         </div>
       </div>
       <div>
@@ -485,10 +485,10 @@
       </div>
       <div class="footer-contact">
         <div class="footer-title">Liên hệ</div>
-        <p><span class="material-icons">phone</span> <strong>1800 6868</strong> (miễn phí)</p>
-        <p><span class="material-icons">email</span> hello@herbre.vn</p>
-        <p><span class="material-icons">location_on</span> Hà Nội, Việt Nam</p>
-        <p><span class="material-icons">schedule</span> 8:00 – 22:00 mỗi ngày</p>
+        <p><i class="fas fa-phone"></i> <strong>1800 6868</strong> (miễn phí)</p>
+        <p><i class="fas fa-envelope"></i> hello@herbre.vn</p>
+        <p><i class="fas fa-map-marker-alt"></i> Hà Nội, Việt Nam</p>
+        <p><i class="fas fa-clock"></i> 8:00 – 22:00 mỗi ngày</p>
         <div class="payment-logos">
           <span class="pay-logo-badge" style="background:#ee0033">VNPAY</span>
           <span class="pay-logo-badge" style="background:#ae2070">MoMo</span>
@@ -504,8 +504,8 @@
 <div class="overlay" id="cart-overlay" onclick="closeCart()"></div>
 <div class="drawer" id="cart-drawer">
   <div class="drawer-header">
-    <h3><span class="material-icons">shopping_cart</span> Giỏ hàng (<span id="cart-count-text">0</span>)</h3>
-    <button class="btn-close" onclick="closeCart()"><span class="material-icons">close</span></button>
+    <h3><i class="fas fa-shopping-cart"></i> Giỏ hàng (<span id="cart-count-text">0</span>)</h3>
+    <button class="btn-close" onclick="closeCart()"><i class="fas fa-times"></i></button>
   </div>
   <div class="drawer-body" id="cart-items"></div>
   <div class="drawer-footer" id="cart-footer" style="display:none">
@@ -531,11 +531,11 @@
   <div class="modal checkout-modal">
     <div class="modal-header">
       <h3>Đặt hàng Herbré</h3>
-      <button class="btn-close" onclick="closeCheckout()"><span class="material-icons">close</span></button>
+      <button class="btn-close" onclick="closeCheckout()"><i class="fas fa-times"></i></button>
     </div>
     <div class="modal-body">
       <div class="checkout-order-summary" id="checkout-summary"></div>
-      <div class="form-section-title"><span class="material-icons">inventory_2</span> Thông tin giao hàng</div>
+      <div class="form-section-title"><i class="fas fa-box"></i> Thông tin giao hàng</div>
       <div class="form-row">
         <div class="form-group">
           <label>Họ và tên *</label>
@@ -571,7 +571,7 @@
           <input type="text" id="f-note" placeholder="VD: Giao giờ hành chính">
         </div>
       </div>
-      <div class="form-section-title"><span class="material-icons">credit_card</span> Phương thức thanh toán</div>
+      <div class="form-section-title"><i class="fas fa-credit-card"></i> Phương thức thanh toán</div>
       <div class="pay-options" id="pay-options">
         <div class="pay-opt selected" data-pay="vnpay" onclick="selectPayMethod(this)">
           <span class="vnpay-tag">VNPAY</span>
@@ -581,20 +581,20 @@
           </div>
         </div>
         <div class="pay-opt" data-pay="momo" onclick="selectPayMethod(this)">
-          <span class="material-icons" style="font-size:1.5rem">favorite</span>
+          <i class="fas fa-heart" style="font-size:1.5rem"></i>
           <div><strong>MoMo</strong><small>Ví điện tử MoMo</small></div>
         </div>
         <div class="pay-opt" data-pay="zalopay" onclick="selectPayMethod(this)">
-          <span class="material-icons" style="font-size:1.5rem">radio_button_checked</span>
+          <i class="fas fa-dot-circle" style="font-size:1.5rem"></i>
           <div><strong>ZaloPay</strong><small>Ví ZaloPay</small></div>
         </div>
         <div class="pay-opt" data-pay="cod" onclick="selectPayMethod(this)">
-          <span class="material-icons" style="font-size:1.5rem">local_shipping</span>
+          <i class="fas fa-truck" style="font-size:1.5rem"></i>
           <div><strong>COD</strong><small>Thanh toán khi nhận hàng</small></div>
         </div>
       </div>
       <div class="vnpay-info" id="vnpay-info">
-        <span class="material-icons">lock</span> Thanh toán bảo mật SSL 256-bit qua cổng VNPay. Hỗ trợ 40+ ngân hàng nội địa và quốc tế.
+        <i class="fas fa-lock"></i> Thanh toán bảo mật SSL 256-bit qua cổng VNPay. Hỗ trợ 40+ ngân hàng nội địa và quốc tế.
       </div>
     </div>
     <div class="modal-footer">
@@ -609,7 +609,7 @@
   <div class="modal auth-modal">
     <div class="modal-header">
       <h3 id="auth-title">Đăng nhập</h3>
-      <button class="btn-close" onclick="closeAuth()"><span class="material-icons">close</span></button>
+      <button class="btn-close" onclick="closeAuth()"><i class="fas fa-times"></i></button>
     </div>
     <div class="modal-body">
       <div class="auth-tabs">
@@ -644,7 +644,7 @@
   <div class="modal blog-modal">
     <div class="modal-header">
       <h3 id="blog-modal-title">Bài viết</h3>
-      <button class="btn-close" onclick="closeBlog()"><span class="material-icons">close</span></button>
+      <button class="btn-close" onclick="closeBlog()"><i class="fas fa-times"></i></button>
     </div>
     <div class="modal-body" id="blog-modal-body"></div>
   </div>
@@ -654,8 +654,8 @@
 <div class="modal-overlay" id="track-overlay">
   <div class="modal track-modal">
     <div class="modal-header">
-      <h3><span class="material-icons">search</span> Tra cứu đơn hàng</h3>
-      <button class="btn-close" onclick="document.getElementById('track-overlay').classList.remove('open')"><span class="material-icons">close</span></button>
+      <h3><i class="fas fa-search"></i> Tra cứu đơn hàng</h3>
+      <button class="btn-close" onclick="document.getElementById('track-overlay').classList.remove('open')"><i class="fas fa-times"></i></button>
     </div>
     <div class="modal-body">
       <div class="form-group">
@@ -722,7 +722,7 @@ async function submitContactForm2() {
   const btn = document.querySelector('#page-contact .btn-contact-submit');
   if (btn) { btn.disabled=true; btn.textContent='Đang gửi...'; }
   await new Promise(r => setTimeout(r, 800));
-  showToast('<span class="material-icons">check_circle</span> Đã nhận thông tin! Chúng tôi sẽ liên hệ lại sớm.', 'success');
+  showToast('<i class="fas fa-check-circle"></i> Đã nhận thông tin! Chúng tôi sẽ liên hệ lại sớm.', 'success');
   ['cf-name2','cf-phone2','cf-note2'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
   if (btn) { btn.disabled=false; btn.innerHTML='<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Gửi thông tin đăng ký tư vấn'; }
 }
@@ -752,7 +752,7 @@ async function submitContactForm() {
   const btn = document.querySelector('.btn-contact-submit');
   if (btn) { btn.disabled=true; btn.textContent='Đang gửi...'; }
   await new Promise(r => setTimeout(r, 800));
-  showToast('<span class="material-icons">check_circle</span> Đã nhận thông tin! Chúng tôi sẽ liên hệ lại sớm.', 'success');
+  showToast('<i class="fas fa-check-circle"></i> Đã nhận thông tin! Chúng tôi sẽ liên hệ lại sớm.', 'success');
   ['cf-name','cf-phone','cf-note'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
   if (btn) { btn.disabled=false; btn.innerHTML='<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Gửi thông tin đăng ký tư vấn'; }
 }
@@ -762,9 +762,9 @@ function copyZaloPhone() {
   const num = '0987654321';
   (navigator.clipboard ? navigator.clipboard.writeText(num) : Promise.reject()).catch(() => {
     const ta = document.createElement('textarea'); ta.value=num; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
-  }).finally(() => showToast('<span class="material-icons">assignment</span> Đã sao chép số Zalo!', 'success'));
+  }).finally(() => showToast('<i class="fas fa-clipboard"></i> Đã sao chép số Zalo!', 'success'));
   const btn = document.querySelector('.btn-zalo-copy');
-  if (btn) { const orig=btn.innerHTML; btn.innerHTML='<span class="material-icons">check_circle</span> Đã sao chép!'; setTimeout(()=>{ btn.innerHTML=orig; },2000); }
+  if (btn) { const orig=btn.innerHTML; btn.innerHTML='<i class="fas fa-check-circle"></i> Đã sao chép!'; setTimeout(()=>{ btn.innerHTML=orig; },2000); }
 }
 function openZaloChat() { window.open('https://zalo.me/0987654321','_blank'); }
 </script>
