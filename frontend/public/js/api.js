@@ -1,21 +1,21 @@
 /* api.js – Centralized API client for Herbré frontend */
 const API_BASE = 'https://herbrethaoduocthiennhi-nv1-production.up.railway.app/api';
-
+ 
 // Session ID for guest cart
 let sessionId = localStorage.getItem('hb_session');
 if (!sessionId) {
   sessionId = 'guest_' + Date.now() + '_' + Math.random().toString(36).slice(2);
   localStorage.setItem('hb_session', sessionId);
 }
-
+ 
 async function request(method, path, body = null, auth = false) {
   const headers = { 'Content-Type': 'application/json', 'X-Session-Id': sessionId };
   const token = localStorage.getItem('hb_token');
   if (token) headers['Authorization'] = `Bearer ${token}`;
-
+ 
   const config = { method, headers };
   if (body) config.body = JSON.stringify(body);
-
+ 
   try {
     const res = await fetch(API_BASE + path, config);
     const data = await res.json();
@@ -28,7 +28,7 @@ async function request(method, path, body = null, auth = false) {
     throw err;
   }
 }
-
+ 
 // ─── Auth ─────────────────────────────────────────────────────────────────────
 const AuthAPI = {
   login: (email, password) => request('POST', '/auth/login', { email, password }),
@@ -40,7 +40,7 @@ const AuthAPI = {
   deleteAddress: (id) => request('DELETE', `/auth/address/${id}`),
   toggleWishlist: (productId) => request('POST', `/auth/wishlist/${productId}`)
 };
-
+ 
 // ─── Products ─────────────────────────────────────────────────────────────────
 const ProductAPI = {
   list: (params = {}) => {
@@ -57,7 +57,7 @@ const ProductAPI = {
   update: (id, data) => request('PUT', `/products/${id}`, data),
   delete: (id) => request('DELETE', `/products/${id}`)
 };
-
+ 
 // ─── Combos ───────────────────────────────────────────────────────────────────
 const ComboAPI = {
   list: (params = {}) => {
@@ -69,7 +69,7 @@ const ComboAPI = {
   update: (id, data) => request('PUT', `/combos/${id}`, data),
   delete: (id) => request('DELETE', `/combos/${id}`)
 };
-
+ 
 // ─── Cart ─────────────────────────────────────────────────────────────────────
 const CartAPI = {
   get: () => request('GET', '/cart'),
@@ -78,7 +78,7 @@ const CartAPI = {
   removeItem: (itemId) => request('DELETE', `/cart/item/${itemId}`),
   clear: () => request('DELETE', '/cart/clear')
 };
-
+ 
 // ─── Orders ───────────────────────────────────────────────────────────────────
 const OrderAPI = {
   create: (data) => request('POST', '/orders', data),
@@ -97,7 +97,7 @@ const OrderAPI = {
   updateStatus: (id, data) => request('PUT', `/orders/${id}/status`, data),
   stats: () => request('GET', '/orders/admin/stats')
 };
-
+ 
 // ─── Blogs ────────────────────────────────────────────────────────────────────
 const BlogAPI = {
   list: (params = {}) => {
@@ -106,17 +106,25 @@ const BlogAPI = {
   },
   categories: () => request('GET', '/blogs/categories'),
   get: (slug) => request('GET', `/blogs/${slug}`),
-  create: (data) => request('POST', '/blogs', data),
-  update: (id, data) => request('PUT', `/blogs/${id}`, data),
-  delete: (id) => request('DELETE', `/blogs/${id}`)
+  getById: (id) => request('GET', `/blogs/id/${id}`),
+  create: (data) => request('POST', '/blogs', data, true),
+  update: (id, data) => request('PUT', `/blogs/${id}`, data, true),
+  delete: (id) => request('DELETE', `/blogs/${id}`, null, true)
 };
-
+ 
+const ContactAPI = {
+  submit: (data) => request('POST', '/contact', data),
+  list: (params = {}) => request('GET', `/contact?${new URLSearchParams(params)}`),
+  updateStatus: (id, status) => request('PUT', `/contact/${id}`, { status }, true),
+  delete: (id) => request('DELETE', `/contact/${id}`, null, true)
+};
+ 
 // ─── Payment ──────────────────────────────────────────────────────────────────
 const PaymentAPI = {
   createVNPay: (orderId, bankCode) => request('POST', '/payment/vnpay-create', { orderId, bankCode }),
   methods: () => request('GET', '/payment/methods')
 };
-
+ 
 // ─── Admin ────────────────────────────────────────────────────────────────────
 const AdminAPI = {
   dashboard: () => request('GET', '/admin/dashboard'),

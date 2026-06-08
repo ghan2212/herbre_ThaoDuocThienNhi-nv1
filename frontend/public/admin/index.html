@@ -170,6 +170,9 @@ select.input-sm{cursor:pointer}
       <div class="nav-item" onclick="showSection('stock', this)">
         <span class="icon">📋</span> Tồn kho
       </div>
+      <div class="nav-item" onclick="showSection('inquiries', this)">
+        <span class="icon">💬</span> Tư vấn
+      </div>
     </nav>
     <div class="sidebar-footer">
       <a href="/" style="font-size:.8rem;color:#8ab886;display:block;margin-bottom:.5rem">← Về trang web</a>
@@ -288,6 +291,23 @@ select.input-sm{cursor:pointer}
         <div class="alert alert-warning">⚠️ Danh sách sản phẩm có tồn kho ≤ 30 sản phẩm cần nhập thêm hàng</div>
         <div class="card">
           <div class="table-wrap" id="stock-table"><div class="loader">⏳ Đang tải...</div></div>
+        </div>
+      </div>
+ 
+      <div class="section-content" id="section-inquiries">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">
+          <h3 style="margin:0">Danh sách đăng ký tư vấn</h3>
+          <div style="display:flex;gap:.5rem">
+            <select id="inquiry-status-filter" class="input-sm" onchange="loadAdminInquiries()" style="width:auto">
+              <option value="">Tất cả</option>
+              <option value="new">Mới</option>
+              <option value="contacted">Đã liên hệ</option>
+              <option value="done">Hoàn tất</option>
+            </select>
+          </div>
+        </div>
+        <div class="card">
+          <div class="table-wrap" id="inquiries-table"><div class="loader">⏳ Đang tải...</div></div>
         </div>
       </div>
     </div>
@@ -491,7 +511,8 @@ const sectionLoaders = {
   combos: loadAdminCombos,
   blogs: loadAdminBlogs,
   users: loadAdminUsers,
-  stock: loadStock
+  stock: loadStock,
+  inquiries: loadAdminInquiries
 };
  
 function showSection(name, navEl) {
@@ -500,7 +521,7 @@ function showSection(name, navEl) {
   document.getElementById(`section-${name}`).classList.add('active');
   if (navEl) navEl.classList.add('active');
  
-  const titles = { dashboard:'Dashboard', orders:'Quản lý đơn hàng', products:'Quản lý sản phẩm', combos:'Quản lý combo', blogs:'Quản lý blog', users:'Quản lý người dùng', stock:'Quản lý tồn kho' };
+  const titles = { dashboard:'Dashboard', orders:'Quản lý đơn hàng', products:'Quản lý sản phẩm', combos:'Quản lý combo', blogs:'Quản lý blog', users:'Quản lý người dùng', stock:'Quản lý tồn kho', inquiries:'Đăng ký tư vấn' };
   document.getElementById('topbar-title').textContent = titles[name] || name;
  
   if (sectionLoaders[name]) sectionLoaders[name]();
@@ -1065,7 +1086,7 @@ function openAddBlog() {
  
 async function editBlog(id) {
   try {
-    const res = await BlogAPI.get(id);
+    const res = await BlogAPI.getById(id);
     const b = res.data;
     document.getElementById('blog-edit-id').value = b._id;
     document.getElementById('blog-modal-head').textContent = 'Chỉnh sửa bài viết';
@@ -1115,6 +1136,46 @@ async function saveBlog() {
 async function deleteBlog(id) {
   if (!confirm('Ẩn bài viết này?')) return;
   try { await BlogAPI.delete(id); loadAdminBlogs(); showAdminToast('✅ Đã ẩn bài viết'); }
+  catch (err) { showAdminToast('❌ ' + err.message, 'error'); }
+}
+ 
+// ─── Inquiries (Tư vấn) ──────────────────────────────────────────────────────
+async function loadAdminInquiries() {
+  const tbl = document.getElementById('inquiries-table');
+  if (!tbl) return;
+  tbl.innerHTML = '<div class="loader">⏳ Đang tải...</div>';
+  try {
+    const status = document.getElementById('inquiry-status-filter')?.value || '';
+    const res = await ContactAPI.list({ status, limit: 50 });
+    const items = res.data;
+    const statusLabel = { new: '<span class="badge badge-pending">Mới</span>', contacted: '<span class="badge badge-processing">Đã liên hệ</span>', done: '<span class="badge badge-delivered">Hoàn tất</span>' };
+    if (!items.length) { tbl.innerHTML = '<div class="empty-state"><div class="empty-icon">💬</div><p>Chưa có đăng ký tư vấn nào</p></div>'; return; }
+    tbl.innerHTML = `<table>
+      <thead><tr><th>Họ tên</th><th>SĐT / Zalo</th><th>Ghi chú</th><th>Trạng thái</th><th>Thời gian</th><th>Thao tác</th></tr></thead>
+      <tbody>${items.map(i => `<tr>
+        <td><strong>${i.name}</strong></td>
+        <td><a href="tel:${i.phone}" style="color:var(--g-dark)">${i.phone}</a></td>
+        <td style="max-width:200px;word-break:break-word">${i.note || '<span style="color:#ccc">—</span>'}</td>
+        <td>${statusLabel[i.status] || i.status}</td>
+        <td>${new Date(i.createdAt).toLocaleString('vi-VN',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'})}</td>
+        <td style="display:flex;gap:.4rem;flex-wrap:wrap">
+          ${i.status !== 'contacted' ? `<button class="btn-sm btn-green" onclick="updateInquiryStatus('${i._id}','contacted')">Đã liên hệ</button>` : ''}
+          ${i.status !== 'done' ? `<button class="btn-sm" onclick="updateInquiryStatus('${i._id}','done')">Hoàn tất</button>` : ''}
+          <button class="btn-sm btn-red" onclick="deleteInquiry('${i._id}')">Xoá</button>
+        </td>
+      </tr>`).join('')}</tbody>
+    </table>`;
+  } catch (err) { tbl.innerHTML = `<div class="alert alert-error">❌ ${err.message}</div>`; }
+}
+ 
+async function updateInquiryStatus(id, status) {
+  try { await ContactAPI.updateStatus(id, status); loadAdminInquiries(); showAdminToast('Đã cập nhật trạng thái'); }
+  catch (err) { showAdminToast('❌ ' + err.message, 'error'); }
+}
+ 
+async function deleteInquiry(id) {
+  if (!confirm('Xoá đăng ký tư vấn này?')) return;
+  try { await ContactAPI.delete(id); loadAdminInquiries(); showAdminToast('Đã xoá'); }
   catch (err) { showAdminToast('❌ ' + err.message, 'error'); }
 }
  
