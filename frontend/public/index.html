@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -46,18 +47,21 @@
       <!-- <button class="btn-icon" id="btn-search-open" title="Tìm kiếm"><span class="material-icons">search</span></button>
       <button class="btn-icon" id="btn-wishlist" title="Yêu thích">🤍</button> -->
       <button class="btn-icon" id="btn-search-open" title="Tìm kiếm">
-        <i class="fas fa-search"></i>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
       </button>
  
       <button class="btn-icon" id="btn-wishlist" title="Yêu thích">
-        <i class="fas fa-heart"></i>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
       </button>
       <button class="btn-icon btn-cart-nav" id="btn-cart" title="Giỏ hàng">
-        <i class="fas fa-shopping-cart"></i><span class="badge" id="cart-badge">0</span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+        <span class="badge" id="cart-badge">0</span>
       </button>
       <button class="btn-auth" id="btn-auth">Đăng nhập</button>
     </div>
-    <button class="btn-hamburger" id="btn-menu"><i class="fas fa-bars"></i></button>
+    <button class="btn-hamburger" id="btn-menu">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
   </div>
 </nav>
  
@@ -65,7 +69,7 @@
 <div class="search-bar" id="search-bar">
   <div class="search-inner">
     <input type="text" id="search-input" placeholder="Tìm thảo dược, công dụng..." autocomplete="off">
-    <button id="btn-search-close"><i class="fas fa-times"></i></button>
+    <button id="btn-search-close"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
   </div>
   <div class="search-results" id="search-results"></div>
 </div>
@@ -96,22 +100,25 @@
       </div>
     </div>
     <div class="hero-visual">
-      <svg viewBox="0 0 300 340" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <ellipse cx="150" cy="295" rx="100" ry="18" fill="rgba(255,255,255,0.08)"/>
-        <rect x="142" y="225" width="16" height="75" rx="8" fill="#4a7c3f"/>
-        <path d="M150 285C150 285 98 243 98 200C98 162 122 138 150 128C178 138 202 162 202 200C202 243 150 285 150 285Z" fill="#5a9450" opacity=".85"/>
-        <path d="M150 128C150 128 134 160 134 184C134 210 141 232 150 247C159 232 166 210 166 184C166 160 150 128 150 128Z" fill="#7aab6a"/>
-        <path d="M150 128L150 247" stroke="#2d5a27" stroke-width="2" stroke-linecap="round"/>
-        <path d="M150 163C150 163 130 156 117 138" stroke="#9fcf8a" stroke-width="2" stroke-linecap="round"/>
-        <path d="M150 183C150 183 170 176 183 158" stroke="#9fcf8a" stroke-width="2" stroke-linecap="round"/>
-        <path d="M150 204C150 204 133 197 124 182" stroke="#9fcf8a" stroke-width="2" stroke-linecap="round"/>
-        <circle cx="100" cy="132" r="23" fill="#4a7c3f" opacity=".6"/>
-        <path d="M100 155C100 155 91 140 95 129C100 117 110 114 100 155Z" fill="#7aab6a"/>
-        <circle cx="200" cy="147" r="19" fill="#3d6a35" opacity=".7"/>
-        <path d="M200 166C200 166 192 153 196 143C200 133 207 131 200 166Z" fill="#7aab6a"/>
-        <rect x="112" y="272" width="76" height="32" rx="16" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.25)" stroke-width="1"/>
-        <text x="150" y="293" text-anchor="middle" fill="white" font-size="11" font-family="serif" opacity=".9">Herbré</text>
-      </svg>
+      <div class="hero-logo-display">
+        <svg class="hero-logo-svg" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="22" cy="22" r="22" fill="rgba(255,255,255,0.12)"/>
+          <line x1="22" y1="5"  x2="22" y2="9"  stroke="#c9a84c" stroke-width="1.6" stroke-linecap="round"/>
+          <line x1="29" y1="7"  x2="27" y2="10.5" stroke="#c9a84c" stroke-width="1.6" stroke-linecap="round"/>
+          <line x1="35" y1="13" x2="31.5" y2="15" stroke="#c9a84c" stroke-width="1.6" stroke-linecap="round"/>
+          <line x1="15" y1="7"  x2="17" y2="10.5" stroke="#c9a84c" stroke-width="1.6" stroke-linecap="round"/>
+          <line x1="9"  y1="13" x2="12.5" y2="15" stroke="#c9a84c" stroke-width="1.6" stroke-linecap="round"/>
+          <path d="M22 11 C19 14 17 17 17 20 C17 23.5 19.2 26 22 27.5 C24.8 26 27 23.5 27 20 C27 17 25 14 22 11Z" fill="none" stroke="#c9a84c" stroke-width="1.5" stroke-linejoin="round"/>
+          <line x1="22" y1="11" x2="22" y2="27.5" stroke="#c9a84c" stroke-width="1.2" stroke-linecap="round"/>
+          <line x1="22" y1="27.5" x2="22" y2="33" stroke="#c9a84c" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M11 31 Q16 28.5 22 31 Q28 33.5 33 31" fill="none" stroke="#c9a84c" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M13 34 Q17.5 31.5 22 34 Q26.5 36.5 31 34" fill="none" stroke="#c9a84c" stroke-width="1.3" stroke-linecap="round"/>
+          <circle cx="8"  cy="22" r="1" fill="#c9a84c"/>
+          <circle cx="36" cy="22" r="1" fill="#c9a84c"/>
+        </svg>
+        <div class="hero-logo-name">Herb<em>ré</em></div>
+        <div class="hero-logo-sub">Thảo dược thiên nhiên thuần Việt</div>
+      </div>
     </div>
   </div>
 </section>
@@ -458,8 +465,8 @@
         <div class="logo"><span class="logo-text" style="color:#fff;font-size:1.5rem">Herb<em style="color:#b8955a">ré</em></span></div>
         <p>Thảo dược thiên nhiên thuần Việt — mang sức khoẻ toàn diện đến từng gia đình.</p>
         <div class="socials">
-          <a href="#" class="social"><i class="fas fa-globe"></i> Facebook:Thảo dược ngâm chân Herbré </a>
-          <a href="#" class="social"><i class="fas fa-camera"></i> Instagram :Thảo dược ngâm chân Herbré</a>
+          <a href="#" class="social"> Facebook:Thảo dược ngâm chân Herbré </a>
+          <a href="#" class="social"> Instagram :Thảo dược ngâm chân Herbré</a>
         
         </div>
       </div>
@@ -485,10 +492,10 @@
       </div>
       <div class="footer-contact">
         <div class="footer-title">Liên hệ</div>
-        <p><i class="fas fa-phone"></i> <strong>0378654625</strong> (miễn phí)</p>
-        <p><i class="fas fa-envelope"></i> hello@herbre.vn</p>
-        <p><i class="fas fa-map-marker-alt"></i> Hà Nội, Việt Nam</p>
-        <p><i class="fas fa-clock"></i> 8:00 – 22:00 mỗi ngày</p>
+        <p>📞 <strong>0378654625</strong> (miễn phí)</p>
+        <p>✉️ hello@herbre.vn</p>
+        <p>📍 Hà Nội, Việt Nam</p>
+        <p>🕐 8:00 – 22:00 mỗi ngày</p>
         <!-- <div class="payment-logos">
           <span class="pay-logo-badge" style="background:#ee0033">VNPAY</span>
           <span class="pay-logo-badge" style="background:#ae2070">MoMo</span>
@@ -504,8 +511,8 @@
 <div class="overlay" id="cart-overlay" onclick="closeCart()"></div>
 <div class="drawer" id="cart-drawer">
   <div class="drawer-header">
-    <h3><i class="fas fa-shopping-cart"></i> Giỏ hàng (<span id="cart-count-text">0</span>)</h3>
-    <button class="btn-close" onclick="closeCart()"><i class="fas fa-times"></i></button>
+    <h3>🛒 Giỏ hàng (<span id="cart-count-text">0</span>)</h3>
+    <button class="btn-close" onclick="closeCart()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
   </div>
   <div class="drawer-body" id="cart-items"></div>
   <div class="drawer-footer" id="cart-footer" style="display:none">
@@ -531,11 +538,11 @@
   <div class="modal checkout-modal">
     <div class="modal-header">
       <h3>Đặt hàng Herbré</h3>
-      <button class="btn-close" onclick="closeCheckout()"><i class="fas fa-times"></i></button>
+      <button class="btn-close" onclick="closeCheckout()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
     </div>
     <div class="modal-body">
       <div class="checkout-order-summary" id="checkout-summary"></div>
-      <div class="form-section-title"><i class="fas fa-box"></i> Thông tin giao hàng</div>
+      <div class="form-section-title">📦 Thông tin giao hàng</div>
       <div class="form-row">
         <div class="form-group">
           <label>Họ và tên *</label>
@@ -571,23 +578,23 @@
           <input type="text" id="f-note" placeholder="VD: Giao giờ hành chính">
         </div>
       </div>
-      <div class="form-section-title"><i class="fas fa-credit-card"></i> Phương thức thanh toán</div>
+      <div class="form-section-title">💳 Phương thức thanh toán</div>
       <div class="pay-options" id="pay-options">
         <!-- <div class="pay-opt selected" data-pay="momo" onclick="selectPayMethod(this)">
-          <i class="fas fa-heart" style="font-size:1.5rem"></i>
+          💜
           <div><strong>MoMo</strong><small>Ví điện tử MoMo</small></div>
         </div>
         <div class="pay-opt" data-pay="zalopay" onclick="selectPayMethod(this)">
-          <i class="fas fa-dot-circle" style="font-size:1.5rem"></i>
+          🔵
           <div><strong>ZaloPay</strong><small>Ví ZaloPay</small></div>
         </div> -->
         <div class="pay-opt" data-pay="cod" onclick="selectPayMethod(this)">
-          <i class="fas fa-truck" style="font-size:1.5rem"></i>
+          
           <div><strong>COD</strong><small>Thanh toán khi nhận hàng</small></div>
         </div>
       </div>
       <!-- <div class="vnpay-info" id="vnpay-info" style="display:none">
-        <i class="fas fa-lock"></i> Thanh toán bảo mật SSL 256-bit qua cổng VNPay. Hỗ trợ 40+ ngân hàng nội địa và quốc tế.
+        🔒 Thanh toán bảo mật SSL 256-bit qua cổng VNPay. Hỗ trợ 40+ ngân hàng nội địa và quốc tế.
       </div> -->
     </div>
     <div class="modal-footer">
@@ -602,7 +609,7 @@
   <div class="modal auth-modal">
     <div class="modal-header">
       <h3 id="auth-title">Đăng nhập</h3>
-      <button class="btn-close" onclick="closeAuth()"><i class="fas fa-times"></i></button>
+      <button class="btn-close" onclick="closeAuth()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
     </div>
     <div class="modal-body">
       <div class="auth-tabs">
@@ -637,7 +644,7 @@
   <div class="modal blog-modal">
     <div class="modal-header">
       <h3 id="blog-modal-title">Bài viết</h3>
-      <button class="btn-close" onclick="closeBlog()"><i class="fas fa-times"></i></button>
+      <button class="btn-close" onclick="closeBlog()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
     </div>
     <div class="modal-body" id="blog-modal-body"></div>
   </div>
@@ -647,8 +654,8 @@
 <div class="modal-overlay" id="track-overlay">
   <div class="modal track-modal">
     <div class="modal-header">
-      <h3><i class="fas fa-search"></i> Tra cứu đơn hàng</h3>
-      <button class="btn-close" onclick="document.getElementById('track-overlay').classList.remove('open')"><i class="fas fa-times"></i></button>
+      <h3> Tra cứu đơn hàng</h3>
+      <button class="btn-close" onclick="document.getElementById('track-overlay').classList.remove('open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
     </div>
     <div class="modal-body">
       <div class="form-group">
@@ -711,13 +718,19 @@ function showPage(name) {
 async function submitContactForm2() {
   const name  = document.getElementById('cf-name2')?.value?.trim();
   const phone = document.getElementById('cf-phone2')?.value?.trim();
+  const note  = document.getElementById('cf-note2')?.value?.trim();
   if (!name || !phone) { showToast('Vui lòng nhập họ tên và số điện thoại', 'error'); return; }
   const btn = document.querySelector('#page-contact .btn-contact-submit');
   if (btn) { btn.disabled=true; btn.textContent='Đang gửi...'; }
-  await new Promise(r => setTimeout(r, 800));
-  showToast('<i class="fas fa-check-circle"></i> Đã nhận thông tin! Chúng tôi sẽ liên hệ lại sớm.', 'success');
-  ['cf-name2','cf-phone2','cf-note2'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
-  if (btn) { btn.disabled=false; btn.innerHTML='<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Gửi thông tin đăng ký tư vấn'; }
+  try {
+    await ContactAPI.submit({ name, phone, note, source: 'page-contact' });
+    showToast('✅ Đã nhận thông tin! Chúng tôi sẽ liên hệ lại trong 30 phút.', 'success');
+    ['cf-name2','cf-phone2','cf-note2'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
+  } catch (err) {
+    showToast('Có lỗi xảy ra, vui lòng thử lại!', 'error');
+  } finally {
+    if (btn) { btn.disabled=false; btn.innerHTML='<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Gửi thông tin đăng ký tư vấn'; }
+  }
 }
 (function(){
   const obs = new IntersectionObserver(entries => {
@@ -756,32 +769,15 @@ async function submitContactForm() {
   }
 }
  
-async function submitContactForm2() {
-  const name  = document.getElementById('cf-name2')?.value?.trim();
-  const phone = document.getElementById('cf-phone2')?.value?.trim();
-  const note  = document.getElementById('cf-note2')?.value?.trim();
-  if (!name || !phone) { showToast('Vui lòng nhập họ tên và số điện thoại', 'error'); return; }
-  const btn = document.querySelector('#page-contact .btn-contact-submit');
-  if (btn) { btn.disabled=true; btn.textContent='Đang gửi...'; }
-  try {
-    await ContactAPI.submit({ name, phone, note });
-    showToast('Đã nhận thông tin! Chúng tôi sẽ liên hệ lại sớm.', 'success');
-    ['cf-name2','cf-phone2','cf-note2'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
-  } catch (err) {
-    showToast('Có lỗi xảy ra, vui lòng thử lại!', 'error');
-  } finally {
-    if (btn) { btn.disabled=false; btn.innerHTML='<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Gửi thông tin đăng ký tư vấn'; }
-  }
-}
 function copyZaloPhone() {
-  const num = '0987654321';
+  const num = '0378654625';
   (navigator.clipboard ? navigator.clipboard.writeText(num) : Promise.reject()).catch(() => {
     const ta = document.createElement('textarea'); ta.value=num; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
-  }).finally(() => showToast('<i class="fas fa-clipboard"></i> Đã sao chép số Zalo!', 'success'));
+  }).finally(() => showToast('📋 Đã sao chép số Zalo!', 'success'));
   const btn = document.querySelector('.btn-zalo-copy');
-  if (btn) { const orig=btn.innerHTML; btn.innerHTML='<i class="fas fa-check-circle"></i> Đã sao chép!'; setTimeout(()=>{ btn.innerHTML=orig; },2000); }
+  if (btn) { const orig=btn.innerHTML; btn.innerHTML='✅ Đã sao chép!'; setTimeout(()=>{ btn.innerHTML=orig; },2000); }
 }
-function openZaloChat() { window.open('https://zalo.me/0987654321','_blank'); }
+function openZaloChat() { window.open('https://zalo.me/0378654625','_blank'); }
 </script>
 </body>
 </html>
